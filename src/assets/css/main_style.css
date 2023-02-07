@@ -1,0 +1,10 @@
+main {
+    display: inline;
+    width: 100vw;
+    justify-items: center;
+}
+.modal {
+    width: 800px;
+    height: 400px;
+    background-color: pink;
+}
