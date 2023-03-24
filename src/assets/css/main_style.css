@@ -3,8 +3,10 @@ main {
     width: 100vw;
     justify-items: center;
 }
+
 .modal {
     width: 800px;
     height: 400px;
-    background-color: pink;
+    background-color: rgb(255, 243, 245);
+
 }
