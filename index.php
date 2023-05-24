@@ -7,9 +7,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Conectar ao banco de dados
     $servername = "localhost";
-    $database = "nomedobanco";
-    $username_db = "usuariodb";
-    $password_db = "senhadb";
+    $database = "bit_tcc";
+    $username_db = "root";
+    $password_db = "";
 
     $conn = new mysqli($servername, $username_db, $password_db, $database);
 
@@ -19,13 +19,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Consulta SQL para verificar as credenciais
-    $sql = "SELECT * FROM usuarios WHERE username = '$username' AND password = '$password'";
+    $sql = "SELECT * FROM usuario WHERE nome = '$username' AND senha = '$password'";
     $result = $conn->query($sql);
 
     // Verificar se a consulta retornou algum resultado
     if ($result->num_rows === 1) {
         // Credenciais válidas, redirecionar para a página de controle
-        header("Location: controle.php");
+        header("Location: pages/sistema.php");
         exit();
     } else {
         // Credenciais inválidas, exibir mensagem de erro
@@ -46,19 +46,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
 
+
     <link rel="stylesheet" href="assets/css/login.css">
 </head>
 <body>
   <div class="container">
     <div class="logo-container">
-      <img src="assets/img/logo.png" alt="Logo da Empresa">
+      <img src="assets/img/logo_bit_200x100.png" alt="Logo da Empresa">
     </div>
   
     <?php if (isset($error_message)): ?>
       <p><?php echo $error_message; ?></p>
     <?php endif; ?>
   
-    <form method="POST" action="login.php">
+    <form method="POST">
       <label for="username">Usuário:</label>
       <input type="text" id="username" name="username" required>
   
