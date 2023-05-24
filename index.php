@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     } else {
         // Credenciais inválidas, exibir mensagem de erro
-        $error_message = "Usuário ou senha inválidos.";
+        $error_message = "<p class=\"senha-erro\">Usuário ou senha inválidos.</p>";
     }
 
     // Fechar a conexão com o banco de dados
@@ -40,38 +40,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
 
-
-    <link rel="stylesheet" href="assets/css/login.css">
+    <link rel="stylesheet" href="assets/css/index.css">
 </head>
-<body>
-  <div class="container">
-    <div class="logo-container">
-      <img src="assets/img/logo_bit_200x100.png" alt="Logo da Empresa">
-    </div>
-  
-    <?php if (isset($error_message)): ?>
-      <p><?php echo $error_message; ?></p>
-    <?php endif; ?>
-  
-    <form method="POST">
-      <label for="username">Usuário:</label>
-      <input type="text" id="username" name="username" required>
-  
-      <label for="password">Senha:</label>
-      <input type="password" id="password" name="password" required>
-  
-      <button type="submit">Entrar</button>
-    </form>
-  </div>
 
- <!--   <footer>
+<body>
+    <div class="container">
+        <div class="logo-container">
+            <img src="assets/img/logo_bit_200x100.png" alt="Logo da Empresa">
+        </div>
+
+        <?php if (isset($error_message)): ?>
+            <p>
+                <?php echo $error_message; ?>
+            </p>
+        <?php endif; ?>
+
+        <form method="POST">
+            <label for="username">Usuário:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Senha:</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit">Entrar</button>
+        </form>
+    </div>
+
+    <!--   <footer>
     <p>Este site é restrito e só pode ser acessado por pessoal autorizado. Em caso de dúvidas, entre em contato com o Administrador.</p>
 </footer> -->
 </body>
+
 </html>

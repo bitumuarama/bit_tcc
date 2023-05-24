@@ -19,17 +19,18 @@ body {
 }
 
 .logo-container {
-  text-align: center;
+    text-align: center;
 }
 
 .logo-container img {
-  max-width: 100%;
-  height: auto;
+    max-width: 100%;
+    height: auto;
 }
 
 label {
     display: block;
     margin-bottom: 5px;
+    margin-top: 5px;
     color: #ccc;
 }
 
@@ -66,4 +67,9 @@ footer {
     font-size: 14px;
     color: #ccc;
     padding: 10px;
+}
+
+.senha-erro {
+    color: red;
+    text-align: center;
 }
