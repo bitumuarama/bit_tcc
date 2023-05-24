@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     } else {
         // Credenciais inválidas, exibir mensagem de erro
-        $error_message = "Não foi possível verificar Usuário ou Senha.<br> Por favor, tente novamente!";
+        $error_message = "Usuário ou Senha inválidos!";
     }
 
     // Fechar a conexão com o banco de dados
