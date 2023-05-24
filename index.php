@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     } else {
         // Credenciais inválidas, exibir mensagem de erro
-        $error_message = "<p class=\"senha-erro\">Usuário ou senha inválidos.</p>";
+        $error_message = "Não foi possível verificar Usuário ou Senha.<br> Por favor, tente novamente!";
     }
 
     // Fechar a conexão com o banco de dados
@@ -47,35 +47,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
 
+    <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/index.css">
 </head>
 
 <body>
     <div class="container">
         <div class="logo-container">
-            <img src="assets/img/logo_bit_200x100.png" alt="Logo da Empresa">
+            <img src="assets/img/logo_bit_300x150px.svg" alt="Logo da Empresa">
         </div>
-
-        <?php if (isset($error_message)): ?>
-            <p>
-                <?php echo $error_message; ?>
-            </p>
-        <?php endif; ?>
-
         <form method="POST">
-            <label for="username">Usuário:</label>
+            <label for="username">Usuário:
+
+            </label>
             <input type="text" id="username" name="username" required>
 
             <label for="password">Senha:</label>
             <input type="password" id="password" name="password" required>
 
+            <?php if (isset($error_message)): ?>
+                <p class="login-erro">
+                    <?php echo $error_message; ?>
+                </p>
+                    <?php endif; ?>
+
             <button type="submit">Entrar</button>
         </form>
     </div>
-
-    <!--   <footer>
-    <p>Este site é restrito e só pode ser acessado por pessoal autorizado. Em caso de dúvidas, entre em contato com o Administrador.</p>
-</footer> -->
 </body>
 
 </html>
