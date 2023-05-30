@@ -8,12 +8,5 @@
 </head>
 <body>
     <h2>SISTEMA</h2>
-
-    <h3>Cadastrar</h3>
-    <a href="">Usuário</a>
-    <a href="">Cliente</a>
-    <a href="">Produto</a>
-
-    
 </body>
 </html>

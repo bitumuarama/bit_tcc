@@ -1,1 +1,0 @@
-window.open("assets/html/painel.html");
