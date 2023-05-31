@@ -25,11 +25,13 @@
             <label for="password">Senha:</label>
             <input type="password" id="password" name="password" required>
 
-            <?php if (isset($error_message)): ?>
+            <?php if (isset($_GET['error'])): ?>
                 <p class="login-erro">
-                    <?php echo $error_message; ?>
+                    <?php echo $_GET['error']; ?>
                 </p>
-                    <?php endif; ?>
+            <?php endif; ?>
+
+
 
             <button type="submit">Entrar</button>
         </form>

@@ -6,7 +6,7 @@ $username_db = "root";
 $password_db = "";
 
 // Dados do usuário para inserção
-$nome = "Bruno Bertolli";
+$nome = "Admin";
 $senha = "123";
 $email = "bertolli@example.com";
 

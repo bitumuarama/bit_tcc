@@ -17,24 +17,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($conn->connect_error) {
         die("Falha na conexão com o banco de dados: " . $conn->connect_error);
     } else {
-        
+
         // Consulta SQL para verificar as credenciais
-        $sql = "SELECT * FROM usuario WHERE nome = '$username' AND senha = '$password'";
-        $result = $conn->query($sql);
-        
+        $sql = "SELECT * FROM usuario WHERE nome = ? AND senha = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ss", $username, $password);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
         // Verificar se a consulta retornou algum resultado
         if ($result->num_rows === 1) {
             // Credenciais válidas, redirecionar para a página de controle
-            header("Location: pages/sistema.php");
+            header("Location: sistema.php");
             exit();
         } else {
             // Credenciais inválidas, exibir mensagem de erro
             $error_message = "Usuário ou Senha inválidos!";
+            header("Location: ../index.php?error=" . urlencode($error_message));
         }
-        
-        // Fechar a conexão com o banco de dados
+
+        // Fechar a declaração e a conexão com o banco de dados
+        $stmt->close();
         $conn->close();
     }
 }
 ?>
-
