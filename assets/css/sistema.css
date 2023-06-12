@@ -1,74 +1,71 @@
-body {
-    background-color: #222;
+.container {
+    margin: 20px 20px 0px 20px;
+}
+
+header {
+    background-color: #007bff;
+    padding: 20px;
+    text-align: center;
+    border-radius: 10px;
+}
+
+header h1 {
     color: #fff;
-    font-family: Arial, sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
+    font-size: 24px;
     margin: 0;
 }
 
-.container {
-    width: 300px;
-    padding: 20px;
-    background-color: #333;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-}
-
-.logo-container {
-  text-align: center;
-}
-
-.logo-container img {
-  max-width: 100%;
-  height: auto;
-}
-
-label {
-    display: block;
-    margin-bottom: 5px;
+header p {
     color: #ccc;
-}
-
-input[type="text"],
-input[type="password"] {
-    width: 100%;
-    padding: 8px;
-    background-color: #444;
-    border: none;
-    border-radius: 4px;
-    color: #fff;
-    box-sizing: border-box;
-}
-
-button {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #0056b3;
-}
-
-footer {
-    margin-top: auto;
-    text-align: center;
     font-size: 14px;
-    color: #ccc;
-    padding: 10px;
+    margin: 5px 0 0 0;
+}
+.cont1 {
+    background-color: #007bff;
+    padding: 10px 5px;
+    margin-top: 20px;
+    text-align: center;
+    border-radius: 10px;
+    height: 450px;
+    width: 220px;
 }
 
+.cont1 h1 {
+    color: #fff;
+    font-size: 16px;
+    margin: 10px 0px;
+}
+.cont1 h2 {
+    color: #fff;
+    font-size: 15px;
+    margin: 10px 0px;
+}
 
-.senha-erro {
-font-size: 24px;
+.cont1 ul {
+    padding: 0;
+    margin: 0;
+  }
+  
+  .cont1 li {
+    color: #fff;
+    font-size: 12px;
+    margin: 5px;
+    list-style: none;
+    text-align: start;
+    padding-left: 0;
+  }
+
+.cont2 {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+svg {
+    margin: 5px;
+}
+.int {
+    position: absolute;
+    right: 0;
+    bottom: 0;
 }

@@ -1,3 +1,49 @@
+<?php
+// Verificar se o formulário foi enviado
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    // Obter as informações do formulário
+    //  $username = $_POST['username'];
+    //  $password = $_POST['password'];
+
+    // Conectar ao banco de dados
+    // $servername = "localhost";
+    // $database = "bit_tcc";
+    // $username_db = "root";
+    // $password_db = "";
+
+    // $conn = new mysqli($servername, $username_db, $password_db, $database);
+
+    // Verificar se a conexão foi estabelecida com sucesso
+    // if ($conn->connect_error) {
+    //     die("Falha na conexão com o banco de dados: " . $conn->connect_error);
+    //  }
+
+    // Escapar caracteres especiais para evitar injeção de SQL
+    //  $username = $conn->real_escape_string($username);
+    //  $password = $conn->real_escape_string($password);
+
+    // Consulta SQL para verificar as credenciais (case-sensitive)
+    //  $sql = "SELECT * FROM usuario WHERE nome = '$username' AND senha = '$password'";
+    // $result = $conn->query($sql);
+
+    // Verificar se a consulta retornou algum resultado
+    //if ($result->num_rows === 1) {
+    // Credenciais válidas, redirecionar para a página de controle
+    //echo $password;
+    // echo $username;
+    header("Location: pages/sistema.php");
+    //    exit();
+    // } else {
+    // Credenciais inválidas, exibir mensagem de erro
+    //    $error_message = "Usuário ou Senha inválidos!";
+    // }
+
+    // Fechar a conexão com o banco de dados
+    // $conn->close();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -16,7 +62,7 @@
         <div class="logo-container">
             <img src="assets/img/logo_bit_300x150px.svg" alt="Logo da Empresa">
         </div>
-        <form method="POST" action="assets/php/login.php">
+        <form method="POST">
             <label for="username">Usuário:
 
             </label>
@@ -29,9 +75,10 @@
                 <p class="login-erro">
                     <?php echo $error_message; ?>
                 </p>
-                    <?php endif; ?>
+            <?php endif; ?>
 
             <button type="submit">Entrar</button>
+            <p>Configurar Script!!!</p>
         </form>
     </div>
 </body>
