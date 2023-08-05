@@ -1,49 +1,3 @@
-<?php
-// Verificar se o formulário foi enviado
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-    // Obter as informações do formulário
-    //  $username = $_POST['username'];
-    //  $password = $_POST['password'];
-
-    // Conectar ao banco de dados
-    // $servername = "localhost";
-    // $database = "bit_tcc";
-    // $username_db = "root";
-    // $password_db = "";
-
-    // $conn = new mysqli($servername, $username_db, $password_db, $database);
-
-    // Verificar se a conexão foi estabelecida com sucesso
-    // if ($conn->connect_error) {
-    //     die("Falha na conexão com o banco de dados: " . $conn->connect_error);
-    //  }
-
-    // Escapar caracteres especiais para evitar injeção de SQL
-    //  $username = $conn->real_escape_string($username);
-    //  $password = $conn->real_escape_string($password);
-
-    // Consulta SQL para verificar as credenciais (case-sensitive)
-    //  $sql = "SELECT * FROM usuario WHERE nome = '$username' AND senha = '$password'";
-    // $result = $conn->query($sql);
-
-    // Verificar se a consulta retornou algum resultado
-    //if ($result->num_rows === 1) {
-    // Credenciais válidas, redirecionar para a página de controle
-    //echo $password;
-    // echo $username;
-    header("Location: pages/sistema.php");
-    //    exit();
-    // } else {
-    // Credenciais inválidas, exibir mensagem de erro
-    //    $error_message = "Usuário ou Senha inválidos!";
-    // }
-
-    // Fechar a conexão com o banco de dados
-    // $conn->close();
-}
-?>
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -51,36 +5,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Sistema - Login</title>
+    <link rel="icon" type="image/x-icon" href="assets/img/logo.ico">
 
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/index.css">
+    <link rel="stylesheet" href="assets/css/login.css">
 </head>
 
 <body>
     <div class="container">
-        <div class="logo-container">
+        <div class="img-login-box ">
             <img src="assets/img/logo_bit_300x150px.svg" alt="Logo da Empresa">
         </div>
-        <form method="POST">
-            <label for="username">Usuário:
+        <div class="login-box">
 
-            </label>
-            <input type="text" id="username" name="username" required>
+            <form action="assets/php/login.php" method="POST">
+                <label for="username">Usuário:</label>
+                <input type="text" id="username" name="username">
 
-            <label for="password">Senha:</label>
-            <input type="password" id="password" name="password" required>
+                <label for="password">Senha:</label>
+                <input type="password" id="password" name="password">
+                <?php if (isset($error_message)): ?>
+                    <p class="login-erro">
+                        <?php echo $error_message; ?>
+                    </p>
+                <?php endif; ?>
 
-            <?php if (isset($error_message)): ?>
-                <p class="login-erro">
-                    <?php echo $error_message; ?>
-                </p>
-            <?php endif; ?>
-
-            <button type="submit">Entrar</button>
-            <p>Configurar Script!!!</p>
-        </form>
+                <button type="submit" name="submit">Entrar</button>
+            </form>
+        </div>
     </div>
+    <footer class="login-footer">
+        <div class="footer-container">
+            <p class="site-name">Bertolli Info Technology</p>
+            <p class="copyright">Copyright © 2023 - Todos os direitos reservados.</p>
+        </div>
+    </footer>
 </body>
 
 </html>

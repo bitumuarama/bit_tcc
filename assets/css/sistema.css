@@ -30,6 +30,8 @@ header p {
     width: 220px;
 }
 
+
+
 .cont1 h1 {
     color: #fff;
     font-size: 16px;
@@ -68,4 +70,30 @@ svg {
     position: absolute;
     right: 0;
     bottom: 0;
+}
+
+.minimized-bar {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px; /* Largura inicial da barra minimizada */
+}
+
+/* Estilo para expandir o menu */
+.menu-container.expanded .cont1 {
+    width: 220px; /* Largura do menu expandido */
+}
+
+.menu-container.expanded .int {
+    display: block;
+}
+
+.menu-container.expanded .minimized-bar {
+    display: none;
 }

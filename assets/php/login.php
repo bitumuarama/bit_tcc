@@ -1,42 +1,32 @@
 <?php
-// Verificar se o formulário foi enviado
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Obter as informações do formulário
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+if (isset($_POST['submit'])) {
+    $email = $_POST['username'];
+    $senha = $_POST['password'];
 
-    // Conectar ao banco de dados
-    $servername = "localhost";
-    $database = "bit_tcc";
-    $username_db = "root";
-    $password_db = "";
+    // Utilize a função BINARY para fazer uma comparação case-sensitive
+    $sql = "SELECT * FROM usuario
+            WHERE BINARY nome = '{$email}'
+            AND BINARY senha = '{$senha}'";
 
-    $conn = new mysqli($servername, $username_db, $password_db, $database);
+    require_once("connection.php");
+    $resultado = mysqli_query($conexao, $sql);
+    $registros = mysqli_num_rows($resultado);
 
-    // Verificar se a conexão foi estabelecida com sucesso
-    if ($conn->connect_error) {
-        die("Falha na conexão com o banco de dados: " . $conn->connect_error);
-    }
+    if ($registros > 0) {
+        $usuario = mysqli_fetch_array($resultado); // Correção aqui
 
-    // Escapar caracteres especiais para evitar injeção de SQL
-    $username = $conn->real_escape_string($username);
-    $password = $conn->real_escape_string($password);
+        session_start();
 
-    // Consulta SQL para verificar as credenciais (case-sensitive)
-    $sql = "SELECT * FROM usuario WHERE nome = '$username' AND senha = '$password'";
-    $result = $conn->query($sql);
-
-    // Verificar se a consulta retornou algum resultado
-    if ($result->num_rows === 1) {
-        // Credenciais válidas, redirecionar para a página de controle
-        header("Location: pages/sistema.php");
-        exit();
+        $_SESSION['id'] = $usuario['id'];
+        $_SESSION['nome'] = $usuario['nome'];
+        $_SESSION['email'] = $usuario['email'];
+    
+        echo "Logado com sucesso";
+        header("location: ../../pages/sistema.php");
+        exit; // Saia do script após redirecionar
     } else {
-        // Credenciais inválidas, exibir mensagem de erro
-        $error_message = "Usuário ou Senha inválidos!";
+        header("location: ../../index.php");
+        exit; // Saia do script após redirecionar
     }
-
-    // Fechar a conexão com o banco de dados
-    $conn->close();
 }
 ?>
