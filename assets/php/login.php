@@ -25,7 +25,7 @@ if (isset($_POST['submit'])) {
         header("location: ../../pages/sistema.php");
         exit; // Saia do script após redirecionar
     } else {
-        header("location: ../../index.php");
+        header("location: ../../index.php?login_error=1");
         exit; // Saia do script após redirecionar
     }
 }

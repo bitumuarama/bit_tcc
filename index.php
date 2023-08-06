@@ -1,3 +1,15 @@
+<?php
+if (isset($_GET['login_error']) && $_GET['login_error'] == 1) {
+    // Exibe o modal se houver um erro de login
+    echo '<div class="modal-container" id="modalContainer">
+            <div class="modal-content">
+                <p>Usuário ou senha inválido(s).</p>
+                <button onclick="closeModal()">Fechar</button>
+            </div>
+          </div>';
+}
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -9,6 +21,7 @@
     <link rel="icon" type="image/x-icon" href="assets/img/logo.ico">
 
     <link rel="stylesheet" href="assets/css/login.css">
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
 <body>
@@ -24,12 +37,22 @@
 
                 <label for="password">Senha:</label>
                 <input type="password" id="password" name="password">
-                <?php if (isset($error_message)): ?>
-                    <p class="login-erro">
-                        <?php echo $error_message; ?>
-                    </p>
-                <?php endif; ?>
 
+                <!-- Script para controlar o modal -->
+                <script>
+                    function closeModal() {
+                        var modal = document.getElementById('modalContainer');
+                        modal.style.display = 'none';
+                    }
+
+                    // Feche o modal se o usuário clicar fora da janela do modal
+                    window.onclick = function (event) {
+                        var modal = document.getElementById('modalContainer');
+                        if (event.target === modal) {
+                            modal.style.display = 'none';
+                        }
+                    };
+                </script>
                 <button type="submit" name="submit">Entrar</button>
             </form>
         </div>
