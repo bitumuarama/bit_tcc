@@ -31,8 +31,8 @@ body {
         /* Ajusta a largura para 100% da tela */
         top: 0;
         /* Alinha a caixa ao topo da tela */
-        right: 0;
-        /* Alinha a caixa à direita da tela */
+        left: 0;
+        /* Alinha a caixa à esquerda da tela */
         transform: none;
         /* Remove a transformação anterior */
         border-radius: 0;
