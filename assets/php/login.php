@@ -22,7 +22,7 @@ if (isset($_POST['submit'])) {
         $_SESSION['email'] = $usuario['email'];
     
         echo "Logado com sucesso";
-        header("location: ../../pages/sistema.php");
+        header("location: ../../pages/dashboard.php");
         exit; // Saia do script após redirecionar
     } else {
         header("location: ../../index.php?login_error=1");
