@@ -37,8 +37,8 @@ header {
 
 .user-profile-img {
     background-color: #007bff;
-    height: 5vw;
-    width: 5vw;
+    height: 4vw;
+    width: 4vw;
     border-radius: 50%;
 }
 
@@ -105,7 +105,7 @@ header {
 .menu-primary {
     left: 10px;
     padding: 10px 10px 0px 10px;
-    background-color: #000;
+    background-color: rgba(0, 0, 0, 0.2);
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     width: 25px;
@@ -187,14 +187,22 @@ header {
 }
 
 .menu-list {
-    display: inline-block;
-    justify-content: flex-start;
+    display: block;
+    cursor: pointer;
+}
+
+.menu-list:hover{
+    color: #007bff;
 }
 
 .menu-items h2 {
     color: #fff;
     font-weight: bold;
     font-size: 1rem;
+}
+
+.menu-items h2:hover{
+    color: #007bff;
 }
 
 .menu-items a {
@@ -224,13 +232,38 @@ header {
 }
 
 .content {
-    max-height: calc(85vh - 30px);
+    max-height: calc(85vh - 35px);
     overflow-y: auto;
     flex: 1;
     margin-left: 10px;
-    border: 1px solid rgba(5, 5, 5, 0.5);
     padding: 5px;
-    border-radius: 10px 0px 0px 0px;
+    border-radius: 10px;
+
+    /* Estilos da barra de rolagem para navegadores que suportam a especificação CSS Scrollbars Module Level 1 */
+    scrollbar-width: thin;
+    /* Largura da barra de rolagem */
+    scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.2);
+    /* Cor do indicador e da área de rastreamento */
+}
+
+/* Estilos da barra de rolagem para navegadores WebKit */
+.content::-webkit-scrollbar {
+    width: 10px;
+    /* Largura da barra de rolagem */
+}
+
+.content::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    margin: 75px 0;
+    border-radius: 15px;
+    /* Cor de fundo da área de rastreamento da barra */
+}
+
+.content::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    /* Cor do indicador da barra de rolagem */
+    border-radius: 10px;
+    /* Borda arredondada do indicador */
 }
 
 .footer-container {
