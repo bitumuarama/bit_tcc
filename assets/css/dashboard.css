@@ -4,6 +4,7 @@ body {
     margin: 10px;
     padding: 0;
     font-family: Arial, sans-serif;
+    height: 100%;
 }
 
 header {
@@ -13,7 +14,7 @@ header {
     background-color: #333;
     border-radius: 10px;
     padding: 10px 20px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     /* Sombra do cabeçalho */
     background-image: url("../img/logo_bit_300x150px.svg");
@@ -55,11 +56,17 @@ header {
     margin: 0px;
     padding: 0px;
     color: #007bff;
+    margin-top: 2px;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .user-name {
     display: inline-block;
     font-weight: bold;
+    text-decoration: none;
+    color: #fff;
+    font-size: 1rem;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     /* Remove o negrito do nome do usuário para não ficar em negrito */
 }
 
@@ -100,7 +107,6 @@ header {
     width: 25px;
     height: 30px;
     transition: height 0.2s, width 0.3s;
-    justify-content: center;
 }
 
 .menu.active {
@@ -125,6 +131,7 @@ header {
     font-size: 1rem;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
+    cursor: pointer;
 }
 
 .menu-title.active {
@@ -173,4 +180,41 @@ header {
 
 .menu-items.active {
     display: block;
+}
+
+.menu-list {
+    display: inline-block;
+    justify-content: flex-start;
+}
+
+.menu-items h2 {
+    color: #fff;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.menu-items a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+    font-size: 0.75rem;
+}
+
+/* Dashboard */
+.dashboard {
+    background-color: #007bff;
+    border-radius: 10px;
+    padding: 10px;
+    height: 100%;
+}
+
+.ref-menu {
+    width: 30px;
+    height: 20px;
+    background-color: #000;
+}
+
+.content {
+    flex: 1;
+    border: 1px solid #000;
 }

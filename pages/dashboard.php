@@ -32,38 +32,50 @@
         </div>
     </header>
 
-    <main>
-        <div class="menu" id="menu">
-            <div class="menu-header" id="menuHeader">
+    <!-- Menu -->
+    <div class="menu" id="menu">
+        <div class="menu-header" id="menuHeader">
 
-                <h1 class="menu-title" id="menuTitle">Painel de Controle</h1>
-                <div class="menu-icon" id="menuIcon">
-                    <div class="central-bar" id="centralBar"></div>
-                </div>
-            </div>
-
-
-            <div class="menu-items" id="menuItems">
-
-                <ul class="menu-list" id="mliCadastroUsuario">
-                    <li><a href="#1">Página 1</a></li>
-                    <li><a href="#2">Página 2</a></li>
-                    <li><a href="#3">Página 3</a></li>
-                    <li><a href="#4">Página 4</a></li>
-                </ul>
-                
+            <a class="menu-title" id="menuTitle" onclick="restaurarConteudoPadrao()">Painel de Controle</a>
+            <div class="menu-icon" id="menuIcon">
+                <div class="central-bar" id="centralBar"></div>
             </div>
         </div>
-        <div class="content">
-            <!-- Your page content goes here -->
-            <h1>Welcome to My Website!</h1>
-            <p>This is the content area that will change dynamically based on the selected menu option.</p>
+
+
+        <div class="menu-items" id="menuItems">
+
+            <ul class="menu-list" id="mliCadastroUsuario">
+                <h2>Cadastros</h2>
+                <li><a href="#cad/usuario">Página 1</a></li>
+                <li><a href="#2">Página 2</a></li>
+                <li><a href="#3">Página 3</a></li>
+                <li><a href="#4">Página 4</a></li>
+            </ul>
+
         </div>
-
-
-
         <script src="../assets/js/dashboard-menu.js"></script>
-    </main>
+    </div>
+
+    <!-- Dashboard Body -->
+    <div class="dashboard">
+        <div class="ref-menu">a</div>
+        <div class="content" id="content">
+
+            Teste 2023 abc 123 eu brasil hello word
+            <h1>Bem-vindo</h1>
+            <h1>Bem-vindo</h1>
+            <h1>Bem-vindo</h1>
+            <h1>Bem-vindo</h1>
+            <h1>Este é o conteúdo padrão da página!</h1>
+        </div>
+    </div>
+    <script src="../assets/js/dashboard-content.js"></script>
+
+
+
+
+
 </body>
 
 </html>
