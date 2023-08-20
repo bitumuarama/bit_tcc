@@ -191,7 +191,7 @@ header {
     cursor: pointer;
 }
 
-.menu-list:hover{
+.menu-list:hover {
     color: #007bff;
 }
 
@@ -199,10 +199,6 @@ header {
     color: #fff;
     font-weight: bold;
     font-size: 1rem;
-}
-
-.menu-items h2:hover{
-    color: #007bff;
 }
 
 .menu-items a {
