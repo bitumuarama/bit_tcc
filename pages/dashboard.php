@@ -27,54 +27,77 @@
                 </a>
             </div>
         </div>
+        <img src="../assets/img/logo_bit_300x150px.svg" alt="Logo" class="logo" onclick="restaurarConteudoPadrao()">
         <div>
             <a class="logout-link" href="../assets/php/exit.php">Sair</a>
         </div>
     </header>
 
-    <!-- Menu -->
-    <div class="menu" id="menu">
-        <div class="menu-header" id="menuHeader">
-
-            <a class="menu-title" id="menuTitle" onclick="restaurarConteudoPadrao()">Painel de Controle</a>
-            <div class="menu-icon" id="menuIcon">
-                <div class="central-bar" id="centralBar"></div>
-            </div>
-        </div>
-
-
-        <div class="menu-items" id="menuItems">
-
-            <ul class="menu-list" id="mliCadastroUsuario">
-                <h2>Cadastros</h2>
-                <li><a href="#cad/usuario">Página 1</a></li>
-                <li><a href="#2">Página 2</a></li>
-                <li><a href="#3">Página 3</a></li>
-                <li><a href="#4">Página 4</a></li>
-            </ul>
-
-        </div>
-        <script src="../assets/js/dashboard-menu.js"></script>
-    </div>
-
     <!-- Dashboard Body -->
     <div class="dashboard">
-        <div class="ref-menu">a</div>
-        <div class="content" id="content">
 
-            Teste 2023 abc 123 eu brasil hello word
-            <h1>Bem-vindo</h1>
-            <h1>Bem-vindo</h1>
-            <h1>Bem-vindo</h1>
-            <h1>Bem-vindo</h1>
-            <h1>Este é o conteúdo padrão da página!</h1>
+        <!-- Menu -->
+        <div class="menu-primary" id="menu">
+            <div class="menu-header" id="menuHeader">
+
+                <a class="menu-title" id="menuTitle">Painel de Controle</a>
+                <div class="menu-icon" id="menuIcon">
+                    <div class="central-bar" id="centralBar"></div>
+                </div>
+            </div>
+
+
+            <div class="menu-items" id="menuItems">
+
+                <ul class="menu-list" id="mliCadastroUsuario">
+                    <h2>Cadastros</h2>
+                    <li><a href="#cad/usuario">Página 1</a></li>
+                    <li><a href="#2">Página 2</a></li>
+                    <li><a href="#3">Página 3</a></li>
+                    <li><a href="#4">Página 4</a></li>
+                </ul>
+
+            </div>
+            <script src="../assets/js/dashboard-menu.js"></script>
         </div>
+
+        <!-- Conteúdo Dashboard-->
+        <div class="content" id="content">
+            <h1>Bem-vindo ao Sistema</h1>
+            <p>Olá,
+                <?php echo $_SESSION['nome'] ?>! Esperamos que aproveite sua experiência.
+            </p>
+
+            <h2>Dicas Rápidas</h2>
+            <ul>
+                <li>Dica 1: [Dica ou truque relevante]</li>
+                <li>Dica 2: [Outra dica útil]</li>
+                <li>Dica 3: [Mais uma dica interessante]</li>
+                <li>Dica 3: [Mais uma dica interessante]</li>
+                <li>Dica 3: [Mais uma dica interessante]</li>
+                <li>Dica 3: [Mais uma dica interessante]</li>
+                <li>Dica 3: [Mais uma dica interessante]</li>
+                <li>Dica 3: [Mais uma dica interessante]</li>
+                <li>Dica 3: [Mais uma dica interessante]</li>
+                <li>Dica 3: [Mais uma dica interessante]</li>
+                <li>Dica 3: [Mais uma dica interessante]</li>
+                <li>Dica 3: [Mais uma dica interessante]</li>
+                <li>Dica 3: [Mais uma dica interessante]</li>
+                <li>Dica 3: [Mais uma dica interessante]</li>
+                <li>Dica 3: [Mais uma dica interessante]</li>
+            </ul>
+            <h2>Destaque de Recurso</h2>
+            <div class="feature">
+                <h3>[Nome do Recurso Destacado]</h3>
+                <p>[Breve descrição do recurso e por que é útil para o usuário.]</p>
+                <a href="faq.html">Saiba mais</a>
+
+
+            </div>
+        </div>
+        <script src="../assets/js/dashboard-content.js"></script>
+
     </div>
-    <script src="../assets/js/dashboard-content.js"></script>
-
-
-
-
 
 </body>
 
