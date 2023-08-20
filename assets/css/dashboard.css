@@ -201,6 +201,7 @@ header {
     font-size: 1rem;
 }
 
+
 .menu-items a {
     text-decoration: none;
     color: #fff;
@@ -282,11 +283,6 @@ header {
 @media (max-width: 800px) {
     header {
         height: 3vh;
-    }
-
-    .user-profile-img {
-        height: 7.5vw;
-        width: 7.5vw;
     }
 
     .logo {
