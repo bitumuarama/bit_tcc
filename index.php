@@ -21,7 +21,6 @@ if (isset($_GET['login_error']) && $_GET['login_error'] == 1) {
     <link rel="icon" type="image/x-icon" href="assets/img/logo.ico">
 
     <link rel="stylesheet" href="assets/css/login.css">
-    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
 <body>

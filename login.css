@@ -1,0 +1,42 @@
+body {
+    display: flex;
+    background-color: #222;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    display: block;
+    background-color: #333;
+    justify-content: center;
+    width: 200px;
+}
+
+.img-login-box img {
+    padding: 25px;
+    height: 20px;
+    text-align: center;
+}
+
+
+footer {
+    position: absolute;
+    left: 0px;
+    font-size: 0.75rem;
+    color: #fff;
+    text-align: center;
+    bottom: 0;
+    width: 100%;
+}
+
+@media (max-width: 800px){
+    footer{
+        display: none;
+    }
+}

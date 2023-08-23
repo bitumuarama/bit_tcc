@@ -36,7 +36,10 @@ header {
 }
 
 .user-profile-img {
-    background-color: #007bff;
+    background-color: #fff;
+    background-image: url("../img/logo.ico");
+    background-repeat: no-repeat;
+    background-position: center;
     height: 4vw;
     width: 4vw;
     border-radius: 50%;
@@ -226,13 +229,14 @@ header {
     height: 100%;
     display: flex;
     flex-wrap: wrap;
+    box-shadow: 3px 5px 5px rgba(0, 0, 0, 0.5);
 }
 
 .content {
     max-height: calc(85vh - 35px);
     overflow-y: auto;
     flex: 1;
-    margin-left: 10px;
+    margin: 0 10px;
     padding: 5px;
     border-radius: 10px;
 
@@ -257,7 +261,7 @@ header {
 }
 
 .content::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.5);
     /* Cor do indicador da barra de rolagem */
     border-radius: 10px;
     /* Borda arredondada do indicador */
