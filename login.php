@@ -1,15 +1,3 @@
-<?php
-if (isset($_GET['login_error']) && $_GET['login_error'] == 1) {
-    // Exibe o modal se houver um erro de login
-    echo '<div class="modal-container" id="modalContainer">
-            <div class="modal-content">
-                <p>Usuário ou senha inválido(s).</p>
-                <button onclick="closeModal()">Fechar</button>
-            </div>
-          </div>';
-}
-?>
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -22,6 +10,7 @@ if (isset($_GET['login_error']) && $_GET['login_error'] == 1) {
 
     <link rel="stylesheet" href="login.css">
 </head>
+
 
 <body>
     <div class="container">

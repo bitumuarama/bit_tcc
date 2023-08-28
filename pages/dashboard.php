@@ -40,21 +40,34 @@
         <div class="menu-primary" id="menu">
             <div class="menu-header" id="menuHeader">
 
-                <a class="menu-title" id="menuTitle">Painel de Controle</a>
+                <a class="menu-title" id="menuTitle" href="" onclick="restaurarConteudoPadrao()">Painel de Controle</a>
                 <div class="menu-icon" id="menuIcon">
                     <div class="central-bar" id="centralBar"></div>
                 </div>
             </div>
 
-
             <div class="menu-items" id="menuItems">
 
                 <ul class="menu-list" id="mliCadastroUsuario">
-                    <h2>Cadastros</h2>
-                    <li><a href="#cad/usuario">Página 1</a></li>
-                    <li><a href="#2">Página 2</a></li>
-                    <li><a href="#3">Página 3</a></li>
-                    <li><a href="#4">Página 4</a></li>
+                    <h2>Controle</h2>
+                    <li><a href="#controle/ordem_servico">Ordem de Serviço</a></li>
+                    <li><a href="#controle/pagamentos">Pagamentos</a></li>
+                    <li><a href="#controle/clientes">Clientes</a></li>
+                    <li><a href="#controle/funcionarios">Funcionários</a></li>
+                </ul>
+                <ul class="menu-list" id="mliCadastroUsuario">
+                    <h2>Cadastro</h2>
+                    <li><a href="#cadastro/usuario">Usuário</a></li>
+                    <li><a href="#cadastro/">Cliente</a></li>
+                    <li><a href="#cadastro/">Funcionário</a></li>
+                    <li><a href="#cadastro/">Página 4</a></li>
+                </ul>
+                <ul class="menu-list" id="mliCadastroUsuario">
+                    <h2>Relatórios </h2>
+                    <li><a href="#relatorio/servicos">Serviços</a></li>
+                    <li><a href="#relatorio/pecas">Peças</a></li>
+                    <li><a href="#relatorio/clientes">Clientes</a></li>
+                    <li><a href="#relatorio/ordem_servico">Ordem de Serviço</a></li>
                 </ul>
 
             </div>
