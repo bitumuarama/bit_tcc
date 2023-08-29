@@ -80,34 +80,46 @@
             <p>Olá,
                 <?php echo $_SESSION['nome'] ?>! Esperamos que aproveite sua experiência.
             </p>
-
             <h2>Dicas Rápidas</h2>
             <ul>
-                <li>Dica 1: [Dica ou truque relevante]</li>
-                <li>Dica 2: [Outra dica útil]</li>
-                <li>Dica 3: [Mais uma dica interessante]</li>
-                <li>Dica 3: [Mais uma dica interessante]</li>
-                <li>Dica 3: [Mais uma dica interessante]</li>
-                <li>Dica 3: [Mais uma dica interessante]</li>
-                <li>Dica 3: [Mais uma dica interessante]</li>
-                <li>Dica 3: [Mais uma dica interessante]</li>
-                <li>Dica 3: [Mais uma dica interessante]</li>
-                <li>Dica 3: [Mais uma dica interessante]</li>
-                <li>Dica 3: [Mais uma dica interessante]</li>
-                <li>Dica 3: [Mais uma dica interessante]</li>
-                <li>Dica 3: [Mais uma dica interessante]</li>
-                <li>Dica 3: [Mais uma dica interessante]</li>
-                <li>Dica 3: [Mais uma dica interessante]</li>
+                <li id="dica-01"></li>
+                <li id="dica-02"></li>
+                <li id="dica-03"></li>
+                <li id="dica-04"></li>
+                <li id="dica-05"></li>
             </ul>
-            <h2>Destaque de Recurso</h2>
+            <script src="../assets/js/gerador_de_dicas.js"></script>
+            <p>Aproveite essas orientações para facilitar suas tarefas e assegurar a operação eficiente do sistema.</p>
+            <h2>Sobre o Nosso Sistema</h2>
             <div class="feature">
-                <h3>[Nome do Recurso Destacado]</h3>
-                <p>[Breve descrição do recurso e por que é útil para o usuário.]</p>
-                <a href="faq.html">Saiba mais</a>
+        <p>Explore todas as possibilidades que nosso sistema de ponta oferece para otimizar as operações da sua empresa. Nossa solução abrangente aborda diversos aspectos da gestão empresarial:</p>
+        <ul>
+            <li><strong>Ordens de Serviço Eficientes:</strong> Gerencie suas ordens de serviço de maneira eficaz, garantindo um fluxo de trabalho contínuo e organizado.</li>
+            <li><strong>Inventário Sempre Atualizado:</strong> Mantenha controle total sobre as peças e componentes, evitando atrasos e interrupções desnecessárias.</li>
+            <li><strong>Segurança de Dados Priorizada:</strong> Assegure a confidencialidade dos dados dos clientes e da empresa por meio de medidas de segurança avançadas.</li>
+            <li><strong>Agendamento Simplificado:</strong> Facilite a vida dos clientes permitindo que agendem serviços online, proporcionando comodidade e eficiência.</li>
+            <li><strong>Registro Detalhado das Atividades:</strong> Tenha um histórico completo de todas as atividades no sistema para rastreabilidade e auditorias precisas.</li>
+        </ul>
 
 
+<!--
+
+    
+    <p>
+                    Aprimore a eficiência operacional da sua empresa através da implementação do nosso sistema altamente
+                    vantajoso. Com as nossas soluções abrangentes, você assegura um aprimoramento significativo no
+                    funcionamento e na gestão de diversas atividades empresariais. Estamos aqui para atender às
+                    necessidades daqueles que buscam uma plataforma abrangente para gerenciar com maestria tanto as
+                    ordens de serviço quanto os produtos ou serviços essenciais no mundo corporativo.
+
+                    Nossa oferta não se limita apenas a uma série de ferramentas vitais para a organização de dados de
+                    maneira segura e eficaz. Vai além, proporcionando o controle preciso de recursos valiosos e
+                    informações críticas. Além disso, oferecemos a funcionalidade de cadastrar novos membros da equipe,
+                    permitindo um gerenciamento refinado de suas permissões e acessos dentro do nosso sistema de ponta.
+                </p>
             </div>
         </div>
+    -->
         <script src="../assets/js/dashboard-content.js"></script>
 
     </div>

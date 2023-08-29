@@ -278,6 +278,15 @@ header {
     /* Borda arredondada do indicador */
 }
 
+.feature p{
+    text-indent: 1rem;
+    text-align: justify;
+}
+
+.feature li {
+    text-align: justify;
+}
+
 .footer-container {
     font-size: 0.75rem;
     color: #fff;
