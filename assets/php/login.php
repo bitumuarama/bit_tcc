@@ -3,7 +3,8 @@ if (isset($_POST['submit'])) {
     $email = $_POST['username'];
     $senha = $_POST['password'];
 
-    // Utilize a função BINARY para fazer uma comparação case-sensitive
+    session_start();
+
     $sql = "SELECT * FROM usuario
             WHERE BINARY nome = '{$email}'
             AND BINARY senha = '{$senha}'";
@@ -13,19 +14,19 @@ if (isset($_POST['submit'])) {
     $registros = mysqli_num_rows($resultado);
 
     if ($registros > 0) {
-        $usuario = mysqli_fetch_array($resultado); // Correção aqui
+        $usuario = mysqli_fetch_array($resultado);
 
-        session_start();
 
         $_SESSION['id'] = $usuario['id'];
         $_SESSION['nome'] = $usuario['nome'];
         $_SESSION['email'] = $usuario['email'];
-    
+
         echo "Logado com sucesso";
         header("location: ../../pages/dashboard.php");
         exit; // Saia do script após redirecionar
     } else {
-        header("location: ../../index.php?login_error=1");
+        $_SESSION['erro'] = "Usuário ou senha inválidos.";
+        header("location: ../../index.php");
         exit; // Saia do script após redirecionar
     }
 }

@@ -1,12 +1,6 @@
 <?php
-if (isset($_GET['login_error']) && $_GET['login_error'] == 1) {
-    // Exibe o modal se houver um erro de login
-    echo '<div class="modal-container" id="modalContainer">
-            <div class="modal-content">
-                <p>Usuário ou senha inválido(s).</p>
-                <button onclick="closeModal()">Fechar</button>
-            </div>
-          </div>';
+if (!isset($_SESSION)) {
+    session_start();
 }
 ?>
 
@@ -25,42 +19,42 @@ if (isset($_GET['login_error']) && $_GET['login_error'] == 1) {
 
 <body>
     <div class="container">
-        <div class="img-login-box ">
-            <img src="assets/img/logo_bit_300x150px.svg" alt="Logo da Empresa">
-        </div>
-        <div class="login-box">
-
+        <img src="assets/img/logo_bit_300x150px.svg" alt="LOGO">
+        <div class="login-form">
             <form action="assets/php/login.php" method="POST">
                 <label for="username">Usuário:</label>
                 <input type="text" id="username" name="username">
-
                 <label for="password">Senha:</label>
                 <input type="password" id="password" name="password">
-
-                <!-- Script para controlar o modal -->
-                <script>
-                    function closeModal() {
-                        var modal = document.getElementById('modalContainer');
-                        modal.style.display = 'none';
+                <p class="login-erro">
+                    <?php
+                    if (isset($_SESSION['erro'])) {
+                        echo $_SESSION['erro'];
+                        unset($_SESSION['erro']); // Limpar a variável de sessão
                     }
-
-                    // Feche o modal se o usuário clicar fora da janela do modal
-                    window.onclick = function (event) {
-                        var modal = document.getElementById('modalContainer');
-                        if (event.target === modal) {
-                            modal.style.display = 'none';
-                        }
-                    };
-                </script>
+                    ?>
+                </p>
                 <button type="submit" name="submit">Entrar</button>
             </form>
         </div>
     </div>
-    <footer class="login-footer">
-        <div class="footer-container">
-            <p class="site-name">Bertolli Info Technology</p>
-            <p class="copyright">Copyright © 2023 - Todos os direitos reservados.</p>
+    <?php
+    if (isset($_SESSION['id'])) {
+        ?>
+        <div class="login-alert">
+            <p>
+                Parece que você já possui uma sessão ativa como
+                <?php echo $_SESSION['nome'] ?>, deseja ser redirecionado ao sistema?
+                <a href="pages/dashboard.php" class="button">Entrar</a>
+            </p>
         </div>
+        <?php
+    } ?>
+
+
+    <footer>
+        <p class="site-name">Bertolli Info Technology</p>
+        <p class="copyright">Copyright © 2023 - Todos os direitos reservados.</p>
     </footer>
 </body>
 
