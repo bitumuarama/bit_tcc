@@ -69,21 +69,81 @@ button {
     cursor: pointer;
 }
 
+.button-link {
+    display: inline-block;
+    width: 100%;
+    margin: 10px 0;
+    padding: 0.75rem 0;
+    background-color: #007bff;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.button-link:hover,
 button:hover {
     background-color: #0056b3;
 }
 
 .login-alert {
     display: flex;
+    flex-direction: column;
     position: fixed;
-    top: 5px;
-    right: 0px;
-    width: 25vw;
-    padding: 10px;
+    top: 5vh;
+    width: auto;
+    align-items: flex-end;
+    right: -25vw;
+    text-decoration: none;
+    /* Comece com a div fora da tela à direita */
     border-radius: 10px 0px 0px 10px;
-    font-weight: normal;
-    background-color: #111;
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: #fff;
+    transition: all 1s ease-in-out;
+    /* Adicione uma transição suave para a propriedade right */
 }
+
+.login-alert-mensage {
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+}
+
+.login-alert .mensagem {
+    font-size: 0.75rem;
+    text-align: justify;
+    opacity: 1;
+    transition: all 0.5s ease, height 0.5s ease, margin 0.5s ease, padding 0.5s ease;
+    /* Adicione uma transição suave para a opacidade, altura, margem e preenchimento */
+}
+
+.login-alert svg {
+    width: 30px;
+    height: 30px;
+}
+
+.login-alert.hovered {
+    width: auto;
+}
+
+/* Adicione uma classe para animar a entrada */
+.login-alert.slide-in {
+    right: 0;
+    /* Quando a classe slide-in for aplicada, mova a div para a posição direita 0 */
+}
+
+.login-alert .barra {
+    height: 3px;
+    width: 100%;
+    background-color: white;
+    transition: width 5s linear;
+    /* Tempo de animação da barra */
+}
+
 
 footer {
     font-size: 0.75rem;
@@ -115,12 +175,21 @@ footer {
         margin-bottom: 3rem;
     }
 
-    footer {
+    .login-alert .barra,
+    .login-alert p {
         display: none;
+    }
+
+    .login-alert svg {
+        width: 30px;
     }
 
     button {
         max-width: none;
+    }
+
+    footer {
+        display: none;
     }
 }
 
