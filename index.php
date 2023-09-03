@@ -19,7 +19,7 @@ if (!isset($_SESSION)) {
 
 <body>
     <div class="container">
-        <img src="assets/img/logo_bit_300x150px.svg" alt="LOGO">
+        <img src="assets/img/logo_bit_200x100.png" alt="LOGO">
         <div class="login-form">
             <form action="assets/php/login.php" method="POST">
                 <label for="username">Usuário:</label>

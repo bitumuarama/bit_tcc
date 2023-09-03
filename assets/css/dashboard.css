@@ -1,44 +1,42 @@
 body {
     background-color: #222;
-    color: #fff;
-    margin: 10px;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    height: 100%;
     background-image: url(../img/logo_bit_300x150px.svg);
+    background-position-x: center;
+    background-position-y: 50vh;
     background-repeat: no-repeat;
     background-size: 50%;
-    background-position-x: center;
-    background-position-y: 80vh;
-
+    color: #fff;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    width: 100%;
 }
 
+/* CABEÇALHO */
 header {
+    align-items: center;
+    background-color: rgb(51, 51, 51);
+    border-radius: 10px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
     display: flex;
     height: 7.5vh;
+    justify-content: space-between;
+    margin: 10px;
     min-height: 25px;
     min-width: 200px;
-    /* Adicionar uma margem direita de 10px para manter 10px de distância da borda */
-    justify-content: space-between;
-    align-items: center;
-    background-color: #333;
-    border-radius: 10px;
     padding: 10px 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     z-index: 1000;
-    /* Garante que o cabeçalho fique acima dos outros elementos */
 }
 
-/* Estilo para informações principais do usuário no cabeçalho */
 .user-primary-info {
     display: flex;
-    /* Faz as informações principais do usuário serem um flex container */
     align-items: center;
-    /* Alinha os elementos ao centro verticalmente */
 }
 
 .user-profile-img {
-    background-color: #fff;
+    background-color: white;
     background-image: url("../img/logo.ico");
     background-repeat: no-repeat;
     background-position: center;
@@ -47,100 +45,79 @@ header {
     border-radius: 50%;
 }
 
-/* Estilo para identificação do usuário no cabeçalho */
 .user-identify {
     display: flex;
-    /* Faz a identificação do usuário ser um flex container */
     flex-direction: column;
-    /* Coloca os elementos em coluna */
-    margin: 0px 10px;
-}
-
-.user-identify p {
-    display: flex;
-    margin: 0px;
-    padding: 0px;
-    color: #007bff;
-    margin-top: 2px;
-    font-family: Arial, Helvetica, sans-serif;
+    margin-left: 10px;
+    color: white;
 }
 
 .user-name {
-    display: inline-block;
-    font-weight: bold;
-    text-decoration: none;
-    color: #fff;
     font-size: 1rem;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    /* Remove o negrito do nome do usuário para não ficar em negrito */
+    color: white;
+    text-decoration: none;
+}
+
+.user-name p {
+    margin: 0;
+    padding: 0;
+    color: #007bff;
 }
 
 .logo {
-    width: 10%;
+    height: 100%;
     cursor: pointer;
 }
 
-/* Estilo para link de logout */
 .logout-link {
     background-color: #007bff;
-    /* Cor de fundo do link de logout */
     color: #fff;
-    /* Cor do texto do link de logout */
     padding: 6px 12px;
-    /* Preenchimento interno do link de logout */
     border-radius: 5px;
-    /* Borda arredondada do link de logout */
     text-decoration: none;
-    /* Remove sublinhado do link de logout */
     font-weight: bold;
-    /* Peso da fonte do link de logout */
 }
 
-/* Estilo para link de logout ao passar o mouse */
-.logout-link:hover {
-    background-color: #000;
-    /* Cor de fundo do link de logout ao passar o mouse */
-    color: #fff;
-    /* Cor do texto do link de logout ao passar o mouse */
-}
-
-/* Fim do Cabeçalho */
+/* FIM CABEÇALHO */
 
 
-
-
-
-
-
-
-/* Menu Display */
-.menu-primary {
-    left: 10px;
-    padding: 10px 10px 0px 10px;
-    background-color: rgba(0, 0, 0, 0.2);
+main {
+    display: flex;
+    background-color: rgba(51, 51, 51, 0.95);
     border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    height: calc(92.5vh - 70px);
+    margin: 10px;
+    min-height: 150px;
+    min-width: 200px;
+    z-index: 1000;
+    padding: 10px;
+}
+
+
+/* MENU */
+.menu-primary {
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
     width: 25px;
-    height: 30px;
+    height: 20px;
     transition: height 0.2s, width 0.3s;
 }
 
 .menu-primary.active {
-    padding: 10px 5px 0px 15px;
     width: 190px;
-    height: calc(80vh - 10px);
-    transition: height 0.5s, width 0.5s;
-    justify-content: baseline;
+    height: calc(100% - 20px);
 }
 
-/* Menu Header */
 .menu-header {
     display: flex;
     align-items: center;
     justify-content: space-around;
 }
 
-/* Menu Title */
 .menu-title {
     display: none;
     margin: 0;
@@ -156,7 +133,6 @@ header {
     display: block;
 }
 
-/* Menu Icon */
 .menu-icon {
     width: 30px;
     cursor: pointer;
@@ -177,6 +153,7 @@ header {
 .central-bar {
     margin: 5px 0;
 }
+
 
 .menu-icon.active:before {
     transform: translateY(8px) rotate(135deg);
@@ -230,52 +207,29 @@ header {
     text-shadow: -1px 1px 1px rgba(0, 123, 255, 0.5);
 }
 
-/* Dashboard */
-.dashboard {
-    position: relative;
-    margin-top: 10px;
-    background-color: rgba(51, 51, 51, 0.975);
-    border-radius: 10px;
-    padding: 10px;
-    height: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    box-shadow: 3px 5px 5px rgba(0, 0, 0, 0.5);
-}
-
 .content {
-    max-height: calc(85vh - 35px);
-    overflow-y: auto;
-    flex: 1;
     margin: 0 10px;
     padding: 5px;
-    border-radius: 10px;
-
-    /* Estilos da barra de rolagem para navegadores que suportam a especificação CSS Scrollbars Module Level 1 */
+    overflow-y: auto;
+    flex: 1;
     scrollbar-width: thin;
-    /* Largura da barra de rolagem */
     scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.2);
-    /* Cor do indicador e da área de rastreamento */
 }
 
 /* Estilos da barra de rolagem para navegadores WebKit */
 .content::-webkit-scrollbar {
     width: 10px;
-    /* Largura da barra de rolagem */
 }
 
 .content::-webkit-scrollbar-track {
     background: rgba(0, 0, 0, 0.2);
     margin: 75px 0;
     border-radius: 15px;
-    /* Cor de fundo da área de rastreamento da barra */
 }
 
 .content::-webkit-scrollbar-thumb {
     background: rgba(0, 0, 0, 0.5);
-    /* Cor do indicador da barra de rolagem */
     border-radius: 10px;
-    /* Borda arredondada do indicador */
 }
 
 .feature p{
@@ -287,58 +241,18 @@ header {
     text-align: justify;
 }
 
-.footer-container {
-    font-size: 0.75rem;
-    color: #fff;
-    text-align: center;
-    padding: 0;
-    margin: 0;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-}
-
-@media (max-width: 1200px) {
-    .content {
-        height: 100vh;
-    }
-}
-
-@media (max-width: 800px) {
-    header {
-        height: 3vh;
-    }
-
+@media (max-width: 600px) {
     .logo {
         display: none;
-    }
-
-    .content {
-        height: 70vh;
     }
 
     .menu-primary {
         display: none;
     }
-
-    .menu-secondary {
-        display: block;
-    }
 }
 
-@media (max-width: 430px) {
-    header {
-        height: 10vh;
-    }
-
-    .user-profile-img {
-        height: 10vw;
-        width: 10vw;
-        max-width: 50px;
-        max-height: 50px;
-    }
-
-    .content {
-        height: calc(80vh - 10px);
+@media (max-height: 400px) {
+    .menu-primary {
+        display: none;
     }
 }
