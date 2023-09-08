@@ -30,12 +30,12 @@
         </div>
         <img src="../assets/img/logo_bit_200x100.png" alt="Logo" class="logo" onclick="restaurarConteudoPadrao()">
 
-        <div class="logout-button">
-            <a class="logout-link" href="../assets/php/exit.php">Sair</a>
-
-            <div class="menu-secundary">
-                <div class="menu-icon" id="menuIcon">
-                    <div class="central-bar" id="centralBar"></div>
+        <div class="logout-area">
+            <a class="logout-button" href="../assets/php/exit.php">Sair</a>
+            <!-- Menu -->
+            <div class="mobile-menu">
+                <div class="menu-icon" id="mobileMenuIcon">
+                    <div class="central-bar" id="mobileCentralMenuBar"></div>
                 </div>
             </div>
         </div>
@@ -44,7 +44,7 @@
 
     <main>
         <!-- Menu -->
-        <div class="menu-primary" id="menu">
+        <div class="desktop-menu" id="desktopMenu">
             <div class="menu-header" id="menuHeader">
 
                 <a class="menu-title" id="menuTitle" href="" onclick="restaurarConteudoPadrao()">Painel de Controle</a>

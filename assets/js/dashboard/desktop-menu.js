@@ -1,4 +1,4 @@
-const menu = document.getElementById("menu");
+const desktopMenu = document.getElementById("desktopMenu");
 const menuTitle = document.getElementById("menuTitle");
 const menuIcon = document.getElementById("menuIcon");
 const iconCentralBar = document.getElementById("centralBar");
@@ -10,21 +10,21 @@ let isMenuHovered = false;
 menuIcon.addEventListener("click", () => {
     isMenuExpanded = !isMenuExpanded;
     updateMenuState();
-    toggleClass(menu, isMenuExpanded);
+    toggleClass(desktopMenu, isMenuExpanded);
 });
 
-menu.addEventListener("mouseenter", () => {
+desktopMenu.addEventListener("mouseenter", () => {
     if (!isMenuExpanded) {
         isMenuHovered = true;
-        menu.classList.add("active");
+        desktopMenu.classList.add("active");
         updateMenuState();
     }
 });
 
-menu.addEventListener("mouseleave", () => {
+desktopMenu.addEventListener("mouseleave", () => {
     isMenuHovered = false;
     if (!isMenuExpanded) {
-        menu.classList.remove("active");
+        desktopMenu.classList.remove("active");
         updateMenuState();
     }
 });
