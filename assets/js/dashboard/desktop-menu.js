@@ -1,6 +1,6 @@
 const desktopMenu = document.getElementById("desktopMenu");
 const menuTitle = document.getElementById("menuTitle");
-const menuIcon = document.getElementById("menuIcon");
+const menuIcon = document.getElementById("desktopMenuIcon");
 const iconCentralBar = document.getElementById("centralBar");
 const menuItems = document.getElementById("menuItems");
 

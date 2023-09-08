@@ -34,9 +34,21 @@
             <a class="logout-button" href="../assets/php/exit.php">Sair</a>
             <!-- Menu -->
             <div class="mobile-menu">
-                <div class="menu-icon" id="mobileMenuIcon">
-                    <div class="central-bar" id="mobileCentralMenuBar"></div>
-                </div>
+
+            </div>
+
+            <div class="internet-menu">
+                <input id="menu-toggle" type="checkbox" />
+                <label class='menu-button-container' for="menu-toggle">
+                    <div class='menu-button'></div>
+                </label>
+                <ul class="menu">
+                    <li>One</li>
+                    <li>Two</li>
+                    <li>Three</li>
+                    <li>Four</li>
+                    <li>Five</li>
+                </ul>
             </div>
         </div>
 
@@ -48,7 +60,7 @@
             <div class="menu-header" id="menuHeader">
 
                 <a class="menu-title" id="menuTitle" href="" onclick="restaurarConteudoPadrao()">Painel de Controle</a>
-                <div class="menu-icon" id="menuIcon">
+                <div class="desktop-menu-icon" id="desktopMenuIcon">
                     <div class="central-bar" id="centralBar"></div>
                 </div>
             </div>
