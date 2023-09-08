@@ -77,7 +77,7 @@
                     <li><a href="#relatorio/ordem_servico">Ordem de Serviço</a></li>
                 </ul>
             </div>
-            <script src="../assets/js/dashboard-menu.js"></script>
+            <script src="../assets/js/dashboard/desktop-menu.js"></script>
         </div>
 
         <!-- Conteúdo -->
@@ -112,7 +112,7 @@
                     <li><strong>Registro Detalhado das Atividades:</strong> Tenha um histórico completo de todas as
                         atividades no sistema para rastreabilidade e auditorias precisas.</li>
                 </ul>
-                <script src="../assets/js/dashboard-content.js"></script>
+                <script src="../assets/js/dashboard/content.js"></script>
 
             </div>
 
