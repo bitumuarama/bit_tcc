@@ -41,7 +41,7 @@ function updateMenuState() {
         setTimeout(() => {
             toggleClass(menuTitle, isMenuExpanded || isMenuHovered);
             toggleClass(menuItems, isMenuExpanded || isMenuHovered);
-        }, 500);
+        }, 250);
     } else {
         toggleClass(menuTitle, isMenuExpanded || isMenuHovered);
         toggleClass(menuItems, isMenuExpanded || isMenuHovered);

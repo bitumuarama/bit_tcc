@@ -28,10 +28,18 @@
                 </a>
             </div>
         </div>
-        <img src="../assets/img/logo_bit_300x150px.svg" alt="Logo" class="logo" onclick="restaurarConteudoPadrao()">
-        <div>
+        <img src="../assets/img/logo_bit_200x100.png" alt="Logo" class="logo" onclick="restaurarConteudoPadrao()">
+
+        <div class="logout-button">
             <a class="logout-link" href="../assets/php/exit.php">Sair</a>
+
+            <div class="menu-secundary">
+                <div class="menu-icon" id="menuIcon">
+                    <div class="central-bar" id="centralBar"></div>
+                </div>
+            </div>
         </div>
+
     </header>
 
     <main>
@@ -68,7 +76,6 @@
                     <li><a href="#relatorio/clientes">Clientes</a></li>
                     <li><a href="#relatorio/ordem_servico">Ordem de Serviço</a></li>
                 </ul>
-
             </div>
             <script src="../assets/js/dashboard-menu.js"></script>
         </div>

@@ -12,7 +12,7 @@ if (isset($_POST['submit'])) {
     $stmt->bind_param("ss", $email, $senha);
     $stmt->execute();
     $resultado = $stmt->get_result();
-    
+
     if ($resultado->num_rows > 0) {
         $usuario = $resultado->fetch_assoc();
 
@@ -20,16 +20,15 @@ if (isset($_POST['submit'])) {
         $_SESSION['nome'] = $usuario['nome'];
         $_SESSION['email'] = $usuario['email'];
 
-        // Antes de qualquer saída
         header("location: ../../pages/dashboard.php");
-        exit; // Saída script após redirecionar
+        exit;
     } else {
         $_SESSION['erro'] = "Usuário ou senha inválidos.";
         header("location: ../../index.php");
-        exit; // Saída script após redirecionar
+        exit;
     }
 } else {
-    header("location: ../../index.php"); // Redirecionamento em caso de falha
-    exit; // Saída do script após redirecionar
+    header("location: ../../index.php");
+    exit;
 }
 ?>

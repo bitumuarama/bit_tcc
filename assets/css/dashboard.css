@@ -1,6 +1,6 @@
 body {
     background-color: #222;
-    background-image: url(../img/logo_bit_300x150px.svg);
+    background-image: url(../img/logo_bit_200x100.png);
     background-position-x: center;
     background-position-y: 50vh;
     background-repeat: no-repeat;
@@ -70,10 +70,18 @@ header {
     cursor: pointer;
 }
 
+.logout-button {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100px;
+}
+
 .logout-link {
     background-color: #007bff;
     color: #fff;
     padding: 6px 12px;
+    margin: 10px;
     border-radius: 5px;
     text-decoration: none;
     font-weight: bold;
@@ -232,7 +240,7 @@ main {
     border-radius: 10px;
 }
 
-.feature p{
+.feature p {
     text-indent: 1rem;
     text-align: justify;
 }
@@ -246,12 +254,28 @@ main {
         display: none;
     }
 
+    .logout-link {
+        display: none;
+    }
+
+    .menu-secundary {
+        display: block;
+    }
+
     .menu-primary {
         display: none;
     }
 }
 
 @media (max-height: 400px) {
+    .logout-link {
+        display: none;
+    }
+
+    .menu-secundary {
+        display: block;
+    }
+
     .menu-primary {
         display: none;
     }
