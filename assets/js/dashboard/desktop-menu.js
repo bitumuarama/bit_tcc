@@ -1,8 +1,8 @@
 const desktopMenu = document.getElementById("desktopMenu");
-const menuTitle = document.getElementById("menuTitle");
+const menuTitle = document.getElementById("desktopMenuTitle");
 const menuIcon = document.getElementById("desktopMenuIcon");
-const iconCentralBar = document.getElementById("centralBar");
-const menuItems = document.getElementById("menuItems");
+const iconCentralBar = document.getElementById("desktopMenuBar");
+const menuItems = document.getElementById("desktopMenuItems");
 
 let isMenuExpanded = false;
 let isMenuHovered = false;

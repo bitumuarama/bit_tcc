@@ -25,7 +25,7 @@ function restaurarConteudoPadrao() {
 
 // Captura os cliques no menu e carrega o conteúdo correspondente
 document.addEventListener("DOMContentLoaded", function () {
-    var menuLinks = document.querySelectorAll("#menu a");
+    var menuLinks = document.querySelectorAll(".menu a");
     menuLinks.forEach(function (link) {
         link.addEventListener("click", function (event) {
             event.preventDefault(); // Evita o comportamento padrão do link

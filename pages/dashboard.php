@@ -35,20 +35,16 @@
             <!-- Menu -->
             <div class="mobile-menu">
 
-            </div>
+                <input id="dropdown" class="input-box" type="checkbox" style="display:none;">
 
-            <div class="internet-menu">
-                <input id="menu-toggle" type="checkbox" />
-                <label class='menu-button-container' for="menu-toggle">
-                    <div class='menu-button'></div>
+                <label for="dropdown" class="dropdown">
+                    <span class="hamburger">
+                        <span class="icon-bar top-bar"></span>
+                        <span class="icon-bar middle-bar"></span>
+                        <span class="icon-bar bottom-bar"></span>
+                    </span>
                 </label>
-                <ul class="menu">
-                    <li>One</li>
-                    <li>Two</li>
-                    <li>Three</li>
-                    <li>Four</li>
-                    <li>Five</li>
-                </ul>
+                <script src="teste.js"></script>
             </div>
         </div>
 
@@ -56,40 +52,42 @@
 
     <main>
         <!-- Menu -->
-        <div class="desktop-menu" id="desktopMenu">
-            <div class="menu-header" id="menuHeader">
+        <div class="menu">
+            <div class="desktop-menu" id="desktopMenu">
+                <div class="menu-header" id="menuHeader">
 
-                <a class="menu-title" id="menuTitle" href="" onclick="restaurarConteudoPadrao()">Painel de Controle</a>
-                <div class="desktop-menu-icon" id="desktopMenuIcon">
-                    <div class="central-bar" id="centralBar"></div>
+                    <a class="menu-title" id="desktopMenuTitle" href="" onclick="restaurarConteudoPadrao()">Painel de
+                        Controle</a>
+                    <div class="desktop-menu-icon" id="desktopMenuIcon">
+                        <div class="central-bar" id="desktopMenuBar"></div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="menu-items" id="menuItems">
+                <div class="desktop-menu-items" id="desktopMenuItems">
 
-                <ul class="menu-list" id="mliCadastroUsuario">
-                    <h2>Controle</h2>
-                    <li><a href="#controle/ordem_servico">Ordem de Serviço</a></li>
-                    <li><a href="#controle/pagamentos">Pagamentos</a></li>
-                    <li><a href="#controle/clientes">Clientes</a></li>
-                    <li><a href="#controle/funcionarios">Funcionários</a></li>
-                </ul>
-                <ul class="menu-list" id="mliCadastroUsuario">
-                    <h2>Cadastro</h2>
-                    <li><a href="#cadastro/usuario">Usuário</a></li>
-                    <li><a href="#cadastro/">Cliente</a></li>
-                    <li><a href="#cadastro/">Funcionário</a></li>
-                    <li><a href="#cadastro/">Página 4</a></li>
-                </ul>
-                <ul class="menu-list" id="mliCadastroUsuario">
-                    <h2>Relatórios </h2>
-                    <li><a href="#relatorio/servicos">Serviços</a></li>
-                    <li><a href="#relatorio/pecas">Peças</a></li>
-                    <li><a href="#relatorio/clientes">Clientes</a></li>
-                    <li><a href="#relatorio/ordem_servico">Ordem de Serviço</a></li>
-                </ul>
+                    <ul class="menu-list" id="mliCadastroUsuario">
+                        <h2>Controle</h2>
+                        <li><a href="#controle/ordem-de-servico">Ordem de Serviço</a></li>
+                        <li><a href="#controle/pagamentos">Pagamentos</a></li>
+                        <li><a href="#controle/clientes">Clientes</a></li>
+                        <li><a href="#controle/funcionarios">Funcionários</a></li>
+                    </ul>
+                    <ul class="menu-list" id="mliCadastroUsuario">
+                        <h2>Cadastro</h2>
+                        <li><a href="#cadastro/usuario">Usuário</a></li>
+                        <li><a href="#cadastro/cliente">Cliente</a></li>
+                        <li><a href="#cadastro/funcionario">Funcionário</a></li>
+                    </ul>
+                    <ul class="menu-list" id="mliCadastroUsuario">
+                        <h2>Relatórios </h2>
+                        <li><a href="#relatorio/servicos">Serviços</a></li>
+                        <li><a href="#relatorio/pecas">Peças</a></li>
+                        <li><a href="#relatorio/clientes">Clientes</a></li>
+                        <li><a href="#relatorio/ordem_servico">Ordem de Serviço</a></li>
+                    </ul>
+                </div>
+                <script src="../assets/js/dashboard/desktop-menu.js"></script>
             </div>
-            <script src="../assets/js/dashboard/desktop-menu.js"></script>
         </div>
 
         <!-- Conteúdo -->
@@ -106,7 +104,7 @@
                 <li id="dica-04"></li>
                 <li id="dica-05"></li>
             </ul>
-            <script src="../assets/js/gerador_de_dicas.js"></script>
+            <script src="../assets/js/gerador-de-dicas.js"></script>
             <p>Aproveite essas orientações para facilitar suas tarefas e assegurar a operação eficiente do sistema.</p>
             <h2>Sobre o Nosso Sistema</h2>
             <div class="feature">
