@@ -304,6 +304,7 @@ label {
     cursor: pointer;
 }
 
+
 input[type=checkbox]+label {
     .icon-bar {
         display: block;
@@ -326,7 +327,7 @@ input[type=checkbox]+label {
 
 input[type=checkbox]:checked+label {
     .top-bar {
-        transform: translateY(7.5px) rotate(135deg);
+        transform: translateY(7px) rotate(135deg);
     }
 
     .middle-bar {
@@ -334,6 +335,6 @@ input[type=checkbox]:checked+label {
     }
 
     .bottom-bar {
-        transform: translateY(-7.5px) rotate(-135deg);
+        transform: translateY(-7px) rotate(-135deg);
     }
 }

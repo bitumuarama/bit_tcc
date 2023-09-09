@@ -65,7 +65,7 @@
 
                 <div class="desktop-menu-items" id="desktopMenuItems">
 
-                    <ul class="menu-list" id="mliCadastroUsuario">
+                    <ul class="menu-list" id="mliCadastro">
                         <h2>Controle</h2>
                         <li><a href="#controle/ordem-de-servico">Ordem de Serviço</a></li>
                         <li><a href="#controle/pagamentos">Pagamentos</a></li>
