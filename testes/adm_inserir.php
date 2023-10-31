@@ -1,12 +1,12 @@
 <?php
 // Dados de conexão com o banco de dados
-$servername = "localhost";
-$database = "bit_tcc";
-$username_db = "root";
+$servername = "50.116.112.112";
+$database = "brbert54_bit_tcc";
+$username_db = "Admin";
 $password_db = "";
 
 // Dados do usuário para inserção
-$nome = "Bruno Bertolli";
+$nome = "Admin";
 $senha = "123";
 $email = "bertolli@example.com";
 

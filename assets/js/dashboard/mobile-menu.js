@@ -4,29 +4,13 @@ const menuIcon = document.getElementById("mobileMenuIcon");
 const iconCentralBar = document.getElementById("mobileMenuBar");
 const menuItems = document.getElementById("desktopMenuItems");
 
+
 let isMenuExpanded = false;
-let isMenuHovered = false;
 
 menuIcon.addEventListener("click", () => {
     isMenuExpanded = !isMenuExpanded;
     updateMenuState();
     toggleClass(mobileMenu, isMenuExpanded);
-});
-
-mobileMenu.addEventListener("mouseenter", () => {
-    if (!isMenuExpanded) {
-        isMenuHovered = true;
-        mobileMenu.classList.add("active");
-        updateMenuState();
-    }
-});
-
-mobileMenu.addEventListener("mouseleave", () => {
-    isMenuHovered = false;
-    if (!isMenuExpanded) {
-        mobileMenu.classList.remove("active");
-        updateMenuState();
-    }
 });
 
 function toggleClass(element, condition) {
@@ -37,13 +21,28 @@ function updateMenuState() {
     toggleClass(menuIcon, isMenuExpanded);
     toggleClass(iconCentralBar, isMenuExpanded);
 
-    if(isMenuExpanded || isMenuHovered){
+    if(isMenuExpanded){
         setTimeout(() => {
-            toggleClass(menuTitle, isMenuExpanded || isMenuHovered);
-            toggleClass(menuItems, isMenuExpanded || isMenuHovered);
+            toggleClass(menuTitle, isMenuExpanded);
+            toggleClass(menuItems, isMenuExpanded);
         }, 250);
     } else {
-        toggleClass(menuTitle, isMenuExpanded || isMenuHovered);
-        toggleClass(menuItems, isMenuExpanded || isMenuHovered);
+        toggleClass(menuTitle, isMenuExpanded);
+        toggleClass(menuItems, isMenuExpanded);
     }
 }
+
+// Selecione todas as tags <a> dentro do mobileMenu
+const menuLinks = mobileMenu.querySelectorAll('h2');
+
+// Função para fechar o menu
+function closeMenu() {
+    isMenuExpanded = false;
+    updateMenuState();
+    toggleClass(mobileMenu, isMenuExpanded);
+}
+
+// Adicione ouvinte de evento de clique para cada tag <a>
+menuLinks.forEach(link => {
+    link.addEventListener('click', closeMenu);
+});

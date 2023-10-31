@@ -1,4 +1,18 @@
-<?php require_once('../assets/php/auth_session.php'); ?>
+<?php
+require_once('../assets/php/auth_session.php');
+
+// Mensagem de Alerta para formulários
+$formMessage = null;
+if (isset($_SESSION['status'])) {
+    $status = $_SESSION['status'];
+    if ($status == 'success') {
+        $formMessage = "<h1 class='alert alert-success'>Cliente cadastrado com sucesso!</h1>";
+    } else {
+        $formMessage = "<h1 class='alert alert-danger'>Erro ao cadastrar cliente.</h1>";
+    }
+    unset($_SESSION['status']);
+}
+?>
 
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -11,6 +25,10 @@
     <link rel="icon" type="image/x-icon" href="../assets/img/logo.ico">
 
     <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 </head>
 
 <body>
@@ -23,20 +41,21 @@
             <div class="user-identify">
                 <a class="user-info user-name" href="">Nome:
                     <p>
-                        <?php echo $_SESSION['nome'] ?>
+                        <!-- Escaping Output para evitar ataques de cross-site scripting (XSS) -->
+                        <?php echo htmlspecialchars($_SESSION['nome']);
+                        ?>
                     </p>
                 </a>
             </div>
         </div>
-        <img src="../assets/img/logo_bit_200x100.png" alt="Logo" class="logo" onclick="restaurarConteudoPadrao()">
+        <!-- LEMBRETE: a função defaultContent não foi definida em nenhum lugar -->
+        <img src="../assets/img/logo_bit_200x100.png" alt="Logo" class="logo" onclick="defaultContent()">
 
         <div class="logout-area">
             <a class="logout-button" href="../assets/php/exit.php">Sair</a>
             <!-- Menu -->
-            <div class="mobile-menu">
-
+            <div class="mobile-menu" id="mobileMenu">
                 <input id="dropdown" class="input-box" type="checkbox" style="display:none;">
-
                 <label for="dropdown" class="dropdown">
                     <span class="hamburger">
                         <span class="icon-bar top-bar"></span>
@@ -44,29 +63,20 @@
                         <span class="icon-bar bottom-bar"></span>
                     </span>
                 </label>
-                <script src="teste.js"></script>
-            </div>
-        </div>
 
-    </header>
-
-    <main>
-        <!-- Menu -->
-        <div class="menu">
-            <div class="desktop-menu" id="desktopMenu">
-                <div class="menu-header" id="menuHeader">
-
-                    <a class="menu-title" id="desktopMenuTitle" href="" onclick="restaurarConteudoPadrao()">Painel de
-                        Controle</a>
-                    <div class="desktop-menu-icon" id="desktopMenuIcon">
-                        <div class="central-bar" id="desktopMenuBar"></div>
-                    </div>
-                </div>
-
-                <div class="desktop-menu-items" id="desktopMenuItems">
-
+                <!-- Menu itens -->
+                <script>
+                    // Corrigir para fechar o menu quando um link for pressionado
+                </script>
+                <div class="menu-items">
+                    <a class="mobile-menu-title" id="mobileMenuTitle" href="" onclick="restaurarConteudoPadrao()">Painel
+                        de
+                        <li><a href="#controle/exemplo-css">Exemplo</a></li>
+                        Controle
+                    </a>
                     <ul class="menu-list" id="mliCadastro">
                         <h2>Controle</h2>
+                        <li><a href="../index.php">Exemplo</a></li>
                         <li><a href="#controle/ordem-de-servico">Ordem de Serviço</a></li>
                         <li><a href="#controle/pagamentos">Pagamentos</a></li>
                         <li><a href="#controle/clientes">Clientes</a></li>
@@ -74,6 +84,7 @@
                     </ul>
                     <ul class="menu-list" id="mliCadastroUsuario">
                         <h2>Cadastro</h2>
+                        <li><a href="#cadastro/ordem-de-servico">Ordem de Serviço</a></li>
                         <li><a href="#cadastro/usuario">Usuário</a></li>
                         <li><a href="#cadastro/cliente">Cliente</a></li>
                         <li><a href="#cadastro/funcionario">Funcionário</a></li>
@@ -86,11 +97,69 @@
                         <li><a href="#relatorio/ordem_servico">Ordem de Serviço</a></li>
                     </ul>
                 </div>
-                <script src="../assets/js/dashboard/desktop-menu.js"></script>
+            </div>
+
+
+    </header>
+
+    <main>
+        <!-- Menu -->
+        <div class="menu">
+            <div class="desktop-menu" id="desktopMenu">
+                <div class="menu-header" id="menuHeader">
+
+                    <a class="menu-title" id="desktopMenuTitle" href="" onclick="defaultContent()">Painel de
+                        Controle</a>
+                    <div class="desktop-menu-icon" id="desktopMenuIcon">
+                        <div class="central-bar" id="desktopMenuBar"></div>
+                    </div>
+                </div>
+
+                <div class="desktop-menu-items" id="desktopMenuItems">
+                    <ul class="menu-list">
+                        <h2>Cadastro</h2>
+                        <li><a href="#cadastro/exemplo">Exemplo</a></li>
+                        <li><a href="#cadastro/cliente">Cliente</a></li>
+                        <li><a href="#cadastro/funcionario">Funcionário</a></li>
+                        <li><a href="#cadastro/ordem-de-servico">Ordem de Serviço</a></li>
+                        <li><a href="#cadastro/usuario">Usuário</a></li>
+                    </ul>
+                    <ul class="menu-list">
+                        <h2>Controle</h2>
+                        <li><a href="#controle/clientes">Clientes</a></li>
+                        <li><a href="#controle/funcionarios">Funcionários</a></li>
+                        <li><a href="#controle/ordem-de-servico">Ordem de Serviço</a></li>
+                        <li><a href="#controle/pagamentos">Pagamentos</a></li>
+                    </ul>
+                    <ul class="menu-list">
+                        <h2>Relatórios </h2>
+                        <li><a href="#relatorio/clientes">Clientes</a></li>
+                        <li><a href="#relatorio/ordem_servico">Ordem de Serviço</a></li>
+                        <li><a href="#relatorio/pecas">Peças</a></li>
+                        <li><a href="#relatorio/servicos">Serviços</a></li>
+                    </ul>
+                </div>
+
             </div>
         </div>
 
         <!-- Conteúdo -->
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                setTimeout(function () {
+                    const statusMessage = document.getElementById('statusMessage');
+                    if (statusMessage) {
+                        statusMessage.style.display = 'none';
+                    }
+                }, 5000); // 5000 milissegundos = 5 segundos
+            });
+
+        </script>
+        <div class="slide-mensage" id="statusMessage">
+            <?php echo $formMessage; ?>
+        </div>
+
+
         <div class="content" id="content">
             <h1>Bem-vindo ao Sistema</h1>
             <p>Olá,
@@ -104,7 +173,7 @@
                 <li id="dica-04"></li>
                 <li id="dica-05"></li>
             </ul>
-            <script src="../assets/js/gerador-de-dicas.js"></script>
+
             <p>Aproveite essas orientações para facilitar suas tarefas e assegurar a operação eficiente do sistema.</p>
             <h2>Sobre o Nosso Sistema</h2>
             <div class="feature">
@@ -122,12 +191,14 @@
                     <li><strong>Registro Detalhado das Atividades:</strong> Tenha um histórico completo de todas as
                         atividades no sistema para rastreabilidade e auditorias precisas.</li>
                 </ul>
-                <script src="../assets/js/dashboard/content.js"></script>
+
 
             </div>
 
     </main>
-
+    <script src="../assets/js/randomTips.js"></script>
+    <script src="../assets/js/dashboard/content.js"></script>
+    <script src="../assets/js/dashboard/desktop-menu.js"></script>
 </body>
 
 </html>

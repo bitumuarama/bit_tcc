@@ -33,6 +33,12 @@ header {
 .user-primary-info {
     display: flex;
     align-items: center;
+    transition: all 0.5s;
+}
+
+.user-primary-info:hover {
+    transition: all 0.25s;
+    scale: 1.05;
 }
 
 .user-profile-img {
@@ -50,6 +56,7 @@ header {
     flex-direction: column;
     margin-left: 10px;
     color: white;
+
 }
 
 .user-name {
@@ -68,18 +75,29 @@ header {
 .logo {
     height: 100%;
     cursor: pointer;
+    transition: all 0.5s;
+}
+
+.logo:hover {
+    scale: 1.05;
+    transition: all 0.5s;
 }
 
 .logout-area {
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    margin: 0 5px;
 }
 
 .logout-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: #007bff;
     color: #fff;
     padding: 6px 12px;
+    min-width: 35px;
     margin: 10px;
     border-radius: 5px;
     text-decoration: none;
@@ -88,6 +106,8 @@ header {
 
 .logout-button:hover {
     background-color: #0056b3;
+    scale: 1.05;
+    transition: all 0.5s;
 }
 
 /* FIM CABEÇALHO */
@@ -108,6 +128,104 @@ main {
 
 
 /* MENU */
+
+/* MOBILE */
+.mobile-menu {
+    display: flex;
+    flex-direction: row;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.hamburger {
+    align-self: flex-end;
+    z-index: 2;
+}
+
+label {
+    cursor: pointer;
+}
+
+
+input[type=checkbox]+label {
+    .icon-bar {
+        display: block;
+        width: 30px;
+        height: 3px;
+        background-color: #fff;
+        margin: 4px;
+        border-radius: 3px;
+        transition: all 0.2s;
+    }
+
+    .top-bar {
+        transform: rotate(0);
+    }
+
+    .middle-bar {
+        opacity: 1;
+    }
+}
+
+input[type=checkbox]:checked+label {
+    .top-bar {
+        transform: translateY(7px) rotate(135deg);
+    }
+
+    .middle-bar {
+        opacity: 0;
+    }
+
+    .bottom-bar {
+        transform: translateY(-7px) rotate(-135deg);
+    }
+}
+
+.mobile-menu-title {
+    display: block;
+    align-self: center;
+    margin: 35px;
+    font-size: 1.25rem;
+    text-decoration: none;
+    color: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.menu-items {
+    display: none;
+    flex-direction: column;
+    background-color: #333;
+    position: absolute;
+    width: 100%;
+    top: 0px;
+    left: 0;
+}
+
+.menu-items ul {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}
+
+.menu-items li {
+    padding: 15px;
+}
+
+.menu-items li a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 16px;
+    display: block;
+}
+
+input[type=checkbox]:checked~.menu-items {
+    display: flex;
+}
+
+/* DESKTOP */
 .desktop-menu {
     padding: 10px;
     background-color: rgba(0, 0, 0, 0.25);
@@ -116,6 +234,9 @@ main {
     width: 25px;
     height: 20px;
     transition: height 0.2s, width 0.3s;
+    overflow-y: auto;
+    scrollbar-width: hidden;
+    scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.2);
 }
 
 .desktop-menu.active {
@@ -228,7 +349,8 @@ main {
 }
 
 /* Estilos da barra de rolagem para navegadores WebKit */
-.content::-webkit-scrollbar {
+.content::-webkit-scrollbar,
+.desktop-menu::-webkit-scrollbar {
     width: 10px;
 }
 
@@ -252,6 +374,21 @@ main {
     text-align: justify;
 }
 
+/* Mensagem ao enviar */
+.fixed-message {
+    position: fixed;
+    top: 10vh;
+    right: 50vw;
+    z-index: 5;
+}
+
+
+@media (min-width: 600px) {
+    .mobile-menu {
+        display: none;
+    }
+}
+
 @media (max-width: 600px) {
     .logo {
         display: none;
@@ -262,7 +399,7 @@ main {
     }
 
     .mobile-menu {
-        display: block;
+        display: flex;
     }
 
     .desktop-menu {
@@ -284,57 +421,3 @@ main {
     }
 }
 
-
-.mobile-menu {
-    display: flex;
-    flex-direction: row;
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-}
-
-
-
-
-.hamburger {
-    align-self: flex-end;
-}
-
-label {
-    cursor: pointer;
-}
-
-
-input[type=checkbox]+label {
-    .icon-bar {
-        display: block;
-        width: 30px;
-        height: 3px;
-        background-color: #fff;
-        margin: 4px;
-        border-radius: 3px;
-        transition: all 0.2s;
-    }
-
-    .top-bar {
-        transform: rotate(0);
-    }
-
-    .middle-bar {
-        opacity: 1;
-    }
-}
-
-input[type=checkbox]:checked+label {
-    .top-bar {
-        transform: translateY(7px) rotate(135deg);
-    }
-
-    .middle-bar {
-        opacity: 0;
-    }
-
-    .bottom-bar {
-        transform: translateY(-7px) rotate(-135deg);
-    }
-}

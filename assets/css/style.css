@@ -1,0 +1,88 @@
+@keyframes slideIn {
+    0% {
+        top: -10vh;
+        opacity: 0;
+    }
+
+    10%,
+    90% {
+        top: 10vh;
+        opacity: 1;
+    }
+
+    100% {
+        top: -10vh;
+        opacity: 0;
+    }
+}
+
+/* Mensagem flutuante ao topo com alertas */
+.slide-mensage {
+    display: flex;
+    position: fixed;
+    justify-content: center;
+    width: 100%;
+    padding: 20px;
+    animation: slideIn 5s forwards;
+    /* a mensagem será exibida por 5 segundos, ajuste conforme necessário */
+}
+
+.alert {
+    font-size: 16px;
+    padding: 10px;
+    background-color: #627386;
+    border-radius: 10px;
+}
+
+
+/* Estilização para Formulários */
+.form-container {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+form {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px;
+}
+
+.form-item {
+    display: flex;
+    align-items: center;
+    flex: 1 1 calc(80% - 40px);
+    /* 40px é a margem total horizontal */
+    max-width: 50%;
+}
+
+.select-item select {
+    text-align: center;
+}
+
+label {
+    font-size: 1rem;
+    min-width: 50px;
+    color: #fff;
+}
+
+input,
+select,
+button {
+    border-style: none;
+    border-radius: 5px;
+    box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.5);
+    margin: 20px;
+}
+
+input[type=text],
+input[type=number],
+select {
+    padding: 5px;
+    flex-grow: 1;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #627386;
+}

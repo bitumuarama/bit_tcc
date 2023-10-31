@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>peca</title>
+    <script type="text/javascript">
+    String.prototype.reverse = function(){
+  return this.split('').reverse().join(''); 
+};
+
+function mascaraMoeda(campo,evento){
+  var tecla = (!evento) ? window.event.keyCode : evento.which;
+  var valor  =  campo.value.replace(/[^\d]+/gi,'').reverse();
+  var resultado  = "";
+  var mascara = "##.###.###,##".reverse();
+  for (var x=0, y=0; x<mascara.length && y<valor.length;) {
+    if (mascara.charAt(x) != '#') {
+      resultado += mascara.charAt(x);
+      x++;
+    } else {
+      resultado += valor.charAt(y);
+      y++;
+      x++;
+    }
+  }
+  campo.value = resultado.reverse();
+}
+</script>
+</head>
+<body>
+    
+<form method="POST" class="mt-4">
+
+    <div>
+      <label for="name" class="form-label">Nome</label>
+      <input type="text" class="form-control" name="nome" id="nome">
+    </div>
+    <div>
+      <label for="descricao" class="form-label">descrição</label>
+      <input type="text" class="form-control" name="descricao" id="descricao">
+    </div>
+    <div>
+    <div>
+      <label for="marca" class="form-label">Marca</label>
+      <input type="text" class="form-control" name="marca" id="marca">
+    </div>
+    <div>
+    <label for="categoria">Categoria:</label>
+  <select name="categoria" placeholder="-selecione a categoria da peça-" id="categoria">
+    <option value="placamae">PLACA MÃE</option>
+    <option value="placadevideo">PLACA DE VIDEO</option>
+    <option value="hd">HD</option>
+    <option value="fonte">FONTE DE ALIMENTAÇÃO</option>
+    <option value="carregador">CARREGADOR</option>
+    <option value="memoria">MEMÓRIA RAM</option>
+    <option value="perifericos">PERIFÉRICOS</option>
+    <option value="diversos">DIVERSOS</option>
+  </select>
+    <div>
+      <div>
+        <label for="estmin" class="form-label">estoque mínimo</label>
+        <input type="number" class="form-control" name="estmin" id="estmin">
+      </div>
+      <div>
+        <label for="estatual" class="form-label">estoque atual</label>
+        <input type="number" class="form-control" name="estatual" id="estatual">
+      </div>
+      <div>
+        <label for="valorcusto" class="form-label">Valor Custo</label>
+        <input type="Text" size="12" name="valorcusto"onKeyUp="mascaraMoeda(this, event)"  value="">
+      </div>
+    
+      <div>
+      <label for="valorvenda">Valor Venda</label>
+      <input type="Text" size="12" name="valorvenda"onKeyUp="mascaraMoeda(this, event)"  value="">
+      </div>
+      <button type="submit" name="salvar" class="btn btn-dark">Cadastrar</button>
+      </form>
+
+      </body>
+</html>
