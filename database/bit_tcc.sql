@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 27/10/2023 às 16:31
--- Versão do servidor: 10.4.28-MariaDB
--- Versão do PHP: 8.2.4
+-- Generation Time: Nov 03, 2023 at 10:51 PM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.0.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Banco de dados: `bit_tcc`
+-- Database: `bit_tcc`
 --
 CREATE DATABASE IF NOT EXISTS `bit_tcc` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE `bit_tcc`;
@@ -26,11 +26,11 @@ USE `bit_tcc`;
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `cliente`
+-- Table structure for table `cliente`
 --
 
 CREATE TABLE `cliente` (
-  `codigo` int(11) NOT NULL,
+  `id` int(11) NOT NULL,
   `nome` varchar(100) NOT NULL,
   `cpf` varchar(30) NOT NULL,
   `rg` varchar(30) DEFAULT NULL,
@@ -39,72 +39,69 @@ CREATE TABLE `cliente` (
   `cep` varchar(40) NOT NULL,
   `estado` varchar(20) NOT NULL,
   `telefone` varchar(30) NOT NULL,
-  `datanasc` date NOT NULL
+  `data_nascimento` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Despejando dados para a tabela `cliente`
+-- Dumping data for table `cliente`
 --
 
-INSERT INTO `cliente` (`codigo`, `nome`, `cpf`, `rg`, `cidade`, `endereco`, `cep`, `estado`, `telefone`, `datanasc`) VALUES
-(7, 'Murilo Augusto Cardoso', 'asdad', 'adasda', 'Umuarama', '4769 Rua José Dias Lopes', '87.502-270', 'PR', '44998843883', '2222-02-22');
+INSERT INTO `cliente` (`id`, `nome`, `cpf`, `rg`, `cidade`, `endereco`, `cep`, `estado`, `telefone`, `data_nascimento`) VALUES
+(1, 'BRUNO PEREIRA BERTOLLI', '', '', 'Umuarama', 'Casa', '87504-020', 'PR', '', '0000-00-00'),
+(99, 'a', '', '', '', '', '', 'PR', '', '0000-00-00'),
+(100, 'a', '', '', '', '', '', 'PR', '', '0000-00-00'),
+(101, 'BRUNO PEREIRA BERTOLLI', '', '', 'Umuarama', 'Casa', '87504-020', 'PR', '', '0000-00-00'),
+(102, 'a', '', '', '', '', '', 'PR', '', '0000-00-00'),
+(103, 'a', '', '', '', '', '', 'PR', '', '0000-00-00');
 
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `ordemdeservico`
+-- Table structure for table `ordem_de_servico`
 --
 
-CREATE TABLE `ordemdeservico` (
-  `codigo` int(11) NOT NULL,
+CREATE TABLE `ordem_de_servico` (
+  `id` int(11) NOT NULL,
   `equipamento` varchar(250) NOT NULL,
-  `problemarelatado` varchar(250) NOT NULL,
-  `problemaconstatado` varchar(250) NOT NULL,
-  `servicoexecutado` varchar(250) NOT NULL,
+  `problema_relatado` varchar(250) NOT NULL,
+  `problema_constatado` varchar(250) NOT NULL,
+  `servico_executado` varchar(250) NOT NULL,
   `servico` varchar(100) NOT NULL,
-  `valorservico` double NOT NULL,
-  `codigo_cliente` int(11) NOT NULL,
-  `codigo_peca` int(11) NOT NULL,
-  `valortotal` double NOT NULL
+  `valor_servico` double NOT NULL,
+  `id_cliente` int(11) NOT NULL,
+  `id_peca` int(11) NOT NULL,
+  `valor_total` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Despejando dados para a tabela `ordemdeservico`
---
-
-INSERT INTO `ordemdeservico` (`codigo`, `equipamento`, `problemarelatado`, `problemaconstatado`, `servicoexecutado`, `servico`, `valorservico`, `codigo_cliente`, `codigo_peca`, `valortotal`) VALUES
-(21, 'note', 'não liga        ', '   problema no hd     ', '        troca de hd', 'formatacao', 10, 7, 1, 1),
-(22, 'note', '        asdfad', '        sadasd', '        asdsad', 'formatacao, montagem', 10, 7, 1, 11);
 
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `peca`
+-- Table structure for table `peca`
 --
 
 CREATE TABLE `peca` (
-  `codigo` int(11) NOT NULL,
+  `id` int(11) NOT NULL,
   `nome` varchar(100) NOT NULL,
   `descricao` varchar(250) NOT NULL,
   `marca` varchar(100) NOT NULL,
   `categoria` varchar(100) NOT NULL,
-  `estoqueminimo` int(11) NOT NULL,
-  `estoqueatual` int(11) NOT NULL,
-  `valorcusto` double NOT NULL,
-  `valorvenda` double NOT NULL
+  `estoque_minimo` int(11) NOT NULL,
+  `estoque_atual` int(11) NOT NULL,
+  `valor_custo` double NOT NULL,
+  `valor_venda` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Despejando dados para a tabela `peca`
+-- Dumping data for table `peca`
 --
 
-INSERT INTO `peca` (`codigo`, `nome`, `descricao`, `marca`, `categoria`, `estoqueminimo`, `estoqueatual`, `valorcusto`, `valorvenda`) VALUES
+INSERT INTO `peca` (`id`, `nome`, `descricao`, `marca`, `categoria`, `estoque_minimo`, `estoque_atual`, `valor_custo`, `valor_venda`) VALUES
 (1, 'SSD 120 Gb Gigabyte', '', '', '', 2, 2, 120, 140);
 
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `usuario`
+-- Table structure for table `usuario`
 --
 
 CREATE TABLE `usuario` (
@@ -118,7 +115,7 @@ CREATE TABLE `usuario` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Despejando dados para a tabela `usuario`
+-- Dumping data for table `usuario`
 --
 
 INSERT INTO `usuario` (`id`, `nome`, `cargo`, `senha`, `email`, `path`, `data-upload`) VALUES
@@ -126,73 +123,73 @@ INSERT INTO `usuario` (`id`, `nome`, `cargo`, `senha`, `email`, `path`, `data-up
 (2, '', 'Indefinido', '', '', '', '2023-08-07 13:13:34');
 
 --
--- Índices para tabelas despejadas
+-- Indexes for dumped tables
 --
 
 --
--- Índices de tabela `cliente`
+-- Indexes for table `cliente`
 --
 ALTER TABLE `cliente`
-  ADD PRIMARY KEY (`codigo`);
+  ADD PRIMARY KEY (`id`);
 
 --
--- Índices de tabela `ordemdeservico`
+-- Indexes for table `ordem_de_servico`
 --
-ALTER TABLE `ordemdeservico`
-  ADD PRIMARY KEY (`codigo`),
-  ADD KEY `codigo_cliente` (`codigo_cliente`),
-  ADD KEY `codigo_peca` (`codigo_peca`);
+ALTER TABLE `ordem_de_servico`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `codigo_cliente` (`id_cliente`),
+  ADD KEY `codigo_peca` (`id_peca`);
 
 --
--- Índices de tabela `peca`
+-- Indexes for table `peca`
 --
 ALTER TABLE `peca`
-  ADD PRIMARY KEY (`codigo`);
+  ADD PRIMARY KEY (`id`);
 
 --
--- Índices de tabela `usuario`
+-- Indexes for table `usuario`
 --
 ALTER TABLE `usuario`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT para tabelas despejadas
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT de tabela `cliente`
+-- AUTO_INCREMENT for table `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=104;
 
 --
--- AUTO_INCREMENT de tabela `ordemdeservico`
+-- AUTO_INCREMENT for table `ordem_de_servico`
 --
-ALTER TABLE `ordemdeservico`
-  MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+ALTER TABLE `ordem_de_servico`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
--- AUTO_INCREMENT de tabela `peca`
+-- AUTO_INCREMENT for table `peca`
 --
 ALTER TABLE `peca`
-  MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT de tabela `usuario`
+-- AUTO_INCREMENT for table `usuario`
 --
 ALTER TABLE `usuario`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- Restrições para tabelas despejadas
+-- Constraints for dumped tables
 --
 
 --
--- Restrições para tabelas `ordemdeservico`
+-- Constraints for table `ordem_de_servico`
 --
-ALTER TABLE `ordemdeservico`
-  ADD CONSTRAINT `ordemdeservico_ibfk_1` FOREIGN KEY (`codigo_cliente`) REFERENCES `cliente` (`codigo`),
-  ADD CONSTRAINT `ordemdeservico_ibfk_3` FOREIGN KEY (`codigo_peca`) REFERENCES `peca` (`codigo`);
+ALTER TABLE `ordem_de_servico`
+  ADD CONSTRAINT `ordem_de_servico_ibfk_1` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id`),
+  ADD CONSTRAINT `ordem_de_servico_ibfk_3` FOREIGN KEY (`id_peca`) REFERENCES `peca` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
