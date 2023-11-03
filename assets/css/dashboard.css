@@ -346,6 +346,7 @@ input[type=checkbox]:checked~.menu-items {
     flex: 1;
     scrollbar-width: thin;
     scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
 }
 
 /* Estilos da barra de rolagem para navegadores WebKit */

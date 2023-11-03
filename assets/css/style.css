@@ -16,21 +16,44 @@
     }
 }
 
+.content-error {
+    display: flex;
+    justify-content: center;
+    font-size: 1.5rem;
+    background-color: red;
+    border-radius: 5px;
+}
+
+#status {
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    width: 100%;
+    top: -10vh;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 /* Mensagem flutuante ao topo com alertas */
 .slide-mensage {
     display: flex;
     position: fixed;
     justify-content: center;
-    width: 100%;
-    padding: 20px;
-    animation: slideIn 5s forwards;
+    animation: slideIn 3s forwards;
     /* a mensagem será exibida por 5 segundos, ajuste conforme necessário */
+}
+
+.sucess {
+    font-size: 16px;
+    padding: 10px;
+    background-color: rgb(53, 171, 112);
+    border-radius: 10px;
 }
 
 .alert {
     font-size: 16px;
     padding: 10px;
-    background-color: #627386;
+    background-color: rgb(224, 77, 77);
     border-radius: 10px;
 }
 
@@ -46,43 +69,120 @@ form {
     display: flex;
     flex-wrap: wrap;
     padding: 20px;
-}
-
-.form-item {
-    display: flex;
-    align-items: center;
-    flex: 1 1 calc(80% - 40px);
-    /* 40px é a margem total horizontal */
-    max-width: 50%;
-}
-
-.select-item select {
-    text-align: center;
+    min-width: 180px;
+    height: calc(92.5vh - 200px);
 }
 
 label {
     font-size: 1rem;
-    min-width: 50px;
     color: #fff;
 }
 
+
 input,
-select,
-button {
+select {
+    padding: 5px;
+    margin: 10px;
+    width: calc(100% - 20px);
+    box-sizing: border-box;
+
     border-style: none;
     border-radius: 5px;
     box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.5);
-    margin: 20px;
 }
 
-input[type=text],
-input[type=number],
-select {
-    padding: 5px;
-    flex-grow: 1;
+.button-area {
+    display: flex;
+    flex-direction: row-reverse;
+    order: 5;
 }
 
 button {
-    padding: 10px 20px;
-    background-color: #627386;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #007bff;
+    color: #fff;
+    padding: 6px 12px;
+    height: 40px;
+    min-width: 100px;
+    border-radius: 5px;
+    border-style: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+    scale: 1.05;
+    transition: all 0.5s;
+}
+
+/* .grid-template>div { */
+    /* border: 1px solid black; */
+    /* background-color: rgba(255, 0, 0, 0.25); */
+/* } */
+
+.grid-template {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: auto; /* Permitir que as linhas cresçam conforme necessário */
+    gap: 3px;
+}
+
+.larger-field {
+    grid-column: span 12;
+}
+
+.normal-field {
+    grid-column: span 8;
+}
+
+.small-field {
+    grid-column: span 4; /* Ajustado para ocupar um pouco mais espaço */
+}
+
+.button-area {
+    grid-column: 1 / -1; /* Faz com que ocupe a largura total */
+}
+
+/* Ajustes para telas menores */
+@media (max-width: 800px) {
+    .normal-field,
+    .small-field {
+        grid-column: span 6; /* Ocupa metade da largura da tela */
+    }
+
+    .button-area {
+        grid-column: 1 / -1; /* Continua ocupando a largura total */
+    }
+}
+
+@media (max-width: 750px) {
+    .larger-field,
+    .normal-field {
+        grid-column: span 12; /* Todos os campos ocupam a largura total */
+    }
+    .small-field {
+        grid-column: span 6;
+        order: 1;
+    }
+    .button-area {
+        justify-content: center;
+    }
+    button {
+        width: 50%;
+    }
+}
+
+@media (max-width: 350px) {
+    .larger-field,
+    .normal-field,
+    .small-field,
+    .button-area {
+        grid-column: span 12; /* Todos os campos ocupam a largura total */
+    }
+    button {
+        width: 100%;
+    }
 }

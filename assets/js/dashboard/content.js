@@ -1,40 +1,45 @@
 $(document).ready(function () {
+    $('a.menu-item').click(function (e) {
+        e.preventDefault();
 
-    // Função para carregar o conteúdo com base no hash ou link
-    function loadContent(path) {
-        $.ajax({
-            url: path + '.html',
-            type: 'POST',
-            data: $("#formContent").serialize(),
-            success: function (data) {
-                $("#content").html(data); // Atualiza o conteúdo do elemento com id 'content'
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                window.location.href = '../pages/dashboard.php';
+        var href = $(this).attr('href').substring(1);
+
+        var $path = href + ".php";
+
+        // Realiza a chamada AJAX para carregar o conteúdo do arquivo PHP
+        $(".content").load($path, function (response, status, xhr) {
+            if (status == "error") {
+                var msg = "Desculpe, ocorreu um erro: ";
+                $(".content").html("<p class='content-error'>" + msg + xhr.status + " " + xhr.statusText + "</p>");
             }
+
+            // Adiciona um evento de submit aos formulários carregados dinamicamente
+            $('form').submit(function (e) {
+                e.preventDefault();
+
+                var formData = $(this).serialize();
+                // Realiza a chamada AJAX
+                $.ajax({
+                    type: "POST",                 // Método de envio
+                    url: $path,  // O endpoint para onde o formulário será enviado
+                    data: formData,               // Os dados do formulário
+                    success: function (data) {
+                        console.log(data); // Verifique o que está sendo retornado aqui no console do navegador
+                    
+                        if (data.trim() == "success") {
+                            $("#status").html('<p class="slide-mensage sucess">Formulário enviado com sucesso!</p>'); // Mensagem de sucesso
+                        } else {
+                            $("#status").html('<p class="slide-mensage alert">Ocorreu um erro ao enviar o formulário.</p>'); // Mensagem de erro
+                        }
+                    }
+                    ,
+                    error: function (xhr, status, error) {
+                        console.log("Não enviou o formulário")
+                        $("#status").html('<p class="slide-mensage alert">Ocorreu um erro ao enviar o formulário.</p>'); // Mensagem de erro
+                    }
+                });
+            });
+
         });
-
-    }
-
-    // Carregar o conteúdo quando a página for carregada
-    if (window.location.hash) {
-        var initialPath = window.location.hash.substring(1);
-        loadContent(initialPath);
-    }
-
-    $(".menu-list a").on('click', function (e) {
-        var link = $(this).attr('href'); // Obtém o valor do href
-        var path = link.replace("#", ""); // Remove o '#'
-
-        loadContent(path);
     });
-
-
 });
-function defaultContent() {
-    // Remove o hash da URL
-    history.pushState("", document.title, window.location.pathname);
-
-    // Redireciona para o dashboard
-    window.location.href = '../pages/dashboard.php';
-}

@@ -27,6 +27,7 @@ if (isset($_SESSION['status'])) {
     <link rel="stylesheet" href="../assets/css/dashboard.css">
     <link rel="stylesheet" href="../assets/css/style.css">
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 </head>
@@ -76,25 +77,25 @@ if (isset($_SESSION['status'])) {
                     </a>
                     <ul class="menu-list" id="mliCadastro">
                         <h2>Controle</h2>
-                        <li><a href="../index.php">Exemplo</a></li>
-                        <li><a href="#controle/ordem-de-servico">Ordem de Serviço</a></li>
-                        <li><a href="#controle/pagamentos">Pagamentos</a></li>
-                        <li><a href="#controle/clientes">Clientes</a></li>
-                        <li><a href="#controle/funcionarios">Funcionários</a></li>
+                        <li><a class="menu-item" href="../index.php">Exemplo</a></li>
+                        <li><a class="menu-item" href="#controle/ordem-de-servico">Ordem de Serviço</a></li>
+                        <li><a class="menu-item" href="#controle/pagamentos">Pagamentos</a></li>
+                        <li><a class="menu-item" href="#controle/clientes">Clientes</a></li>
+                        <li><a class="menu-item" href="#controle/funcionarios">Funcionários</a></li>
                     </ul>
                     <ul class="menu-list" id="mliCadastroUsuario">
                         <h2>Cadastro</h2>
-                        <li><a href="#cadastro/ordem-de-servico">Ordem de Serviço</a></li>
-                        <li><a href="#cadastro/usuario">Usuário</a></li>
-                        <li><a href="#cadastro/cliente">Cliente</a></li>
-                        <li><a href="#cadastro/funcionario">Funcionário</a></li>
+                        <li><a class="menu-item" href="#cadastro/ordem-de-servico">Ordem de Serviço</a></li>
+                        <li><a class="menu-item" href="#cadastro/usuario">Usuário</a></li>
+                        <li><a class="menu-item" href="#cadastro/cliente">Cliente</a></li>
+                        <li><a class="menu-item" href="#cadastro/funcionario">Funcionário</a></li>
                     </ul>
                     <ul class="menu-list" id="mliCadastroUsuario">
                         <h2>Relatórios </h2>
-                        <li><a href="#relatorio/servicos">Serviços</a></li>
-                        <li><a href="#relatorio/pecas">Peças</a></li>
-                        <li><a href="#relatorio/clientes">Clientes</a></li>
-                        <li><a href="#relatorio/ordem_servico">Ordem de Serviço</a></li>
+                        <li><a class="menu-item" href="#relatorio/servicos">Serviços</a></li>
+                        <li><a class="menu-item" href="#relatorio/pecas">Peças</a></li>
+                        <li><a class="menu-item" href="#relatorio/clientes">Clientes</a></li>
+                        <li><a class="menu-item" href="#relatorio/ordem_servico">Ordem de Serviço</a></li>
                     </ul>
                 </div>
             </div>
@@ -118,25 +119,25 @@ if (isset($_SESSION['status'])) {
                 <div class="desktop-menu-items" id="desktopMenuItems">
                     <ul class="menu-list">
                         <h2>Cadastro</h2>
-                        <li><a href="#cadastro/exemplo">Exemplo</a></li>
-                        <li><a href="#cadastro/cliente">Cliente</a></li>
-                        <li><a href="#cadastro/funcionario">Funcionário</a></li>
-                        <li><a href="#cadastro/ordem-de-servico">Ordem de Serviço</a></li>
-                        <li><a href="#cadastro/usuario">Usuário</a></li>
+                        <li><a class="menu-item" href="#cadastro/exemplo">Exemplo</a></li>
+                        <li><a class="menu-item" href="#cadastro/cliente">Cliente</a></li>
+                        <li><a class="menu-item" href="#cadastro/funcionario">Funcionário</a></li>
+                        <li><a class="menu-item" href="#cadastro/ordem-de-servico">Ordem de Serviço</a></li>
+                        <li><a class="menu-item" href="#cadastro/usuario">Usuário</a></li>
                     </ul>
                     <ul class="menu-list">
                         <h2>Controle</h2>
-                        <li><a href="#controle/clientes">Clientes</a></li>
-                        <li><a href="#controle/funcionarios">Funcionários</a></li>
-                        <li><a href="#controle/ordem-de-servico">Ordem de Serviço</a></li>
-                        <li><a href="#controle/pagamentos">Pagamentos</a></li>
+                        <li><a class="menu-item" href="#controle/clientes">Clientes</a></li>
+                        <li><a class="menu-item" href="#controle/funcionarios">Funcionários</a></li>
+                        <li><a class="menu-item" href="#controle/ordem-de-servico">Ordem de Serviço</a></li>
+                        <li><a class="menu-item" href="#controle/pagamentos">Pagamentos</a></li>
                     </ul>
                     <ul class="menu-list">
                         <h2>Relatórios </h2>
-                        <li><a href="#relatorio/clientes">Clientes</a></li>
-                        <li><a href="#relatorio/ordem_servico">Ordem de Serviço</a></li>
-                        <li><a href="#relatorio/pecas">Peças</a></li>
-                        <li><a href="#relatorio/servicos">Serviços</a></li>
+                        <li><a class="menu-item" href="#relatorio/clientes">Clientes</a></li>
+                        <li><a class="menu-item" href="#relatorio/ordem_servico">Ordem de Serviço</a></li>
+                        <li><a class="menu-item" href="#relatorio/pecas">Peças</a></li>
+                        <li><a class="menu-item" href="#relatorio/servicos">Serviços</a></li>
                     </ul>
                 </div>
 
@@ -144,20 +145,7 @@ if (isset($_SESSION['status'])) {
         </div>
 
         <!-- Conteúdo -->
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                setTimeout(function () {
-                    const statusMessage = document.getElementById('statusMessage');
-                    if (statusMessage) {
-                        statusMessage.style.display = 'none';
-                    }
-                }, 5000); // 5000 milissegundos = 5 segundos
-            });
-
-        </script>
-        <div class="slide-mensage" id="statusMessage">
-            <?php echo $formMessage; ?>
-        </div>
+        <div id="status"></div>
 
 
         <div class="content" id="content">
