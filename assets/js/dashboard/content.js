@@ -28,7 +28,11 @@ $(document).ready(function () {
                     
                         if (data.trim() == "success") {
                             $("#status").html('<p class="slide-mensage sucess">Formulário enviado com sucesso!</p>'); // Mensagem de sucesso
-                        } else {
+                        } else if (data.trim() == "already") {
+                            $("#status").html('<p class="slide-mensage alert">Cliente/CPF já cadastrado!</p>'); // Mensagem de sucesso
+                        }
+                        
+                        else {
                             $("#status").html('<p class="slide-mensage alert">Ocorreu um erro ao enviar o formulário.</p>'); // Mensagem de erro
                         }
                     }

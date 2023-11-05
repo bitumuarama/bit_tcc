@@ -1,48 +1,42 @@
-const mobileMenu = document.getElementById("mobileMenu");
-const menuTitle = document.getElementById("mobileMenuTitle");
-const menuIcon = document.getElementById("mobileMenuIcon");
-const iconCentralBar = document.getElementById("mobileMenuBar");
-const menuItems = document.getElementById("desktopMenuItems");
+const mobileMenuTitle = document.getElementById("mobileMenuTitle");
+const mobileMenu = document.getElementById("mobileMenuIcon");
+const mobileMenuItems = document.getElementById("mobileMenuItems");
+const mobileMenuItem = document.getElementsByClassName("menu-item");
+const mobileMenuIcon = document.getElementById("mobileMenuIcon");
+const mobileIconCentralBar = document.getElementById("mobileMenuBar");
 
+let isMobileMenuExpanded = false;
 
-let isMenuExpanded = false;
+mobileMenu.addEventListener('click', () => {
+    isMobileMenuExpanded = !isMobileMenuExpanded;
+    toggleClass(mobileMenuIcon, isMobileMenuExpanded);
+    toggleClass(mobileIconCentralBar, isMobileMenuExpanded);
+    if (isMobileMenuExpanded) {
+        mobileMenuItems.classList.remove('collapsing');
+        mobileMenuItems.classList.add('active');
+        mobileMenuTitle.classList.add('active');
+    } else {
+        mobileMenuItems.classList.add('collapsing');
+        setTimeout(() => {
+            mobileMenuTitle.classList.remove('active');
+            mobileMenuItems.classList.remove('active');
+        }, 250)
+    }
+})
 
-menuIcon.addEventListener("click", () => {
-    isMenuExpanded = !isMenuExpanded;
-    updateMenuState();
-    toggleClass(mobileMenu, isMenuExpanded);
-});
+mobileMenuItems.addEventListener('click', () => {
+    if (isMobileMenuExpanded) {
+        isMobileMenuExpanded = !isMobileMenuExpanded;
+        toggleClass(mobileMenuIcon, isMobileMenuExpanded);
+        toggleClass(mobileIconCentralBar, isMobileMenuExpanded);
+        mobileMenuItems.classList.add('collapsing');
+        setTimeout(() => {
+            mobileMenuItems.classList.remove('active');
+        }, 250)
+    }
+})
+
 
 function toggleClass(element, condition) {
     element.classList.toggle("active", condition);
 }
-
-function updateMenuState() {
-    toggleClass(menuIcon, isMenuExpanded);
-    toggleClass(iconCentralBar, isMenuExpanded);
-
-    if(isMenuExpanded){
-        setTimeout(() => {
-            toggleClass(menuTitle, isMenuExpanded);
-            toggleClass(menuItems, isMenuExpanded);
-        }, 250);
-    } else {
-        toggleClass(menuTitle, isMenuExpanded);
-        toggleClass(menuItems, isMenuExpanded);
-    }
-}
-
-// Selecione todas as tags <a> dentro do mobileMenu
-const menuLinks = mobileMenu.querySelectorAll('h2');
-
-// Função para fechar o menu
-function closeMenu() {
-    isMenuExpanded = false;
-    updateMenuState();
-    toggleClass(mobileMenu, isMenuExpanded);
-}
-
-// Adicione ouvinte de evento de clique para cada tag <a>
-menuLinks.forEach(link => {
-    link.addEventListener('click', closeMenu);
-});

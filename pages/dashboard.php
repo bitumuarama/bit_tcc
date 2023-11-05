@@ -25,6 +25,7 @@ if (isset($_SESSION['status'])) {
     <link rel="icon" type="image/x-icon" href="../assets/img/logo.ico">
 
     <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../assets/css/menu.css">
     <link rel="stylesheet" href="../assets/css/style.css">
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -52,72 +53,25 @@ if (isset($_SESSION['status'])) {
         <!-- LEMBRETE: a função defaultContent não foi definida em nenhum lugar -->
         <img src="../assets/img/logo_bit_200x100.png" alt="Logo" class="logo" onclick="defaultContent()">
 
-        <div class="logout-area">
+
+
+
+
+
+
+        <div>
             <a class="logout-button" href="../assets/php/exit.php">Sair</a>
-            <!-- Menu -->
+
             <div class="mobile-menu" id="mobileMenu">
-                <input id="dropdown" class="input-box" type="checkbox" style="display:none;">
-                <label for="dropdown" class="dropdown">
-                    <span class="hamburger">
-                        <span class="icon-bar top-bar"></span>
-                        <span class="icon-bar middle-bar"></span>
-                        <span class="icon-bar bottom-bar"></span>
-                    </span>
-                </label>
-
-                <!-- Menu itens -->
-                <script>
-                    // Corrigir para fechar o menu quando um link for pressionado
-                </script>
-                <div class="menu-items">
-                    <a class="mobile-menu-title" id="mobileMenuTitle" href="" onclick="restaurarConteudoPadrao()">Painel
-                        de
-                        <li><a href="#controle/exemplo-css">Exemplo</a></li>
-                        Controle
-                    </a>
-                    <ul class="menu-list" id="mliCadastro">
-                        <h2>Controle</h2>
-                        <li><a class="menu-item" href="../index.php">Exemplo</a></li>
-                        <li><a class="menu-item" href="#controle/ordem-de-servico">Ordem de Serviço</a></li>
-                        <li><a class="menu-item" href="#controle/pagamentos">Pagamentos</a></li>
-                        <li><a class="menu-item" href="#controle/clientes">Clientes</a></li>
-                        <li><a class="menu-item" href="#controle/funcionarios">Funcionários</a></li>
-                    </ul>
-                    <ul class="menu-list" id="mliCadastroUsuario">
-                        <h2>Cadastro</h2>
-                        <li><a class="menu-item" href="#cadastro/ordem-de-servico">Ordem de Serviço</a></li>
-                        <li><a class="menu-item" href="#cadastro/usuario">Usuário</a></li>
-                        <li><a class="menu-item" href="#cadastro/cliente">Cliente</a></li>
-                        <li><a class="menu-item" href="#cadastro/funcionario">Funcionário</a></li>
-                    </ul>
-                    <ul class="menu-list" id="mliCadastroUsuario">
-                        <h2>Relatórios </h2>
-                        <li><a class="menu-item" href="#relatorio/servicos">Serviços</a></li>
-                        <li><a class="menu-item" href="#relatorio/pecas">Peças</a></li>
-                        <li><a class="menu-item" href="#relatorio/clientes">Clientes</a></li>
-                        <li><a class="menu-item" href="#relatorio/ordem_servico">Ordem de Serviço</a></li>
-                    </ul>
-                </div>
-            </div>
-
-
-    </header>
-
-    <main>
-        <!-- Menu -->
-        <div class="menu">
-            <div class="desktop-menu" id="desktopMenu">
-                <div class="menu-header" id="menuHeader">
-
-                    <a class="menu-title" id="desktopMenuTitle" href="" onclick="defaultContent()">Painel de
-                        Controle</a>
-                    <div class="desktop-menu-icon" id="desktopMenuIcon">
-                        <div class="central-bar" id="desktopMenuBar"></div>
+                <div class="mobile-menu-header">
+                    <a class="mobile-menu-title" id="mobileMenuTitle" href="">Painel de Controle</a>
+                    <div class="mobile-menu-icon" id="mobileMenuIcon">
+                        <div class="mobile-central-bar" id="mobileMenuBar"></div>
                     </div>
                 </div>
 
-                <div class="desktop-menu-items" id="desktopMenuItems">
-                    <ul class="menu-list">
+                <div class="mobile-menu-items" id="mobileMenuItems">
+                    <ul class="mobile-menu-list">
                         <h2>Cadastro</h2>
                         <li><a class="menu-item" href="#cadastro/exemplo">Exemplo</a></li>
                         <li><a class="menu-item" href="#cadastro/cliente">Cliente</a></li>
@@ -125,14 +79,14 @@ if (isset($_SESSION['status'])) {
                         <li><a class="menu-item" href="#cadastro/ordem-de-servico">Ordem de Serviço</a></li>
                         <li><a class="menu-item" href="#cadastro/usuario">Usuário</a></li>
                     </ul>
-                    <ul class="menu-list">
+                    <ul class="mobile-menu-list">
                         <h2>Controle</h2>
                         <li><a class="menu-item" href="#controle/clientes">Clientes</a></li>
                         <li><a class="menu-item" href="#controle/funcionarios">Funcionários</a></li>
                         <li><a class="menu-item" href="#controle/ordem-de-servico">Ordem de Serviço</a></li>
                         <li><a class="menu-item" href="#controle/pagamentos">Pagamentos</a></li>
                     </ul>
-                    <ul class="menu-list">
+                    <ul class="mobile-menu-list">
                         <h2>Relatórios </h2>
                         <li><a class="menu-item" href="#relatorio/clientes">Clientes</a></li>
                         <li><a class="menu-item" href="#relatorio/ordem_servico">Ordem de Serviço</a></li>
@@ -140,9 +94,74 @@ if (isset($_SESSION['status'])) {
                         <li><a class="menu-item" href="#relatorio/servicos">Serviços</a></li>
                     </ul>
                 </div>
-
             </div>
         </div>
+
+
+
+
+
+
+
+
+
+
+    </header>
+    <main>
+
+
+
+
+
+
+
+
+        <!-- Menu Desktop -->
+        <div class="desktop-menu" id="desktopMenu">
+            <div class="desktop-menu-header">
+                <!-- Header para Titulo e Icon -->
+                <a class="desktop-menu-title" id="desktopMenuTitle" href="">Painel de
+                    Controle</a>
+                <div class="desktop-menu-icon" id="desktopMenuIcon">
+                    <div class="desktop-central-bar" id="desktopMenuBar"></div>
+                </div>
+            </div>
+
+            <div class="desktop-menu-items" id="desktopMenuItems">
+                <ul class="desktop-menu-list">
+                    <h2>Cadastro</h2>
+                    <li><a class="menu-item" href="#cadastro/exemplo">Exemplo</a></li>
+                    <li><a class="menu-item" href="#cadastro/cliente">Cliente</a></li>
+                    <li><a class="menu-item" href="#cadastro/funcionario">Funcionário</a></li>
+                    <li><a class="menu-item" href="#cadastro/ordem-de-servico">Ordem de Serviço</a></li>
+                    <li><a class="menu-item" href="#cadastro/usuario">Usuário</a></li>
+                </ul>
+                <ul class="desktop-menu-list">
+                    <h2>Controle</h2>
+                    <li><a class="menu-item" href="#controle/clientes">Clientes</a></li>
+                    <li><a class="menu-item" href="#controle/funcionarios">Funcionários</a></li>
+                    <li><a class="menu-item" href="#controle/ordem-de-servico">Ordem de Serviço</a></li>
+                    <li><a class="menu-item" href="#controle/pagamentos">Pagamentos</a></li>
+                </ul>
+                <ul class="desktop-menu-list">
+                    <h2>Relatórios </h2>
+                    <li><a class="menu-item" href="#relatorio/clientes">Clientes</a></li>
+                    <li><a class="menu-item" href="#relatorio/ordem_servico">Ordem de Serviço</a></li>
+                    <li><a class="menu-item" href="#relatorio/pecas">Peças</a></li>
+                    <li><a class="menu-item" href="#relatorio/servicos">Serviços</a></li>
+                </ul>
+            </div>
+
+        </div>
+
+
+
+
+
+
+
+
+
 
         <!-- Conteúdo -->
         <div id="status"></div>
@@ -187,6 +206,7 @@ if (isset($_SESSION['status'])) {
     <script src="../assets/js/randomTips.js"></script>
     <script src="../assets/js/dashboard/content.js"></script>
     <script src="../assets/js/dashboard/desktop-menu.js"></script>
+    <script src="../assets/js/dashboard/mobile-menu.js"></script>
 </body>
 
 </html>
