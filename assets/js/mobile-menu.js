@@ -4,6 +4,7 @@ const mobileMenuItems = document.getElementById("mobileMenuItems");
 const mobileMenuItem = document.getElementsByClassName("menu-item");
 const mobileMenuIcon = document.getElementById("mobileMenuIcon");
 const mobileIconCentralBar = document.getElementById("mobileMenuBar");
+const mobileRefIcon = document.getElementById("refIcon");
 
 let isMobileMenuExpanded = false;
 
@@ -11,6 +12,7 @@ mobileMenu.addEventListener('click', () => {
     isMobileMenuExpanded = !isMobileMenuExpanded;
     toggleClass(mobileMenuIcon, isMobileMenuExpanded);
     toggleClass(mobileIconCentralBar, isMobileMenuExpanded);
+    toggleClass(mobileRefIcon, isMobileMenuExpanded)
     if (isMobileMenuExpanded) {
         mobileMenuItems.classList.remove('collapsing');
         mobileMenuItems.classList.add('active');
@@ -29,6 +31,7 @@ mobileMenuItems.addEventListener('click', () => {
         isMobileMenuExpanded = !isMobileMenuExpanded;
         toggleClass(mobileMenuIcon, isMobileMenuExpanded);
         toggleClass(mobileIconCentralBar, isMobileMenuExpanded);
+        toggleClass(mobileRefIcon, isMobileMenuExpanded)
         mobileMenuItems.classList.add('collapsing');
         setTimeout(() => {
             mobileMenuItems.classList.remove('active');

@@ -28,39 +28,55 @@
 
 #mobileMenu {
   padding: 10px;
-  background-color: rgba(0, 0, 0, 0.25);
+  background-color: #333;
+  /* Cor de fundo mais escura para melhor contraste */
   border-radius: 10px;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
-  transition: height 0.2s, width 0.3s;
+  box-shadow: 2px 2px 5px #000;
+  /* Sombra mais definida */
   overflow-y: auto;
-  scrollbar-width: hidden;
-  scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.2);
+  scrollbar-width: none;
+  /* Esconde a scrollbar por padrão */
 }
 
 #mobileMenu.active {
   width: 190px;
-  height: calc(100% - 20px);
+  height: 100%;
+  /* 100% do viewport height */
+  position: fixed;
+  /* Fixa o menu no topo */
+  top: 0;
+  left: 0;
 }
+
+.ref-icon {
+  display: block;
+}
+
+.ref-icon.active {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+}
+
+
 
 #mobileMenu::-webkit-scrollbar {
   width: 10px;
 }
 
-.mobile-menu-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
+.mobile-menu-title {
+  font-size: 1.5rem;
+  color: #FFFFFF;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  /* Fonte mais moderna */
+  font-weight: bold;
 }
+
+
 
 .mobileMenuTitle {
   display: none;
-  margin: 0;
-  font-size: 1rem;
-  text-decoration: none;
-  color: #fff;
-  font-family: Arial, Helvetica, sans-serif;
-  font-weight: bold;
-  cursor: pointer;
 }
 
 .mobileMenuTitle.active {
@@ -69,8 +85,9 @@
 
 .mobile-menu-icon {
   width: 30px;
+  position: relative;
   cursor: pointer;
-  z-index: 2;
+
 }
 
 .mobile-menu-icon:before,
@@ -84,10 +101,10 @@
   transition: 0.5s;
 }
 
+
 .mobile-central-bar {
   margin: 5px 0;
 }
-
 
 .mobile-menu-icon.active:before {
   transform: translateY(8px) rotate(135deg);
@@ -99,22 +116,24 @@
 
 .mobile-central-bar.active {
   transform: scale(0);
+
 }
 
+
 #mobileMenuItems {
-  display: none;
   position: fixed;
   width: 100%;
   height: 100%;
-  justify-content: center;
-  flex-wrap: wrap;
-  background-color: #222;
+  top: 0;
   left: 0;
-  overflow: hidden;
+  background-color: rgba(26, 26, 26, 0.95);
+  /* Aumenta a opacidade para melhorar a leitura */
+  display: none;
+  overflow-y: auto;
 }
 
 #mobileMenuItems.active {
-  display: flex;
+  display: block;
   animation: mobileExpandMenu 0.5s forwards;
 }
 
@@ -122,10 +141,39 @@
   animation: mobileCollapseMenu 0.5s forwards;
 }
 
-
 .mobile-menu-list {
-  text-align: center;
-  width: 100%;
+  padding: 20px;
+  /* Espaçamento interno na lista */
+}
+
+.mobile-menu-list h2 {
+  background-color: #0056b3;
+  /* Um tom de azul mais escuro para melhor contraste */
+  color: #FFFFFF;
+  /* Cor do texto para melhor legibilidade */
+  padding: 10px;
+  /* Espaçamento interno para os títulos */
+  margin: 10px 0;
+  /* Espaçamento externo para os títulos */
+}
+
+.mobile-menu-list li {
+  padding: 10px 0;
+  /* Espaçamento vertical entre itens */
+}
+
+.mobile-menu-list .menu-item {
+  text-decoration: none;
+  color: #FFFFFF;
+  display: block;
+  /* Itens do menu em bloco para facilitar o toque */
+  padding: 10px;
+  /* Espaçamento para cada item do menu */
+}
+
+/* Esconde a scrollbar no Chrome, Safari e Opera */
+#mobileMenu::-webkit-scrollbar {
+  display: none;
 }
 
 
@@ -259,9 +307,11 @@
   #mobileMenu {
     display: block;
   }
+
   .logout-button {
     display: none;
   }
+
   #desktopMenu {
     display: none;
   }

@@ -34,16 +34,16 @@
     transform: translate(-50%, -50%);
 }
 
-/* Mensagem flutuante ao topo com alertas */
+/* Mensagem flutuante ao topo da página com alertas */
 .slide-mensage {
     display: flex;
     position: fixed;
     justify-content: center;
     animation: slideIn 3s forwards;
-    /* a mensagem será exibida por 5 segundos, ajuste conforme necessário */
 }
 
-.sucess {
+
+.success {
     font-size: 16px;
     padding: 10px;
     background-color: rgb(53, 171, 112);
@@ -58,43 +58,63 @@
 }
 
 
-/* Estilização para Formulários */
-.form-container {
-    display: flex;
-    width: 100%;
-    justify-content: center;
-}
-
+/* Estilos Formulários */
 form {
     display: flex;
     flex-wrap: wrap;
-    padding: 20px;
+    padding: 10px;
     min-width: 180px;
     height: calc(92.5vh - 200px);
 }
 
 label {
     font-size: 1rem;
+    margin: 0.15rem;
     color: #fff;
 }
 
-
 input,
-select {
+select,
+textarea {
     padding: 5px;
-    margin: 10px;
-    width: calc(100% - 20px);
+    width: calc(100% - 4px);
     box-sizing: border-box;
-
-    border-style: none;
+    border: 1px solid #ccc;
     border-radius: 5px;
 }
 
-.button-area {
-    display: flex;
-    flex-direction: row-reverse;
-    order: 5;
+textarea {
+    font-size: 1rem;
+    overflow: hidden;
+    resize: none;
+    height: 90%;
 }
+
+fieldset {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0 1rem;
+}
+
+fieldset div {
+    display: flex;
+    justify-content: space-between;
+    margin: 5px 0;
+    width: 100%;
+}
+
+fieldset label {
+    width: calc(100% - 1rem);
+}
+
+fieldset input[type="checkbox"] {
+    height: 1rem;
+    width: 1rem;
+}
+
+
+
 
 button {
     display: flex;
@@ -102,6 +122,7 @@ button {
     justify-content: center;
     background-color: #007bff;
     color: #fff;
+    margin: 5px 10px;
     padding: 6px 12px;
     height: 40px;
     min-width: 100px;
@@ -113,74 +134,148 @@ button {
 
 button:hover {
     background-color: #0056b3;
-    scale: 1.05;
-    transition: all 0.5s;
 }
 
-/* .grid-template>div { */
-    /* border: 1px solid black; */
-    /* background-color: rgba(255, 0, 0, 0.25); */
-/* } */
-
+/* Estilos Grid */
 .grid-template {
     display: grid;
+    flex-wrap: wrap;
     grid-template-columns: repeat(12, 1fr);
-    grid-template-rows: auto; /* Permitir que as linhas cresçam conforme necessário */
-    gap: 3px;
+    grid-gap: 20px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 10px;
+    height: calc(100% - 20px)
+}
+
+.extra-larger-field {
+    grid-area: span 1 / span 12;
 }
 
 .larger-field {
-    grid-column: span 12;
+    grid-area: span 1 / span 9;
 }
 
 .normal-field {
-    grid-column: span 8;
+    grid-area: span 1 / span 6;
 }
 
 .small-field {
-    grid-column: span 4; /* Ajustado para ocupar um pouco mais espaço */
+    grid-area: span 1 / span 3;
+}
+
+.extra-small-field {
+    grid-area: span 1 / span 2;
+}
+
+.extra-small-field input {
+    max-width: 150px;
+}
+
+.textarea-field {
+    grid-area: span 6 / span 4;
+}
+
+.fieldset-field {
+    grid-area: span 6 / span 4;
 }
 
 .button-area {
-    grid-column: 1 / -1; /* Faz com que ocupe a largura total */
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: end;
+    margin: 0 100px;
+    order: 9;
 }
 
-/* Ajustes para telas menores */
+
+
+
+
+
+/* Estilos Tabelas */
+/*  */
+/*  */
+/*  */
+/*  */
+/*  */
+/*  */
+/*  */
+
+
+
+
+
+
+@media (max-width: 1000px) {
+    .extra-small-field {
+        grid-column: span 3;
+    }
+
+    .textarea-field {
+        grid-row: span 1;
+    }
+}
+
 @media (max-width: 800px) {
-    .normal-field,
-    .small-field {
-        grid-column: span 6; /* Ocupa metade da largura da tela */
-    }
-
-    .button-area {
-        grid-column: 1 / -1; /* Continua ocupando a largura total */
-    }
-}
-
-@media (max-width: 750px) {
-    .larger-field,
-    .normal-field {
-        grid-column: span 12; /* Todos os campos ocupam a largura total */
-    }
     .small-field {
         grid-column: span 6;
-        order: 1;
     }
+
+    .fieldset-field {
+        grid-column: span 6;
+    }
+
+    .textarea-field {
+        order: -1;
+    }
+
     .button-area {
+        margin: 0;
         justify-content: center;
-    }
-    button {
-        width: 50%;
     }
 }
 
-@media (max-width: 350px) {
-    .larger-field,
-    .normal-field,
-    .small-field,
-    .button-area {
-        grid-column: span 12; /* Todos os campos ocupam a largura total */
+@media (max-width: 600px) {
+    .larger-field {
+        grid-column: span 12;
     }
+
+    .normal-field {
+        grid-column: span 9;
+    }
+
+    .extra-small-field {
+        grid-column: span 6;
+    }
+
+    .normal-field,
+    .textarea-field,
+    .fieldset-field {
+        grid-column: span 12;
+    }
+
+    .valores {
+        grid-column: span 6;
+    }
+}
+
+@media (max-width: 400px) {
+    .small-field,
+    .extra-small-field,
+    .fieldset-field {
+        grid-column: span 12;
+    }
+
+    .textarea-field {
+        order: 0;
+    }
+
     button {
         width: 100%;
     }

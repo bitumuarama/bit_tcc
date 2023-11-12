@@ -28,8 +28,10 @@ if (isset($_SESSION['status'])) {
     <link rel="stylesheet" href="../assets/css/menu.css">
     <link rel="stylesheet" href="../assets/css/style.css">
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script src="../assets/js/jquery-3.6.0.min.js"></script>
+    <script src="../assets/js/jquery.maskMoney.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
 
 </head>
 
@@ -50,8 +52,7 @@ if (isset($_SESSION['status'])) {
                 </a>
             </div>
         </div>
-        <!-- LEMBRETE: a função defaultContent não foi definida em nenhum lugar -->
-        <img src="../assets/img/logo_bit_200x100.png" alt="Logo" class="logo" onclick="defaultContent()">
+        <img class="logo restore-default-content" src="../assets/img/logo_bit_200x100.png" alt="Logo">
 
 
 
@@ -63,14 +64,15 @@ if (isset($_SESSION['status'])) {
             <a class="logout-button" href="../assets/php/exit.php">Sair</a>
 
             <div class="mobile-menu" id="mobileMenu">
-                <div class="mobile-menu-header">
-                    <a class="mobile-menu-title" id="mobileMenuTitle" href="">Painel de Controle</a>
+                <div class="ref-icon" id="refIcon">
+
                     <div class="mobile-menu-icon" id="mobileMenuIcon">
                         <div class="mobile-central-bar" id="mobileMenuBar"></div>
                     </div>
                 </div>
 
                 <div class="mobile-menu-items" id="mobileMenuItems">
+                    <h1 class="mobile-menu-title restore-default-content" id="mobileMenuTitle">Painel de Controle</h1>
                     <ul class="mobile-menu-list">
                         <h2>Cadastro</h2>
                         <li><a class="menu-item" href="#cadastro/exemplo">Exemplo</a></li>
@@ -120,8 +122,7 @@ if (isset($_SESSION['status'])) {
         <div class="desktop-menu" id="desktopMenu">
             <div class="desktop-menu-header">
                 <!-- Header para Titulo e Icon -->
-                <a class="desktop-menu-title" id="desktopMenuTitle" href="">Painel de
-                    Controle</a>
+                <h1 class="desktop-menu-title restore-default-content" id="desktopMenuTitle">Painel de Controle</h1>
                 <div class="desktop-menu-icon" id="desktopMenuIcon">
                     <div class="desktop-central-bar" id="desktopMenuBar"></div>
                 </div>
@@ -204,9 +205,9 @@ if (isset($_SESSION['status'])) {
 
     </main>
     <script src="../assets/js/randomTips.js"></script>
-    <script src="../assets/js/dashboard/content.js"></script>
-    <script src="../assets/js/dashboard/desktop-menu.js"></script>
-    <script src="../assets/js/dashboard/mobile-menu.js"></script>
+    <script src="../assets/js/content.js"></script>
+    <script src="../assets/js/desktop-menu.js"></script>
+    <script src="../assets/js/mobile-menu.js"></script>
 </body>
 
 </html>

@@ -73,14 +73,8 @@ header {
 }
 
 .logo {
-    height: 100%;
     cursor: pointer;
-    transition: all 0.5s;
-}
-
-.logo:hover {
-    scale: 1.05;
-    transition: all 0.5s;
+    height: 100%;
 }
 
 .logout-area {
@@ -129,6 +123,7 @@ main {
     margin: 0 10px;
     padding: 5px;
     overflow-y: auto;
+    overflow-x: hidden;
     flex: 1;
     scrollbar-width: thin;
     scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.2);
