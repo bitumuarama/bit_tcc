@@ -1,4 +1,11 @@
 <?php
+if ($_SERVER['HTTP_X_REQUESTED_WITH'] != 'XMLHttpRequest') {
+
+  header('HTTP/1.0 403 Forbidden');
+  echo 'Você não tem permissão para acessar este arquivo diretamente.';
+  exit;
+}
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -16,45 +23,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       die("Erro de conexão: " . mysqli_connect_error());
     }
 
-    $nome = $_POST['nome'];
+
+    // Validação de CPF
     $cpf = $_POST['cpf'];
 
     if (!validaCPF($cpf)) {
       echo "cpf";
-      mysqli_close($conexao);
-      exit;
-    }
-
-    // Verifica se o CPF já existe no banco de dados
-    $query = $conexao->prepare("SELECT * FROM cliente WHERE cpf = ?");
-    $query->bind_param("s", $cpf);
-    $query->execute();
-    $result = $query->get_result();
-
-    if ($result->num_rows > 0) {
-      echo "already";
-      mysqli_close($conexao);
-      exit;
     } else {
-      // Prepara a inserção usando consultas preparadas para evitar injeção de SQL
-      $rg = $_POST['rg'];
-      $cidade = $_POST['cidade'];
-      $endereco = $_POST['endereco'];
-      $cep = $_POST['cep'];
-      $estado = $_POST['estado'];
-      $telefone = $_POST['telefone'];
-      $data_nascimento = $_POST['data'];
+      // Preparação da consulta para verificar se o CPF já existe
+      $query = $conexao->prepare("SELECT * FROM cliente WHERE cpf = ?");
+      $query->bind_param("s", $cpf);
+      $query->execute();
+      $result = $query->get_result();
 
-      $insert = $conexao->prepare("INSERT INTO cliente (nome, cpf, rg, cidade, endereco, cep, estado, telefone, data_nascimento) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-      $insert->bind_param("sssssssss", $nome, $cpf, $rg, $cidade, $endereco, $cep, $estado, $telefone, $data_nascimento);
-
-      if ($insert->execute()) {
-        echo "success";
+      if ($result->num_rows > 0) {
+        echo "already";
       } else {
-        echo "error";
+        $nome = strtoupper($_POST['nome']);
+        $data_nascimento = $_POST['data_nascimento'];
+        $rg = $_POST['rg'];
+        // CPF já validado
+        $celular = $_POST['celular'];
+        $cep = $_POST['cep'];
+        $estado = $_POST['estado'];
+        $cidade = $_POST['cidade'];
+        $bairro = $_POST['bairro'];
+        $rua = $_POST['rua'];
+        $numero = $_POST['numero'];
+
+        $insert = $conexao->prepare("INSERT INTO cliente (nome, data_nascimento, rg, cpf, celular, cep, estado, cidade, bairro, rua, numero) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $insert->bind_param("sssssssssss", $nome, $data_nascimento, $rg, $cpf, $celular, $cep, $estado, $cidade, $bairro, $rua, $numero);
+
+        if ($insert->execute()) {
+          echo "success";
+        } else {
+          echo "error";
+        }
       }
     }
-
     mysqli_close($conexao);
     exit;
   }
@@ -81,22 +87,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <div class="larger-field field">
       <label for="nome">Nome</label>
-      <input type="text" name="nome" id="nome" required>
+      <input type="text" name="nome" id="nome" placeholder="Nome Completo" required>
     </div>
 
     <div class="extra-small-field field">
-      <label for="data">Data nascimento</label>
-      <input type="date" name="data" id="data">
+      <label for="data_nascimento">Data nascimento</label>
+      <input type="date" name="data_nascimento" id="data_nascimento">
     </div>
 
     <div class="extra-small-field field">
       <label for="rg">RG</label>
-      <input type="text" name="rg" id="rg">
+      <input type="text" name="rg" id="rg" placeholder="XX.XXX.XXX-X">
     </div>
 
     <div class="extra-small-field field">
       <label for="cpf">CPF</label>
-      <input type="text" name="cpf" id="cpf">
+      <input type="text" name="cpf" id="cpf" placeholder="XXX.XXX.XXX-XX" required>
 
 
     </div>
@@ -104,34 +110,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <div class="small-field field">
       <label for="celular">Celular</label>
-      <input type="text" name="celular" id="celular">
+      <input class="celular" type="text" name="celular" id="celular" placeholder="(XX) XXXXXX-XXXX" required>
 
-    </div>
-
-    <div class="larger-field field">
-      <label for="endereco">Endereço</label>
-      <input type="text" name="endereco" id="endereco">
     </div>
 
     <div class="small-field field">
       <label for="cep">CEP</label>
-      <input type="text" name="cep" id="cep">
+      <input type="text" name="cep" id="cep" placeholder="XXXXX-XXX" required>
     </div>
 
-    <div class="normal-field field">
-      <label for="cidade">Cidade</label>
-      <input type="text" name="cidade" id="cidade">
-    </div>
-
-    <div class="small-field field">
+    <div class="small-field field" requiered>
       <label for="estado">Estado</label>
       <select name="estado" id="estado">
         <option value="SC">Santa Catarina</option>
-        <option value="PR" selected>Paraná</option>
+        <option value="PR">Paraná</option>
         <option value="SP">São Paulo</option>
       </select>
     </div>
 
+    <div class="normal-field field">
+      <label for="cidade">Cidade</label>
+      <input type="text" name="cidade" id="cidade" placeholder="Cidade" requiered>
+    </div>
+
+    <div class="small-field field">
+      <label for="bairro">Bairro</label>
+      <input type="text" name="bairro" id="bairro" placeholder="Ex.: Centro" requiered>
+    </div>
+
+    <div class="larger-field field">
+      <label for="rua">Rua</label>
+      <input type="text" name="rua" id="rua" placeholder="Ex.: Av. Tecnologias / Rua das Caldeiras" required>
+    </div>
+    <div class="extra-small-field field">
+      <label for="numero">N°</label>
+      <input type="text" name="numero" id="numero" placeholder="Ex.: 1001" requiered>
+    </div>
 
     <div class="button-area">
       <button type="submit" name="salvar">Cadastrar</button>

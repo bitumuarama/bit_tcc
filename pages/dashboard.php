@@ -31,7 +31,7 @@ if (isset($_SESSION['status'])) {
 
     <script src="../assets/js/jquery-3.6.0.min.js"></script>
     <script src="../assets/js/jquery.maskMoney.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+    <script src="../assets/js/jquery.mask.min.js"></script>
 
 </head>
 
@@ -95,6 +95,7 @@ if (isset($_SESSION['status'])) {
                         <li><a class="menu-item" href="#relatorio/pecas">Peças</a></li>
                         <li><a class="menu-item" href="#relatorio/servicos">Serviços</a></li>
                     </ul>
+                    <img src="" alt="Logout">
                 </div>
             </div>
         </div>
