@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 03, 2023 at 10:51 PM
+-- Generation Time: Nov 14, 2023 at 09:20 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -32,27 +32,34 @@ USE `bit_tcc`;
 CREATE TABLE `cliente` (
   `id` int(11) NOT NULL,
   `nome` varchar(100) NOT NULL,
-  `cpf` varchar(30) NOT NULL,
-  `rg` varchar(30) DEFAULT NULL,
-  `cidade` varchar(100) NOT NULL,
-  `endereco` varchar(200) NOT NULL,
-  `cep` varchar(40) NOT NULL,
-  `estado` varchar(20) NOT NULL,
-  `telefone` varchar(30) NOT NULL,
-  `data_nascimento` date NOT NULL
+  `data_nascimento` date NOT NULL,
+  `rg` varchar(12) NOT NULL,
+  `cpf` varchar(14) NOT NULL,
+  `celular` varchar(15) NOT NULL,
+  `cep` varchar(8) NOT NULL,
+  `estado` varchar(2) NOT NULL,
+  `cidade` varchar(30) NOT NULL,
+  `bairro` varchar(30) NOT NULL,
+  `rua` varchar(50) NOT NULL,
+  `numero` varchar(6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `cliente`
 --
 
-INSERT INTO `cliente` (`id`, `nome`, `cpf`, `rg`, `cidade`, `endereco`, `cep`, `estado`, `telefone`, `data_nascimento`) VALUES
-(1, 'BRUNO PEREIRA BERTOLLI', '', '', 'Umuarama', 'Casa', '87504-020', 'PR', '', '0000-00-00'),
-(99, 'a', '', '', '', '', '', 'PR', '', '0000-00-00'),
-(100, 'a', '', '', '', '', '', 'PR', '', '0000-00-00'),
-(101, 'BRUNO PEREIRA BERTOLLI', '', '', 'Umuarama', 'Casa', '87504-020', 'PR', '', '0000-00-00'),
-(102, 'a', '', '', '', '', '', 'PR', '', '0000-00-00'),
-(103, 'a', '', '', '', '', '', 'PR', '', '0000-00-00');
+INSERT INTO `cliente` (`id`, `nome`, `data_nascimento`, `rg`, `cpf`, `celular`, `cep`, `estado`, `cidade`, `bairro`, `rua`, `numero`) VALUES
+(1, 'ADMINISTRADOR', '2000-01-01', '00.000.000-0', '000.000.000-00', '(00) 00000-0000', '00000-00', 'PR', 'Cidade', 'Centro', 'Av. Tecnologias', '000000'),
+(2, 'João Silva', '1990-01-01', 'MG-10.123.45', '000.000.001-91', '(31) 90000-0001', '31000-00', 'MG', 'Belo Horizonte', 'Centro', 'Rua da Bahia', '100'),
+(3, 'Maria Souza', '1991-02-02', 'SP-20.234.56', '000.000.002-72', '(11) 90000-0002', '01000-00', 'SP', 'São Paulo', 'Brás', 'Rua São Caetano', '200'),
+(4, 'Pedro Santos', '1992-03-03', 'RJ-30.345.67', '000.000.003-53', '(21) 90000-0003', '22000-00', 'RJ', 'Rio de Janeiro', 'Copacabana', 'Avenida Atlântica', '300'),
+(5, 'Ana Costa', '1993-04-04', 'RS-40.456.78', '000.000.004-34', '(51) 90000-0004', '90000-00', 'RS', 'Porto Alegre', 'Centro', 'Rua dos Andradas', '400'),
+(6, 'Lucas Martins', '1994-05-05', 'PR-50.567.89', '000.000.005-15', '(41) 90000-0005', '80000-00', 'PR', 'Curitiba', 'Batel', 'Avenida Sete de Setembro', '500'),
+(7, 'Patrícia Oliveira', '1995-06-06', 'SC-60.678.90', '000.000.006-96', '(48) 90000-0006', '88000-00', 'SC', 'Florianópolis', 'Centro', 'Rua Felipe Schmidt', '600'),
+(8, 'Rafael Almeida', '1996-07-07', 'BA-70.789.01', '000.000.007-77', '(71) 90000-0007', '40000-00', 'BA', 'Salvador', 'Itapuã', 'Avenida Dorival Caymmi', '700'),
+(9, 'Fernanda Gomes', '1997-08-08', 'PE-80.890.12', '000.000.008-58', '(81) 90000-0008', '50000-00', 'PE', 'Recife', 'Boa Viagem', 'Avenida Conselheiro Aguiar', '800'),
+(10, 'Carlos Rodrigues', '1998-09-09', 'CE-90.901.23', '000.000.009-39', '(85) 90000-0009', '60000-00', 'CE', 'Fortaleza', 'Meireles', 'Avenida Beira Mar', '900'),
+(11, 'Sandra Lima', '1999-10-10', 'PA-01.012.34', '000.000.010-10', '(91) 90000-0010', '66000-00', 'PA', 'Belém', 'Nazaré', 'Avenida Nazaré', '1000');
 
 -- --------------------------------------------------------
 
@@ -72,6 +79,13 @@ CREATE TABLE `ordem_de_servico` (
   `id_peca` int(11) NOT NULL,
   `valor_total` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `ordem_de_servico`
+--
+
+INSERT INTO `ordem_de_servico` (`id`, `equipamento`, `problema_relatado`, `problema_constatado`, `servico_executado`, `servico`, `valor_servico`, `id_cliente`, `id_peca`, `valor_total`) VALUES
+(3, 'Laptop', '', '', '', 'formatacao', 120, 1, 1, 120);
 
 -- --------------------------------------------------------
 
@@ -106,21 +120,21 @@ INSERT INTO `peca` (`id`, `nome`, `descricao`, `marca`, `categoria`, `estoque_mi
 
 CREATE TABLE `usuario` (
   `id` int(11) NOT NULL,
-  `nome` varchar(50) NOT NULL,
-  `cargo` varchar(30) NOT NULL DEFAULT 'Indefinido',
-  `senha` varchar(20) NOT NULL,
-  `email` varchar(80) NOT NULL,
-  `path` varchar(100) NOT NULL,
-  `data-upload` datetime NOT NULL DEFAULT current_timestamp()
+  `nome` varchar(100) NOT NULL,
+  `cargo` varchar(40) NOT NULL DEFAULT 'Indefinido',
+  `senha` varchar(40) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `celular` varchar(15) NOT NULL,
+  `path` varchar(255) NOT NULL,
+  `data_upload` date NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `usuario`
 --
 
-INSERT INTO `usuario` (`id`, `nome`, `cargo`, `senha`, `email`, `path`, `data-upload`) VALUES
-(1, 'Admin', 'Indefinido', '123abC', 'admin@example.com', '', '2023-08-07 13:13:34'),
-(2, '', 'Indefinido', '', '', '', '2023-08-07 13:13:34');
+INSERT INTO `usuario` (`id`, `nome`, `cargo`, `senha`, `email`, `celular`, `path`, `data_upload`) VALUES
+(1, 'Admin', 'Administrador', '123abC', 'administrador@bit.com', '(00) 00000-0000', '', '2023-11-13');
 
 --
 -- Indexes for dumped tables
@@ -160,13 +174,13 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT for table `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=104;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `ordem_de_servico`
 --
 ALTER TABLE `ordem_de_servico`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `peca`
@@ -178,7 +192,7 @@ ALTER TABLE `peca`
 -- AUTO_INCREMENT for table `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables

@@ -13,6 +13,7 @@ error_reporting(E_ALL);
 require_once("../../assets/php/auth_session.php");
 include("../../assets/php/connection.php");
 
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   // A conexão deve ser estabelecida antes de qualquer operação com o banco de dados
   $conexao = mysqli_connect($host, $username, $password, $database);
@@ -68,22 +69,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <body>
   <h2>Cadastrar Ordem de Serviço</h2>
-  <form class="grid-template" action="orderm-de-servico.php" method="POST">
-    <div class="larger-field field">
-      <label for="cliente_id">Cliente</label>
-      <select name="cliente_id" id="cliente_id" required>
-        <option value="">Selecione o cliente</option>
-        <?php
-        $sql = "select * from cliente order by nome";
-        $resultado = mysqli_query($conexao, $sql);
-        while ($linha = mysqli_fetch_array($resultado)):
-          $id = $linha['id'];
-          $nome = $linha['nome'];
 
-          echo "<option value='{$id}'>{$nome}</option>";
-        endwhile;
-        ?>
-      </select>
+  <!-- Modal para pesquisa de clientes -->
+  <div id="modalCliente" class="modal hidden">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <form method="GET" id="searchForm" action="buscar-cliente.php">
+        <input type="text" id="searchInput" placeholder="Digite para pesquisar clientes...">
+        <button type="submit">Pesquisar</button>
+      </form>
+
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Selecionar</th>
+          </tr>
+        </thead>
+        <tbody id="cliente-tbody">
+        </tbody>
+      </table>
+      <button type="button" id="selecionarCliente">Selecionar Cliente</button>
+
+    </div>
+  </div>
+
+
+  <form class="grid-template" id="primaryForm" action="orderm-de-servico.php" method="POST">
+    <div class="normal-field field">
+      <label for="cliente_id">Cliente</label>
+      <input type="text" id="clienteNome" placeholder="Clique para selecionar um cliente" readonly />
+      <input type="hidden" name="cliente_id" id="cliente_id" />
     </div>
 
 
@@ -148,8 +165,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <option value="">Selecione a peça utilizada</option>
         <?php
         $sql = "select * from peca order by nome";
-        $resultado = mysqli_query($conexao, $sql);
-        while ($linha = mysqli_fetch_array($resultado)):
+        $a = mysqli_query($conexao, $sql);
+        while ($linha = mysqli_fetch_array($a)):
           $id = $linha['id'];
           $nome = $linha['nome'];
 

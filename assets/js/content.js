@@ -14,7 +14,7 @@ $(document).ready(function () {
             }
 
             // Adiciona um evento de submit aos formulários carregados dinamicamente
-            $('form').submit(function (e) {
+            $('#primaryForm').submit(function (e) {
                 e.preventDefault();
 
                 var formData = $(this).serialize();
@@ -35,6 +35,10 @@ $(document).ready(function () {
                             };
                             case "cpf": {
                                 $("#status").html('<p class="slide-mensage alert">CPF inválido!</p>');
+                                break;
+                            }
+                            case "teste": {
+                                $("#status").html('<p class="slide-mensage sucess">Passou no Teste De</p>');
                                 break;
                             }
                             default: {

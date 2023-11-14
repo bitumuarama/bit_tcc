@@ -32,7 +32,7 @@ if (isset($_SESSION['status'])) {
     <script src="../assets/js/jquery-3.6.0.min.js"></script>
     <script src="../assets/js/jquery.maskMoney.min.js"></script>
     <script src="../assets/js/jquery.mask.min.js"></script>
-
+    <script src="../assets/js/modal-handler.js"></script>
 </head>
 
 <body>
@@ -77,7 +77,6 @@ if (isset($_SESSION['status'])) {
                         <h2>Cadastro</h2>
                         <li><a class="menu-item" href="#cadastro/exemplo">Exemplo</a></li>
                         <li><a class="menu-item" href="#cadastro/cliente">Cliente</a></li>
-                        <li><a class="menu-item" href="#cadastro/funcionario">Funcionário</a></li>
                         <li><a class="menu-item" href="#cadastro/ordem-de-servico">Ordem de Serviço</a></li>
                         <li><a class="menu-item" href="#cadastro/usuario">Usuário</a></li>
                     </ul>
@@ -95,7 +94,14 @@ if (isset($_SESSION['status'])) {
                         <li><a class="menu-item" href="#relatorio/pecas">Peças</a></li>
                         <li><a class="menu-item" href="#relatorio/servicos">Serviços</a></li>
                     </ul>
-                    <img src="" alt="Logout">
+                    <a class="mobile-logout" href="../assets/php/exit.php">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                            <polyline points="16 17 21 12 16 7" />
+                            <line x1="21" y1="12" x2="9" y2="12" />
+                        </svg>
+                    </a>
                 </div>
             </div>
         </div>
@@ -134,7 +140,6 @@ if (isset($_SESSION['status'])) {
                     <h2>Cadastro</h2>
                     <li><a class="menu-item" href="#cadastro/exemplo">Exemplo</a></li>
                     <li><a class="menu-item" href="#cadastro/cliente">Cliente</a></li>
-                    <li><a class="menu-item" href="#cadastro/funcionario">Funcionário</a></li>
                     <li><a class="menu-item" href="#cadastro/ordem-de-servico">Ordem de Serviço</a></li>
                     <li><a class="menu-item" href="#cadastro/usuario">Usuário</a></li>
                 </ul>

@@ -176,6 +176,32 @@
   display: none;
 }
 
+.mobile-logout {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.mobile-logout svg {
+  padding: 5px;
+  border-radius: 5px;
+  background-color: #007bff;
+  /* Cor de fundo do ícone azul para combinar com o menu */
+  color: white;
+  /* Cor do ícone */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  /* Sombra leve para destacar o ícone */
+  cursor: pointer;
+  /* Muda o cursor para indicar que é clicável */
+}
+
+/* Estilização do ícone para quando o usuário passa o mouse sobre ele */
+.mobile-logout svg:hover {
+  background-color: #0056b3;
+  /* Uma cor um pouco mais escura quando hover */
+}
+
 
 
 /* DESKTOP */

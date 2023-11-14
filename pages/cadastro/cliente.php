@@ -16,14 +16,6 @@ include("../../assets/php/cpf_validation.php");
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if (isset($_POST['nome']) && isset($_POST['cpf'])) {
-    // A conexão deve ser estabelecida antes de qualquer operação com o banco de dados
-    $conexao = mysqli_connect($host, $username, $password, $database);
-
-    if (!$conexao) {
-      die("Erro de conexão: " . mysqli_connect_error());
-    }
-
-
     // Validação de CPF
     $cpf = $_POST['cpf'];
 
@@ -82,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <body>
   <h2>Cadastrar Clientes</h2>
-  <form class="grid-template" action="cliente.php" method="POST">
+  <form class="grid-template" id="primaryForm" action="cliente.php" method="POST">
 
 
     <div class="larger-field field">
@@ -111,7 +103,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="small-field field">
       <label for="celular">Celular</label>
       <input class="celular" type="text" name="celular" id="celular" placeholder="(XX) XXXXXX-XXXX" required>
-
     </div>
 
     <div class="small-field field">
@@ -142,6 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <label for="rua">Rua</label>
       <input type="text" name="rua" id="rua" placeholder="Ex.: Av. Tecnologias / Rua das Caldeiras" required>
     </div>
+
     <div class="extra-small-field field">
       <label for="numero">N°</label>
       <input type="text" name="numero" id="numero" placeholder="Ex.: 1001" requiered>
