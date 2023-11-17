@@ -1,56 +1,55 @@
 <?php
-if ($_SERVER['HTTP_X_REQUESTED_WITH'] != 'XMLHttpRequest') {
+if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+  ini_set('display_errors', 1);
+  ini_set('display_startup_errors', 1);
+  error_reporting(E_ALL);
 
-  header('HTTP/1.0 403 Forbidden');
-  echo 'Você não tem permissão para acessar este arquivo diretamente.';
-  exit;
-}
+  if (!isset($_SESSION)) {
+    session_start();
+  }
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-if (!isset($_SESSION)) {
-  session_start();
-}
-
-if (!isset($_SESSION['id'])) {
-  $_SESSION['erro'] = "Sessão expirada. Faça login novamente!";
-  header("location: ../index.php");
-}
+  if (!isset($_SESSION['id'])) {
+    $_SESSION['erro'] = "Sessão expirada. Faça login novamente!";
+    header("location: ../index.php");
+  }
 
 
-require_once("../../assets/php/connection.php");
+  require_once("../../assets/php/connection.php");
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  if (isset($_POST['nome'])) {
-    $nome = $_POST['nome'];
+  if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['nome'])) {
+      $nome = $_POST['nome'];
 
-    $query = $conexao->prepare("SELECT * FROM usuario WHERE nome = ?");
-    $query->bind_param("s", $nome);
-    $query->execute();
-    $result = $query->get_result();
+      $query = $conexao->prepare("SELECT * FROM usuario WHERE nome = ?");
+      $query->bind_param("s", $nome);
+      $query->execute();
+      $result = $query->get_result();
 
-    if ($result->num_rows > 0) {
-      echo "already";
-    } else {
-      $cargo = $_POST['cargo'];
-      $senha = $_POST['senha'];
-      $email = $_POST['email'];
-      $celular = $_POST['celular'];
-
-      $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
-      $insert = $conexao->prepare("INSERT INTO usuario (nome, cargo, senha, email, celular) VALUES (?, ?, ?, ?, ?)");
-      $insert->bind_param("sssss", $nome, $cargo, $senhaHash, $email, $celular);
-
-      if ($insert->execute()) {
-        echo "success";
+      if ($result->num_rows > 0) {
+        echo "already";
       } else {
-        echo "error";
+        $cargo = $_POST['cargo'];
+        $senha = $_POST['senha'];
+        $email = $_POST['email'];
+        $celular = $_POST['celular'];
+
+        $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
+        $insert = $conexao->prepare("INSERT INTO usuario (nome, cargo, senha, email, celular) VALUES (?, ?, ?, ?, ?)");
+        $insert->bind_param("sssss", $nome, $cargo, $senhaHash, $email, $celular);
+
+        if ($insert->execute()) {
+          echo "success";
+        } else {
+          echo "error";
+        }
       }
     }
+    mysqli_close($conexao);
+    exit;
   }
-  mysqli_close($conexao);
+} else {
+  // Acesso não-AJAX, nega acesso
+  header('HTTP/1.0 403 Forbidden');
   exit;
 }
 ?>
@@ -62,13 +61,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cadastro - Usuário</title>
-  
+
   <script src="../assets/js/masks.js"></script>
 </head>
 
 <body>
   <h2>Cadastrar Usuário</h2>
-  <form class="grid-template" action="usuario.php" method="POST">
+  <form class="grid-template" action="usuario.php" method="POST" id="submitForm">
 
 
     <div class="larger-field">

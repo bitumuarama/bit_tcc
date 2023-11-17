@@ -271,22 +271,9 @@ table input[type="radio"] {
 
 
 
-
-
-
-
-
-/* Estilos Tabelas */
-/*  */
-/*  */
-/*  */
-/*  */
-/*  */
-/*  */
-/*  */
-
-
 /* Estilos Modal */
+
+
 
 .modal {
     display: flex;
@@ -303,9 +290,6 @@ table input[type="radio"] {
     z-index: 50;
 }
 
-.hidden {
-    display: none;
-}
 
 /* Conteúdo do Modal */
 .modal-content {
@@ -352,6 +336,39 @@ table input[type="radio"] {
     /* Altura máxima para a área de resultados */
     overflow-y: auto;
     /* Permite rolagem se houver muitos resultados */
+}
+
+#pecasSelecionadas {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.peca-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.peca-nome {
+    flex: 1;
+}
+
+.peca-quantidade {
+    width: 50px;
+    margin-right: 10px;
+}
+
+.remove-peca {
+    background: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.hidden {
+    display: none;
 }
 
 /* Animação para o modal aparecer suavemente */

@@ -29,10 +29,12 @@ if (isset($_SESSION['status'])) {
     <link rel="stylesheet" href="../assets/css/style.css">
 
 
-    <script src="../assets/js/jquery-3.6.0.min.js"></script>
-    <script src="../assets/js/jquery.maskMoney.min.js"></script>
-    <script src="../assets/js/jquery.mask.min.js"></script>
-    <script src="../assets/js/modal-handler.js"></script>
+    <script src="../assets/js/jquery/jquery-3.6.0.min.js"></script>
+    <script src="../assets/js/jquery/jquery.maskMoney.min.js"></script>
+    <script src="../assets/js/jquery/jquery.mask.min.js"></script>
+    <script src="../assets/js/form-ajax.js"></script>
+    <script src="../assets/js/modal.js"></script>
+
 </head>
 
 <body>
@@ -79,6 +81,7 @@ if (isset($_SESSION['status'])) {
                         <li><a class="menu-item" href="#cadastro/cliente">Cliente</a></li>
                         <li><a class="menu-item" href="#cadastro/ordem-de-servico">Ordem de Serviço</a></li>
                         <li><a class="menu-item" href="#cadastro/usuario">Usuário</a></li>
+                        <li><a class="menu-item" href="#cadastro/peca">Peças</a></li>
                     </ul>
                     <ul class="mobile-menu-list">
                         <h2>Controle</h2>
@@ -142,6 +145,7 @@ if (isset($_SESSION['status'])) {
                     <li><a class="menu-item" href="#cadastro/cliente">Cliente</a></li>
                     <li><a class="menu-item" href="#cadastro/ordem-de-servico">Ordem de Serviço</a></li>
                     <li><a class="menu-item" href="#cadastro/usuario">Usuário</a></li>
+                    <li><a class="menu-item" href="#cadastro/peca">Peças</a></li>
                 </ul>
                 <ul class="desktop-menu-list">
                     <h2>Controle</h2>
@@ -173,9 +177,8 @@ if (isset($_SESSION['status'])) {
         <!-- Conteúdo -->
         <div id="status"></div>
 
-
         <div class="content" id="content">
-            <h1>Bem-vindo ao Sistema</h1>
+            <h1>Bem-vindo ao sistema</h1>
             <p>Olá,
                 <?php echo $_SESSION['nome'] ?>! Esperamos que aproveite sua experiência.
             </p>
@@ -210,8 +213,11 @@ if (isset($_SESSION['status'])) {
             </div>
 
     </main>
+    <!-- AJAX para content e formulários -->
+    <script src="../assets/js/content-ajax.js"></script>
+    <!-- Dicas aleatórias -->
     <script src="../assets/js/randomTips.js"></script>
-    <script src="../assets/js/content.js"></script>
+    <!-- Menus -->
     <script src="../assets/js/desktop-menu.js"></script>
     <script src="../assets/js/mobile-menu.js"></script>
 </body>

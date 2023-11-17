@@ -1,57 +1,107 @@
 <?php
-if ($_SERVER['HTTP_X_REQUESTED_WITH'] != 'XMLHttpRequest') {
+if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+  ini_set('display_errors', 1);
+  ini_set('display_startup_errors', 1);
+  error_reporting(E_ALL);
 
-  header('HTTP/1.0 403 Forbidden');
-  echo 'Você não tem permissão para acessar este arquivo diretamente.';
-  exit;
-}
+  require_once("../../assets/php/auth_session.php");
+  include("../../assets/php/connection.php");
+  if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+    $conexao->begin_transaction();
 
-require_once("../../assets/php/auth_session.php");
-include("../../assets/php/connection.php");
+    try {
+      $cliente_id = $_POST['cliente_id'];
+      $equipamento = $_POST['equipamento'];
+      $problema_relatado = $_POST['problemarelatado'];
+      $problema_constatado = $_POST['problemaconstatado'];
+      $servico_executado = $_POST['servicoexecutado'];
+      $servicos = isset($_POST['servicos']) ? implode(',', $_POST['servicos']) : '';
+      $valor_servico = $_POST['valorservico'];
+      $valor_total = $_POST['valortotal'];
 
+      $stmt = $conexao->prepare("INSERT INTO `ordem_de_servico` (`cliente_id`, `equipamento`, `problema_relatado`, `problema_constatado`, `servico_executado`, `servicos`, `valor_servico`, `valor_total`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+      $stmt->bind_param("isssssdd", $cliente_id, $equipamento, $problema_relatado, $problema_constatado, $servico_executado, $servicos, $valor_servico, $valor_total);
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  // A conexão deve ser estabelecida antes de qualquer operação com o banco de dados
-  $conexao = mysqli_connect($host, $username, $password, $database);
+      if (!$stmt->execute()) {
+        throw new Exception("Erro ao inserir ordem de serviço: " . $stmt->error);
+      }
 
-  // Atribui variáveis com os dados do POST
-  $cliente_id = $_POST['cliente_id'];
-  $equipamento = $_POST['equipamento'];
-  $problema_relatado = $_POST['problemarelatado'];
-  $problema_constatado = $_POST['problemaconstatado'];
-  $servico_executado = $_POST['servicoexecutado'];
-  $servicos = isset($_POST['servicos']) ? implode(',', $_POST['servicos']) : '';
-  $peca_id = $_POST['peca_id']; // Certifique-se de que esta coluna realmente existe na tabela
-  $valor_servico = $_POST['valorservico']; // Certifique-se de que esta coluna realmente existe na tabela
-  $valor_total = $_POST['valortotal']; // Certifique-se de que esta coluna realmente existe na tabela
+      $ordemDeServicoId = $conexao->insert_id;
 
-  // Insere no banco de dados
-  $stmt = $conexao->prepare("INSERT INTO `ordem_de_servico` (`equipamento`, `problema_relatado`, `problema_constatado`, `servico_executado`, `servico`, `id_cliente`, `id_peca`, `valor_servico`, `valor_total`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+      $stmtPeca = $conexao->prepare("INSERT INTO `ordem_de_servico_peca` (`ordem_de_servico_id`, `peca_id`, `quantidade`) VALUES (?, ?, ?)");
 
-  // Verifica se a preparação da consulta foi bem-sucedida
-  if (!$stmt) {
-    // Se não foi, imprime o erro
-    echo "Erro na preparação: " . $conexao->error;
+      $peca_ids = $_POST['peca_ids'];
+      $peca_quantidades = $_POST['peca_quantidades'];
+
+      for ($i = 0; $i < count($peca_ids); $i++) {
+        $stmtPeca->bind_param("iii", $ordemDeServicoId, $peca_ids[$i], $peca_quantidades[$i]);
+        if (!$stmtPeca->execute()) {
+          throw new Exception("Erro ao inserir peça: " . $stmtPeca->error);
+        }
+      }
+
+      // Se tudo estiver ok, commit a transação
+      $conexao->commit();
+      echo "success";
+    } catch (Exception $e) {
+      // Se algo deu errado, rollback a transação
+      $conexao->rollback();
+      echo "error: " . $e->getMessage();
+    } finally {
+      $stmt->close();
+      $stmtPeca->close();
+      $conexao->close();
+    }
     exit;
   }
 
-  // Continua com a execução normal do código
-  $stmt->bind_param("sssssiidd", $equipamento, $problema_relatado, $problema_constatado, $servico_executado, $servicos, $cliente_id, $peca_id, $valor_servico, $valor_total);
 
-  if ($stmt->execute()) {
-    echo "success";
-  } else {
-    echo "error: " . $stmt->error;
+  if (isset($_GET['searchTerm']) && isset($_GET['searchContext'])) {
+    $searchTerm = $_GET['searchTerm'];
+    $searchContext = $_GET['searchContext'];
+    $searchTerm = "%$searchTerm%";
+
+    if ($searchContext === 'clientes') {
+      $stmt = $conexao->prepare("SELECT id, nome FROM cliente WHERE nome LIKE ?");
+      $stmt->bind_param("s", $searchTerm);
+    } elseif ($searchContext === 'pecas') {
+      $stmt = $conexao->prepare("SELECT id, nome FROM peca WHERE nome LIKE ?");
+      $stmt->bind_param("s", $searchTerm);
+    } else {
+      echo "Contexto de pesquisa não reconhecido.";
+      exit;
+    }
+
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+
+    // Verifica qual é o contexto e renderiza o HTML apropriado
+    if ($searchContext === 'clientes') {
+      while ($cliente = $resultado->fetch_assoc()) {
+        echo "<tr><td>{$cliente['id']}</td><td>{$cliente['nome']}</td><td><button type='button' class='select-client' data-id='{$cliente['id']}'>Selecionar</button></td></tr>";
+      }
+    } elseif ($searchContext === 'pecas') {
+      while ($peca = $resultado->fetch_assoc()) {
+        echo "<tr>";
+        echo "<td>{$peca['id']}</td>";
+        echo "<td>{$peca['nome']}</td>";
+        echo "<td><input type='number' class='peca-quantidade' min='1'></td>";
+        echo "<td><button type='button' class='select-peca' data-id='{$peca['id']}'>Adicionar</button></td>";
+        echo "</tr>";
+      }
+
+    }
+
+    $conexao->close();
+    exit;
   }
 
-  $stmt->close();
-  $conexao->close();
+} else {
+  header('HTTP/1.0 403 Forbidden');
   exit;
 }
+
 ?>
 
 
@@ -69,16 +119,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <body>
   <h2>Cadastrar Ordem de Serviço</h2>
-
-  <!-- Modal para pesquisa de clientes -->
-  <div id="modalCliente" class="modal hidden">
+  <div id="clienteModal" class="modal hidden">
     <div class="modal-content">
       <span class="close">&times;</span>
-      <form method="GET" id="searchForm" action="buscar-cliente.php">
-        <input type="text" id="searchInput" placeholder="Digite para pesquisar clientes...">
+      <form method="GET" id="searchFormCliente">
+        <input type="text" id="searchTermCliente" placeholder="Digite para pesquisar...">
         <button type="submit">Pesquisar</button>
       </form>
-
       <table>
         <thead>
           <tr>
@@ -87,20 +134,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <th>Selecionar</th>
           </tr>
         </thead>
-        <tbody id="cliente-tbody">
+        <tbody id="search-results-cliente">
         </tbody>
       </table>
-      <button type="button" id="selecionarCliente">Selecionar Cliente</button>
-
     </div>
   </div>
 
+  <div id="pecaModal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <form method="GET" id="searchFormPeca">
+        <input type="text" id="searchTermPeca" placeholder="Digite para pesquisar...">
+        <button type="submit">Pesquisar</button>
+      </form>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Quantidade</th>
+          </tr>
+        </thead>
+        <tbody id="search-results-peca">
+        </tbody>
+      </table>
+    </div>
+  </div>
 
-  <form class="grid-template" id="primaryForm" action="orderm-de-servico.php" method="POST">
+  <form class="grid-template" id="submitForm" action="orderm-de-servico.php" method="POST">
     <div class="normal-field field">
-      <label for="cliente_id">Cliente</label>
+      <label>Cliente</label>
       <input type="text" id="clienteNome" placeholder="Clique para selecionar um cliente" readonly />
-      <input type="hidden" name="cliente_id" id="cliente_id" />
+      <input type="hidden" id="cliente_id" />
+      <button type="button" id="selecionarCliente">Selecionar Cliente</button>
     </div>
 
 
@@ -160,30 +226,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </fieldset>
 
     <div class="normal-field field">
-      <label for="peca_id">Peças</label>
-      <select name="peca_id" id="cliente_id" required>
-        <option value="">Selecione a peça utilizada</option>
-        <?php
-        $sql = "select * from peca order by nome";
-        $a = mysqli_query($conexao, $sql);
-        while ($linha = mysqli_fetch_array($a)):
-          $id = $linha['id'];
-          $nome = $linha['nome'];
-
-          echo "<option value='{$id}'>{$nome}</option>";
-        endwhile;
-        ?>
-      </select>
+      <label>Peças</label>
+      <div id="pecasSelecionadas">
+      </div>
+      <button type="button" id="selecionarPeca">Adicionar Peças</button>
     </div>
 
+    <input class="contabil" type="text" name="valorpeca" value="" hidden>
 
     <div class="extra-small-field field">
       <label for="valorservico">Valor Serviço: </label>
-      <input class="contabil" type="text" placeholder="R$ 0,00" name="valorservico" value="">
+      <input class="contabil" type="text" placeholder="R$ 0,00" name="valorservico" id="valorservico" value="">
     </div>
+
+
     <div class="extra-small-field field">
       <label for="valortotal">Valor Total: </label>
-      <input class="contabil" type="text" placeholder="R$ 0,00" name="valortotal" value="">
+      <input class="contabil" type="text" placeholder="R$ 0,00" name="valortotal" id="valortotal" value="">
     </div>
 
     <div class="button-area">
@@ -191,7 +250,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 
   </form>
-
 </body>
 
 </html>
