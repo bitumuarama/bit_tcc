@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 14, 2023 at 09:20 PM
+-- Generation Time: Nov 17, 2023 at 03:05 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -59,7 +59,8 @@ INSERT INTO `cliente` (`id`, `nome`, `data_nascimento`, `rg`, `cpf`, `celular`, 
 (8, 'Rafael Almeida', '1996-07-07', 'BA-70.789.01', '000.000.007-77', '(71) 90000-0007', '40000-00', 'BA', 'Salvador', 'Itapuã', 'Avenida Dorival Caymmi', '700'),
 (9, 'Fernanda Gomes', '1997-08-08', 'PE-80.890.12', '000.000.008-58', '(81) 90000-0008', '50000-00', 'PE', 'Recife', 'Boa Viagem', 'Avenida Conselheiro Aguiar', '800'),
 (10, 'Carlos Rodrigues', '1998-09-09', 'CE-90.901.23', '000.000.009-39', '(85) 90000-0009', '60000-00', 'CE', 'Fortaleza', 'Meireles', 'Avenida Beira Mar', '900'),
-(11, 'Sandra Lima', '1999-10-10', 'PA-01.012.34', '000.000.010-10', '(91) 90000-0010', '66000-00', 'PA', 'Belém', 'Nazaré', 'Avenida Nazaré', '1000');
+(11, 'Sandra Lima', '1999-10-10', 'PA-01.012.34', '000.000.010-10', '(91) 90000-0010', '66000-00', 'PA', 'Belém', 'Nazaré', 'Avenida Nazaré', '1000'),
+(12, '', '0000-00-00', '', '080.391.989-17', '', '', 'SC', '', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -69,23 +70,55 @@ INSERT INTO `cliente` (`id`, `nome`, `data_nascimento`, `rg`, `cpf`, `celular`, 
 
 CREATE TABLE `ordem_de_servico` (
   `id` int(11) NOT NULL,
-  `equipamento` varchar(250) NOT NULL,
-  `problema_relatado` varchar(250) NOT NULL,
-  `problema_constatado` varchar(250) NOT NULL,
-  `servico_executado` varchar(250) NOT NULL,
-  `servico` varchar(100) NOT NULL,
-  `valor_servico` double NOT NULL,
-  `id_cliente` int(11) NOT NULL,
-  `id_peca` int(11) NOT NULL,
-  `valor_total` double NOT NULL
+  `cliente_id` int(11) NOT NULL,
+  `equipamento` varchar(255) NOT NULL,
+  `problema_relatado` text DEFAULT NULL,
+  `problema_constatado` text DEFAULT NULL,
+  `servico_executado` text DEFAULT NULL,
+  `servicos` varchar(255) DEFAULT NULL,
+  `valor_servico` decimal(10,2) DEFAULT NULL,
+  `valor_total` decimal(10,2) DEFAULT NULL,
+  `data_criacao` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `ordem_de_servico`
 --
 
-INSERT INTO `ordem_de_servico` (`id`, `equipamento`, `problema_relatado`, `problema_constatado`, `servico_executado`, `servico`, `valor_servico`, `id_cliente`, `id_peca`, `valor_total`) VALUES
-(3, 'Laptop', '', '', '', 'formatacao', 120, 1, 1, 120);
+INSERT INTO `ordem_de_servico` (`id`, `cliente_id`, `equipamento`, `problema_relatado`, `problema_constatado`, `servico_executado`, `servicos`, `valor_servico`, `valor_total`, `data_criacao`) VALUES
+(1, 1, 'Laptop', 'Não sei', 'Não sei', 'Não sei', 'limpeza', 240.00, 300.00, '2023-11-15 22:09:01'),
+(2, 1, 'Laptop', 'Não sei', 'Não sei', 'Não sei', 'limpeza', 240.00, 300.00, '2023-11-15 22:09:40'),
+(3, 1, 'Laptop', 'Não sei', 'Não sei', 'Não sei', 'limpeza', 240.00, 300.00, '2023-11-15 22:10:08'),
+(4, 1, '', '', '', '', '', 0.00, 0.00, '2023-11-15 22:37:22'),
+(5, 1, '', '', '', '', '', 0.00, 0.00, '2023-11-15 22:37:24'),
+(7, 1, '', '', '', '', '', 0.00, 0.00, '2023-11-16 11:11:23');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ordem_de_servico_peca`
+--
+
+CREATE TABLE `ordem_de_servico_peca` (
+  `ordem_de_servico_id` int(11) NOT NULL,
+  `peca_id` int(11) NOT NULL,
+  `quantidade` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `ordem_de_servico_peca`
+--
+
+INSERT INTO `ordem_de_servico_peca` (`ordem_de_servico_id`, `peca_id`, `quantidade`) VALUES
+(1, 1, 1),
+(1, 1, 1),
+(2, 1, 1),
+(2, 1, 1),
+(2, 1, 5),
+(3, 1, 3),
+(4, 2, 1),
+(5, 2, 1),
+(7, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -110,7 +143,11 @@ CREATE TABLE `peca` (
 --
 
 INSERT INTO `peca` (`id`, `nome`, `descricao`, `marca`, `categoria`, `estoque_minimo`, `estoque_atual`, `valor_custo`, `valor_venda`) VALUES
-(1, 'SSD 120 Gb Gigabyte', '', '', '', 2, 2, 120, 140);
+(1, 'SSD 120 Gb Gigabyte', '', '', '', 2, 2, 120, 140),
+(2, 'SSD 240Gb', 'State Solid Disk 240 Gigabytes Kingston', 'Kingston', 'SSD', 5, 10, 90, 150),
+(3, 'SSD 240Gb', 'State Solid Disk 240 Gigabytes Kingston', 'Kingston', 'SSD', 5, 10, 90, 150),
+(4, 'Fonte para Testes', 'Fonte de testes da loja', 'Indefinido', 'Fontes', 1, 1, 200, 1),
+(5, 'Fonte para Testes', 'Fonte de testes da loja', 'Indefinido', 'Fontes', 1, 1, 200, 1);
 
 -- --------------------------------------------------------
 
@@ -134,7 +171,8 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`id`, `nome`, `cargo`, `senha`, `email`, `celular`, `path`, `data_upload`) VALUES
-(1, 'Admin', 'Administrador', '123abC', 'administrador@bit.com', '(00) 00000-0000', '', '2023-11-13');
+(1, 'Admin', 'Administrador', '123abC', 'administrador@bit.com', '(00) 00000-0000', '', '2023-11-13'),
+(5, 'Bruno', 'Dono', '$2y$10$8461q2t1bhgs6BUcO0JVruoI8X6f4wdJn', '123@123', '(44) 99839-9410', '', '2023-11-16');
 
 --
 -- Indexes for dumped tables
@@ -151,8 +189,14 @@ ALTER TABLE `cliente`
 --
 ALTER TABLE `ordem_de_servico`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `codigo_cliente` (`id_cliente`),
-  ADD KEY `codigo_peca` (`id_peca`);
+  ADD KEY `cliente_id` (`cliente_id`);
+
+--
+-- Indexes for table `ordem_de_servico_peca`
+--
+ALTER TABLE `ordem_de_servico_peca`
+  ADD KEY `ordem_de_servico_id` (`ordem_de_servico_id`),
+  ADD KEY `peca_id` (`peca_id`);
 
 --
 -- Indexes for table `peca`
@@ -174,25 +218,25 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT for table `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `ordem_de_servico`
 --
 ALTER TABLE `ordem_de_servico`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `peca`
 --
 ALTER TABLE `peca`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Constraints for dumped tables
@@ -202,8 +246,14 @@ ALTER TABLE `usuario`
 -- Constraints for table `ordem_de_servico`
 --
 ALTER TABLE `ordem_de_servico`
-  ADD CONSTRAINT `ordem_de_servico_ibfk_1` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id`),
-  ADD CONSTRAINT `ordem_de_servico_ibfk_3` FOREIGN KEY (`id_peca`) REFERENCES `peca` (`id`);
+  ADD CONSTRAINT `ordem_de_servico_ibfk_1` FOREIGN KEY (`cliente_id`) REFERENCES `cliente` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `ordem_de_servico_peca`
+--
+ALTER TABLE `ordem_de_servico_peca`
+  ADD CONSTRAINT `ordem_de_servico_peca_ibfk_1` FOREIGN KEY (`ordem_de_servico_id`) REFERENCES `ordem_de_servico` (`id`),
+  ADD CONSTRAINT `ordem_de_servico_peca_ibfk_2` FOREIGN KEY (`peca_id`) REFERENCES `peca` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
