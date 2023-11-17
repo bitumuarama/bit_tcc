@@ -80,7 +80,7 @@ if (isset($_SESSION['status'])) {
                         <li><a class="menu-item" href="#cadastro/exemplo">Exemplo</a></li>
                         <li><a class="menu-item" href="#cadastro/cliente">Cliente</a></li>
                         <li><a class="menu-item" href="#cadastro/ordem-de-servico">Ordem de Serviço</a></li>
-                        <li><a class="menu-item" href="#cadastro/usuario">Usuário</a></li>
+                        <li><a class="menu-item" href="#cadastro/funcionario">Funcionário</a></li>
                         <li><a class="menu-item" href="#cadastro/peca">Peças</a></li>
                     </ul>
                     <ul class="mobile-menu-list">
@@ -144,7 +144,7 @@ if (isset($_SESSION['status'])) {
                     <li><a class="menu-item" href="#cadastro/exemplo">Exemplo</a></li>
                     <li><a class="menu-item" href="#cadastro/cliente">Cliente</a></li>
                     <li><a class="menu-item" href="#cadastro/ordem-de-servico">Ordem de Serviço</a></li>
-                    <li><a class="menu-item" href="#cadastro/usuario">Usuário</a></li>
+                    <li><a class="menu-item" href="#cadastro/funcionario">Funcionário</a></li>
                     <li><a class="menu-item" href="#cadastro/peca">Peças</a></li>
                 </ul>
                 <ul class="desktop-menu-list">

@@ -8,7 +8,7 @@ if (isset($_POST['submit'])) {
     require_once("connection.php");
 
     // Declaração preparada para evitar SQL injection
-    $stmt = $conexao->prepare("SELECT * FROM usuario WHERE BINARY nome = ? AND BINARY senha = ?");
+    $stmt = $conexao->prepare("SELECT * FROM funcionario WHERE BINARY usuario = ? AND BINARY senha = ?");
     $stmt->bind_param("ss", $email, $senha);
     $stmt->execute();
     $resultado = $stmt->get_result();

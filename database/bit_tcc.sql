@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 17, 2023 at 03:05 PM
+-- Generation Time: Nov 17, 2023 at 09:49 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -61,6 +61,32 @@ INSERT INTO `cliente` (`id`, `nome`, `data_nascimento`, `rg`, `cpf`, `celular`, 
 (10, 'Carlos Rodrigues', '1998-09-09', 'CE-90.901.23', '000.000.009-39', '(85) 90000-0009', '60000-00', 'CE', 'Fortaleza', 'Meireles', 'Avenida Beira Mar', '900'),
 (11, 'Sandra Lima', '1999-10-10', 'PA-01.012.34', '000.000.010-10', '(91) 90000-0010', '66000-00', 'PA', 'Belém', 'Nazaré', 'Avenida Nazaré', '1000'),
 (12, '', '0000-00-00', '', '080.391.989-17', '', '', 'SC', '', '', '', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `funcionario`
+--
+
+CREATE TABLE `funcionario` (
+  `id` int(11) NOT NULL,
+  `nome` varchar(100) NOT NULL,
+  `cargo` varchar(40) DEFAULT 'Funcionario',
+  `usuario` varchar(20) NOT NULL,
+  `senha` varchar(50) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `celular` varchar(15) NOT NULL,
+  `path` varchar(255) DEFAULT NULL,
+  `data_upload` date NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `funcionario`
+--
+
+INSERT INTO `funcionario` (`id`, `nome`, `cargo`, `usuario`, `senha`, `email`, `celular`, `path`, `data_upload`) VALUES
+(1, 'Admin', 'Administrador', 'Admin', '123abC', 'comercialexemplo@bit.com', '(00) 00000-0000', NULL, '2023-11-17'),
+(2, 'Bruno Pereira Bertolli', '', 'Bruno', '1471', '', '', NULL, '2023-11-17');
 
 -- --------------------------------------------------------
 
@@ -149,31 +175,6 @@ INSERT INTO `peca` (`id`, `nome`, `descricao`, `marca`, `categoria`, `estoque_mi
 (4, 'Fonte para Testes', 'Fonte de testes da loja', 'Indefinido', 'Fontes', 1, 1, 200, 1),
 (5, 'Fonte para Testes', 'Fonte de testes da loja', 'Indefinido', 'Fontes', 1, 1, 200, 1);
 
--- --------------------------------------------------------
-
---
--- Table structure for table `usuario`
---
-
-CREATE TABLE `usuario` (
-  `id` int(11) NOT NULL,
-  `nome` varchar(100) NOT NULL,
-  `cargo` varchar(40) NOT NULL DEFAULT 'Indefinido',
-  `senha` varchar(40) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `celular` varchar(15) NOT NULL,
-  `path` varchar(255) NOT NULL,
-  `data_upload` date NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `usuario`
---
-
-INSERT INTO `usuario` (`id`, `nome`, `cargo`, `senha`, `email`, `celular`, `path`, `data_upload`) VALUES
-(1, 'Admin', 'Administrador', '123abC', 'administrador@bit.com', '(00) 00000-0000', '', '2023-11-13'),
-(5, 'Bruno', 'Dono', '$2y$10$8461q2t1bhgs6BUcO0JVruoI8X6f4wdJn', '123@123', '(44) 99839-9410', '', '2023-11-16');
-
 --
 -- Indexes for dumped tables
 --
@@ -182,6 +183,12 @@ INSERT INTO `usuario` (`id`, `nome`, `cargo`, `senha`, `email`, `celular`, `path
 -- Indexes for table `cliente`
 --
 ALTER TABLE `cliente`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `funcionario`
+--
+ALTER TABLE `funcionario`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -205,12 +212,6 @@ ALTER TABLE `peca`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `usuario`
---
-ALTER TABLE `usuario`
-  ADD PRIMARY KEY (`id`);
-
---
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -219,6 +220,12 @@ ALTER TABLE `usuario`
 --
 ALTER TABLE `cliente`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT for table `funcionario`
+--
+ALTER TABLE `funcionario`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `ordem_de_servico`
@@ -230,12 +237,6 @@ ALTER TABLE `ordem_de_servico`
 -- AUTO_INCREMENT for table `peca`
 --
 ALTER TABLE `peca`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
--- AUTO_INCREMENT for table `usuario`
---
-ALTER TABLE `usuario`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --

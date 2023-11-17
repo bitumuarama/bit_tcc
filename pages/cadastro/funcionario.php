@@ -17,25 +17,30 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
   require_once("../../assets/php/connection.php");
 
   if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['nome'])) {
-      $nome = $_POST['nome'];
+    if (isset($_POST['usuario'])) {
+      $usuario = $_POST['usuario'];
 
-      $query = $conexao->prepare("SELECT * FROM usuario WHERE nome = ?");
-      $query->bind_param("s", $nome);
+      $query = $conexao->prepare("SELECT * FROM funcionario WHERE usuario = ?");
+      $query->bind_param("s", $usuario);
       $query->execute();
       $result = $query->get_result();
 
       if ($result->num_rows > 0) {
-        echo "already";
+        echo "already_registered_user";
       } else {
-        $cargo = $_POST['cargo'];
+        $nome = $_POST['nome'];
+        $cargo = $_POST['cargo'] ?? NULL;
         $senha = $_POST['senha'];
         $email = $_POST['email'];
         $celular = $_POST['celular'];
 
-        $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
-        $insert = $conexao->prepare("INSERT INTO usuario (nome, cargo, senha, email, celular) VALUES (?, ?, ?, ?, ?)");
-        $insert->bind_param("sssss", $nome, $cargo, $senhaHash, $email, $celular);
+        if($cargo === NULL){
+          $insert = $conexao->prepare("INSERT INTO funcionario (nome, usuario, senha, email, celular) VALUES (?, ?, ?, ?, ?)");
+          $insert->bind_param("sssss", $nome, $usuario, $senha, $email, $celular);
+        } else {
+          $insert = $conexao->prepare("INSERT INTO funcionario (nome, cargo, usuario, senha, email, celular) VALUES (?, ?, ?, ?, ?, ?)");
+          $insert->bind_param("ssssss", $nome, $cargo, $usuario, $senha, $email, $celular);
+        }
 
         if ($insert->execute()) {
           echo "success";
@@ -60,13 +65,13 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cadastro - Usuário</title>
+  <title>Cadastro - Funcionário</title>
 
   <script src="../assets/js/masks.js"></script>
 </head>
 
 <body>
-  <h2>Cadastrar Usuário</h2>
+  <h2>Cadastrar Funcionário</h2>
   <form class="grid-template" action="usuario.php" method="POST" id="submitForm">
 
 
@@ -77,7 +82,12 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
 
     <div class="small-field">
       <label for="cargo">Cargo</label>
-      <input type="text" name="cargo" id="cargo" placeholder="Funcionário" required>
+      <input type="text" name="cargo" id="cargo" placeholder="Funcionário">
+    </div>
+
+    <div class="small-field">
+      <label for="usuario">Usuário</label>
+      <input type="text" name="usuario" id="usuario" placeholder="Usuário" required>
     </div>
 
     <div class="small-field">
@@ -88,12 +98,12 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
 
     <div class="normal-field">
       <label for="email">E-mail</label>
-      <input type="email" name="email" id="email" placeholder="comercialexemplo@dominio.com" required>
+      <input type="email" name="email" id="email" placeholder="comercialexemplo@dominio.com">
     </div>
 
     <div class="small-field">
       <label for="celular">Celular</label>
-      <input class="celular" type="text" name="celular" id="celular" placeholder="(XX) XXXXXX-XXXX" required>
+      <input class="celular" type="text" name="celular" id="celular" placeholder="(XX) XXXXXX-XXXX">
     </div>
     <div class="button-area">
       <button type="submit" name="salvar">Cadastrar</button>

@@ -6,5 +6,6 @@ if (!isset($_SESSION)) {
 if (!isset($_SESSION['id'])) {
     $_SESSION['erro'] = "Sessão expirada. Faça login novamente!";
     header("location: ../index.php");
+    exit;
 }
 ?>

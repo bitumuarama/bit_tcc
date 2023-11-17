@@ -46,19 +46,35 @@ $(document).ready(function () {
         });
     })
 
-    $('a.menu-item').click(function (e) {
+    $(document).on('submit', '#searchForm', function (e) {
         e.preventDefault();
+        console.log("searchForm");
 
-        var href = $(this).attr('href').substring(1);
-        $path = href + ".php";
+        var formData = $(this).serialize();
 
-        $('.content').load($path, function (response, status, xhr) {
-            if (status == "error") {
-                var msg = "Desculpe, ocorreu um erro: ";
-                $(".content").html("<p class='content-error'>" + msg + xhr.status + " " + xhr.statusText + "</p>");
+        // Certifique-se de que o $path está definido
+        if (!$path) {
+            console.log("Caminho para o formulário não definido.");
+            return;
+        }
+
+        // Realiza a chamada AJAX
+        $.ajax({
+            type: "POST",
+            url: $path,
+            data: formData,
+            success: function (data) {
+                $("#search-result").html(data);
+            }
+            ,
+            error: function (xhr, status, error) {
+                console.log("Error: " + error)
+                $("#status").html('<p class="slide-mensage alert">Ocorreu um erro inesperado!</p>');
             }
         });
-    });
+    })
+
+
 
     // Trata formulário de pesquisa em páginas de acesso.
 
@@ -71,6 +87,10 @@ $(document).ready(function () {
                 $("#status").html('<p class="slide-mensage success">Formulário enviado com sucesso!</p>');
                 break;
             };
+            case "already_registered_user": {
+                $("#status").html('<p class="slide-mensage alert">Este usuário já está cadastrado!</p>');
+                break;
+            }
             case "already": {
                 $("#status").html('<p class="slide-mensage alert">CPF já cadastrado!</p>');
                 break;

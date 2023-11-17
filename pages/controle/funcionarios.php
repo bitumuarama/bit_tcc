@@ -53,11 +53,11 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Controle de Clientes</title>
+    <title>Controle de Funcionários</title>
 </head>
 
 <body>
-    <h2>Controle de Clientes</h2>
+    <h2>Controle de Funcionários</h2>
     <div id="searchSection">
         <form id="searchForm" method="POST">
             <input type="text" name="searchTerm" placeholder="Digite para pesquisar...">
