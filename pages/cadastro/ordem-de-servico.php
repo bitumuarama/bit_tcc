@@ -8,10 +8,65 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
   include("../../assets/php/connection.php");
   if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
+    if (isset($_POST['search-cliente'])) {
+      $search = $_POST['search-cliente'];
+      $search = "%$search%";
+
+      $stmt = $conexao->prepare("SELECT id, nome FROM cliente WHERE nome LIKE ?");
+      $stmt->bind_param("s", $search);
+      $stmt->execute();
+      $resultado = $stmt->get_result();
+
+      while ($row = $resultado->fetch_assoc()) {
+        echo "<tr>";
+        echo "<td>" . $row['id'] . "</td>";
+        echo "<td>" . $row['nome'] . "</td>";
+        echo "<td><button class='select-button' type='button' data-type='cliente' data-id='" . $row['id'] . "' data-nome='" . $row['nome'] . "'>Selecionar</button></td>";
+        echo "</tr>";
+      }
+      exit;
+    }
+
+    if (isset($_POST['search-peca'])) {
+      $search = $_POST['search-peca'];
+      $search = "%$search%";
+
+      $stmt = $conexao->prepare("SELECT * FROM peca WHERE nome LIKE ?");
+      $stmt->bind_param("s", $search);
+      $stmt->execute();
+      $resultado = $stmt->get_result();
+
+      while ($row = $resultado->fetch_assoc()) {
+        // Calculando a diferença de estoque
+        $estoque = $row['estoque_atual'] - $row['estoque_minimo'];
+
+        echo "<tr>";
+        echo "<td>" . $row['id'] . "</td>";
+        echo "<td>" . $row['nome'] . "</td>";
+        echo "<td>" . $row['valor_venda'] . "</td>";
+
+        if ($estoque > 0) {
+          echo "<td><input type='number' class='quantidade-input' min='1' max='" . $estoque . "' value='1'></td>";
+          echo "<td><button class='select-button' type='button'
+         data-type='peca' data-id='" . $row['id'] . "' data-nome='" . $row['nome'] . "'
+          data-quantidade=''>Adicionar</button></td>";
+        } else {
+          echo "<td><input type='text' placeholder='Sem estoque' readonly></input></td>";
+          echo "<td><button class='locked-button' type='button'
+           data-type='peca' data-id='" . $row['id'] . "' data-nome='" . $row['nome'] . "'
+            data-quantidade='0'>Adicionar</button></td>";
+        }
+
+        echo "</tr>";
+      }
+      exit;
+    }
+
+
     $conexao->begin_transaction();
 
     try {
-      $cliente_id = $_POST['cliente_id'];
+      $cliente_id = $_POST['clienteId'];
       $equipamento = $_POST['equipamento'];
       $problema_relatado = $_POST['problemarelatado'];
       $problema_constatado = $_POST['problemaconstatado'];
@@ -29,17 +84,27 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
 
       $ordemDeServicoId = $conexao->insert_id;
 
+
       $stmtPeca = $conexao->prepare("INSERT INTO `ordem_de_servico_peca` (`ordem_de_servico_id`, `peca_id`, `quantidade`) VALUES (?, ?, ?)");
+
 
       $peca_ids = $_POST['peca_ids'];
       $peca_quantidades = $_POST['peca_quantidades'];
 
       for ($i = 0; $i < count($peca_ids); $i++) {
+        $stmtUpdatePeca = $conexao->prepare("UPDATE peca SET estoque_atual = estoque_atual - ? WHERE id = ?");
+        $stmtUpdatePeca->bind_param("ii", $peca_quantidades[$i], $peca_ids[$i]);
+
+        if (!$stmtUpdatePeca->execute()) {
+          throw new Exception("Erro ao atualizar quantidade da peça: " . $stmtUpdatePeca->error);
+        }
+
         $stmtPeca->bind_param("iii", $ordemDeServicoId, $peca_ids[$i], $peca_quantidades[$i]);
         if (!$stmtPeca->execute()) {
           throw new Exception("Erro ao inserir peça: " . $stmtPeca->error);
         }
       }
+
 
       // Se tudo estiver ok, commit a transação
       $conexao->commit();
@@ -57,51 +122,10 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
   }
 
 
-  if (isset($_GET['searchTerm']) && isset($_GET['searchContext'])) {
-    $searchTerm = $_GET['searchTerm'];
-    $searchContext = $_GET['searchContext'];
-    $searchTerm = "%$searchTerm%";
-
-    if ($searchContext === 'clientes') {
-      $stmt = $conexao->prepare("SELECT id, nome FROM cliente WHERE nome LIKE ?");
-      $stmt->bind_param("s", $searchTerm);
-    } elseif ($searchContext === 'pecas') {
-      $stmt = $conexao->prepare("SELECT id, nome FROM peca WHERE nome LIKE ?");
-      $stmt->bind_param("s", $searchTerm);
-    } else {
-      echo "Contexto de pesquisa não reconhecido.";
-      exit;
-    }
-
-    $stmt->execute();
-    $resultado = $stmt->get_result();
-
-    // Verifica qual é o contexto e renderiza o HTML apropriado
-    if ($searchContext === 'clientes') {
-      while ($cliente = $resultado->fetch_assoc()) {
-        echo "<tr><td>{$cliente['id']}</td><td>{$cliente['nome']}</td><td><button type='button' class='select-client' data-id='{$cliente['id']}'>Selecionar</button></td></tr>";
-      }
-    } elseif ($searchContext === 'pecas') {
-      while ($peca = $resultado->fetch_assoc()) {
-        echo "<tr>";
-        echo "<td>{$peca['id']}</td>";
-        echo "<td>{$peca['nome']}</td>";
-        echo "<td><input type='number' class='peca-quantidade' min='1'></td>";
-        echo "<td><button type='button' class='select-peca' data-id='{$peca['id']}'>Adicionar</button></td>";
-        echo "</tr>";
-      }
-
-    }
-
-    $conexao->close();
-    exit;
-  }
-
 } else {
   header('HTTP/1.0 403 Forbidden');
   exit;
 }
-
 ?>
 
 
@@ -115,6 +139,8 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
   <title>Cadastro - Ordem de Serviço</title>
 
   <script src="../assets/js/masks.js"></script>
+  <script src="../assets/js/modal.js"></script>
+
 </head>
 
 <body>
@@ -122,8 +148,8 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
   <div id="clienteModal" class="modal hidden">
     <div class="modal-content">
       <span class="close">&times;</span>
-      <form method="GET" id="searchFormCliente">
-        <input type="text" id="searchTermCliente" placeholder="Digite para pesquisar...">
+      <form id="searchCliente">
+        <input type="text" name="search-cliente" placeholder="Digite para pesquisar...">
         <button type="submit">Pesquisar</button>
       </form>
       <table>
@@ -134,8 +160,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
             <th>Selecionar</th>
           </tr>
         </thead>
-        <tbody id="search-results-cliente">
-        </tbody>
+        <tbody id="search-result-cliente"></tbody>
       </table>
     </div>
   </div>
@@ -143,8 +168,8 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
   <div id="pecaModal" class="modal hidden">
     <div class="modal-content">
       <span class="close">&times;</span>
-      <form method="GET" id="searchFormPeca">
-        <input type="text" id="searchTermPeca" placeholder="Digite para pesquisar...">
+      <form id="searchPeca">
+        <input type="text" name="search-peca" placeholder="Digite para pesquisar...">
         <button type="submit">Pesquisar</button>
       </form>
       <table>
@@ -152,11 +177,12 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
           <tr>
             <th>ID</th>
             <th>Nome</th>
+            <th>Valor</th>
             <th>Quantidade</th>
+            <th>Ações</th>
           </tr>
         </thead>
-        <tbody id="search-results-peca">
-        </tbody>
+        <tbody id="search-result-peca"></tbody>
       </table>
     </div>
   </div>
@@ -164,8 +190,8 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
   <form class="grid-template" id="submitForm" action="orderm-de-servico.php" method="POST">
     <div class="normal-field field">
       <label>Cliente</label>
-      <input type="text" id="clienteNome" placeholder="Clique para selecionar um cliente" readonly />
-      <input type="hidden" id="cliente_id" />
+      <input type="text" id="clienteNome" name="clienteNome" placeholder="Clique para selecionar um cliente" readonly />
+      <input type="hidden" id="clienteId" name="clienteId" />
       <button type="button" id="selecionarCliente">Selecionar Cliente</button>
     </div>
 

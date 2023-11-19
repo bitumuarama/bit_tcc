@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 17, 2023 at 09:49 PM
+-- Generation Time: Nov 19, 2023 at 11:16 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -59,8 +59,7 @@ INSERT INTO `cliente` (`id`, `nome`, `data_nascimento`, `rg`, `cpf`, `celular`, 
 (8, 'Rafael Almeida', '1996-07-07', 'BA-70.789.01', '000.000.007-77', '(71) 90000-0007', '40000-00', 'BA', 'Salvador', 'Itapuã', 'Avenida Dorival Caymmi', '700'),
 (9, 'Fernanda Gomes', '1997-08-08', 'PE-80.890.12', '000.000.008-58', '(81) 90000-0008', '50000-00', 'PE', 'Recife', 'Boa Viagem', 'Avenida Conselheiro Aguiar', '800'),
 (10, 'Carlos Rodrigues', '1998-09-09', 'CE-90.901.23', '000.000.009-39', '(85) 90000-0009', '60000-00', 'CE', 'Fortaleza', 'Meireles', 'Avenida Beira Mar', '900'),
-(11, 'Sandra Lima', '1999-10-10', 'PA-01.012.34', '000.000.010-10', '(91) 90000-0010', '66000-00', 'PA', 'Belém', 'Nazaré', 'Avenida Nazaré', '1000'),
-(12, '', '0000-00-00', '', '080.391.989-17', '', '', 'SC', '', '', '', '');
+(11, 'Sandra Lima', '1999-10-10', 'PA-01.012.34', '000.000.010-10', '(91) 90000-0010', '66000-00', 'PA', 'Belém', 'Nazaré', 'Avenida Nazaré', '1000');
 
 -- --------------------------------------------------------
 
@@ -117,7 +116,11 @@ INSERT INTO `ordem_de_servico` (`id`, `cliente_id`, `equipamento`, `problema_rel
 (3, 1, 'Laptop', 'Não sei', 'Não sei', 'Não sei', 'limpeza', 240.00, 300.00, '2023-11-15 22:10:08'),
 (4, 1, '', '', '', '', '', 0.00, 0.00, '2023-11-15 22:37:22'),
 (5, 1, '', '', '', '', '', 0.00, 0.00, '2023-11-15 22:37:24'),
-(7, 1, '', '', '', '', '', 0.00, 0.00, '2023-11-16 11:11:23');
+(7, 1, '', '', '', '', '', 0.00, 0.00, '2023-11-16 11:11:23'),
+(9, 1, 'PC', 'ABC', 'ABC', 'ABC', 'formatacao', 1.20, 1.20, '2023-11-19 16:35:06'),
+(10, 11, 'Notebook Asus', 'Está lento', 'HD danificado', 'Troca do HD por SSD e colocado parafusos', 'formatacao,trocadepeca,montagem', 165.00, 165.00, '2023-11-19 16:37:52'),
+(12, 1, 'BROCA DE ELIXIR DO CLASH OF CLANS', 'Deu tela AZUL', 'HIN TU PIO', 'Parafusuuus  e SSD', 'formatacao,limpeza,trocadepeca,instalacao', 160.00, 160.00, '2023-11-19 17:18:11'),
+(13, 11, 'Notebook Asus', 'Algo deu ruim no teclado', 'Teclado tá com merda de gato', 'Trocamos o teclado e o SSD, mas o teclado novo era do cliente', 'formatacao,trocadepeca,instalacao', 200.00, 200.00, '2023-11-19 17:21:17');
 
 -- --------------------------------------------------------
 
@@ -144,7 +147,13 @@ INSERT INTO `ordem_de_servico_peca` (`ordem_de_servico_id`, `peca_id`, `quantida
 (3, 1, 3),
 (4, 2, 1),
 (5, 2, 1),
-(7, 1, 1);
+(7, 1, 1),
+(9, 2, 1),
+(10, 2, 1),
+(10, 6, 30),
+(12, 2, 1),
+(12, 6, 20),
+(13, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -160,8 +169,8 @@ CREATE TABLE `peca` (
   `categoria` varchar(100) NOT NULL,
   `estoque_minimo` int(11) NOT NULL,
   `estoque_atual` int(11) NOT NULL,
-  `valor_custo` double NOT NULL,
-  `valor_venda` double NOT NULL
+  `valor_custo` decimal(10,2) NOT NULL,
+  `valor_venda` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -169,11 +178,16 @@ CREATE TABLE `peca` (
 --
 
 INSERT INTO `peca` (`id`, `nome`, `descricao`, `marca`, `categoria`, `estoque_minimo`, `estoque_atual`, `valor_custo`, `valor_venda`) VALUES
-(1, 'SSD 120 Gb Gigabyte', '', '', '', 2, 2, 120, 140),
-(2, 'SSD 240Gb', 'State Solid Disk 240 Gigabytes Kingston', 'Kingston', 'SSD', 5, 10, 90, 150),
-(3, 'SSD 240Gb', 'State Solid Disk 240 Gigabytes Kingston', 'Kingston', 'SSD', 5, 10, 90, 150),
-(4, 'Fonte para Testes', 'Fonte de testes da loja', 'Indefinido', 'Fontes', 1, 1, 200, 1),
-(5, 'Fonte para Testes', 'Fonte de testes da loja', 'Indefinido', 'Fontes', 1, 1, 200, 1);
+(1, 'SSD 120 Gb Gigabyte', '', '', '', 2, 2, 120.00, 140.00),
+(2, 'SSD 240Gb', 'State Solid Disk 240 Gigabytes Kingston', 'Kingston', 'SSD', 5, 8, 90.00, 150.00),
+(3, 'SSD 240Gb', 'State Solid Disk 240 Gigabytes Kingston', 'Kingston', 'SSD', 5, 10, 90.00, 150.00),
+(4, 'Fonte para Testes', 'Fonte de testes da loja', 'Indefinido', 'Fontes', 1, 1, 200.00, 1.00),
+(5, 'Fonte para Testes', 'Fonte de testes da loja', 'Indefinido', 'Fontes', 1, 1, 200.00, 1.00),
+(6, 'Parafuso', 'Parafuso da dona tereza', 'Casa dos Parafusos', 'Essencial', 1, 80, 0.10, 0.50),
+(7, 'Teclado ASUS', 'Teclado para notebook', 'SEi lá', 'Teclado', 1, 1, 0.00, 0.00),
+(8, 'Teclado ASUS', 'Teclado para notebook', 'SEi lá', 'Teclado', 1, 1, 1.00, 2.00),
+(9, 'Teclado ASUS', 'Teclado para notebook', 'SEi lá', 'Teclado', 1, 1, 0.00, 0.00),
+(10, 'Teste', 'Teste', 'TEste', 'Teste', 1, 22, 50.00, 50.00);
 
 --
 -- Indexes for dumped tables
@@ -231,13 +245,13 @@ ALTER TABLE `funcionario`
 -- AUTO_INCREMENT for table `ordem_de_servico`
 --
 ALTER TABLE `ordem_de_servico`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `peca`
 --
 ALTER TABLE `peca`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Constraints for dumped tables

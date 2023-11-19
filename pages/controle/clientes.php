@@ -29,7 +29,10 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
                 echo "<td>{$cliente['cpf']}</td>";
                 echo "<td>{$cliente['data_nascimento']}</td>";
                 echo "<td>{$cliente['celular']}</td>";
-                echo "<td><input type='button' value='Editar'><input type='button'value='Excluir'></td>";
+                echo "<td>
+                <input type='button' id='editarCliente' value='Editar'>
+                <input type='button' id='excluirCliente' value='Excluir'>
+                </td>";
                 echo "</tr>";
             }
         } else {
@@ -38,6 +41,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
         mysqli_close($conexao);
         exit;
     }
+    
 
 
 } else {
@@ -63,6 +67,37 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
             <input type="text" name="searchTerm" placeholder="Digite para pesquisar...">
             <button type="submit">Pesquisar</button>
         </form>
+    </div>
+
+    <div id="editModal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <table>
+                <form>
+
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>CPF</th>
+                            <th>Data de Nascimento</th>
+                            <th>Celular</th>
+                        </tr>
+                    </thead>
+                    <tbody id="edit-result"></tbody>
+            </table>
+            <input type="button" value="Salvar">
+            <input class="close" type="button" value="Cancelar">
+            </form>
+        </div>
+    </div>
+
+    <div id="excluirModal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <input type="button" value="Confirmar">
+            <input class="close" type="button" value="Cancelar">
+        </div>
     </div>
 
     <div id="clientList">
@@ -91,7 +126,10 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
                         echo "<td>{$pesquisa['cpf']}</td>";
                         echo "<td>{$pesquisa['data_nascimento']}</td>";
                         echo "<td>{$pesquisa['celular']}</td>";
-                        echo "<td><input type='button' value='Editar'><input type='button'value='Excluir'></td>";
+                        echo "<td>
+                        <input type='button' id='editarCliente' value='Editar'>
+                        <input type='button' id='excluirCliente' value='Excluir'>
+                        </td>";
                         echo "</tr>";
                     }
                 } else {

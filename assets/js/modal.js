@@ -25,13 +25,24 @@ $(document).ready(function () {
     $(document).on('click', '#selecionarCliente', function () {
         showModal('#clienteModal');
     });
-    
+
     $(document).on('click', '#selecionarPeca', function () {
         showModal('#pecaModal');
     });
-    
 
-    $(document).on('click', '.close', function() {
+    $(document).on('click', '#editarCliente', function () {
+        console.log("Editar")
+        showModal('#editModal');
+    });
+    
+    $(document).on('click', '#excluirCliente', function () {
+        showModal('#excluirModal');
+    });
+
+
+
+
+    $(document).on('click', '.close', function () {
         var modalId = '#' + $(this).closest('.modal').attr('id');
         hideModal(modalId);
     });
@@ -43,13 +54,11 @@ $(document).ready(function () {
     });
 
     // Seleção de cliente
-    $(document).on('click', '.select-client', function () {
-        var clientId = $(this).data('id');
-        var clientName = $(this).closest('tr').find('td:nth-child(2)').text();
-        $('#cliente_id').val(clientId);
-        $('#clienteNome').val(clientName);
-        hideModal('#clienteModal');
+
+    $(document).on('click', '.select-button', function () {
+        hideModal('.modal');
     });
+
 
     // Seleção e remoção de peças
     $(document).on('click', '.select-peca', function () {

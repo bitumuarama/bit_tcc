@@ -59,7 +59,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
       <input type="text" name="nome" id="nome" placeholder="Nome da Peça" required>
     </div>
 
-    <div class="larger-field field">
+    <div class="textarea-field field">
       <label for="descricao">Descrição</label>
       <textarea name="descricao" id="descricao" placeholder="Descrição da Peça" required></textarea>
     </div>
@@ -76,12 +76,12 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
 
     <div class="extra-small-field field">
       <label for="estoque_minimo">Estoque Mínimo</label>
-      <input type="number" name="estoque_minimo" id="estoque_minimo" required>
+      <input type="number" name="estoque_minimo" id="estoque_minimo" min="0" required>
     </div>
 
     <div class="extra-small-field field">
       <label for="estoque_atual">Estoque Atual</label>
-      <input type="number" name="estoque_atual" id="estoque_atual" required>
+      <input type="number" name="estoque_atual" id="estoque_atual" min="0" required>
     </div>
 
     <div class="extra-small-field field">

@@ -32,7 +32,6 @@ if (isset($_SESSION['status'])) {
     <script src="../assets/js/jquery/jquery-3.6.0.min.js"></script>
     <script src="../assets/js/jquery/jquery.maskMoney.min.js"></script>
     <script src="../assets/js/jquery/jquery.mask.min.js"></script>
-    <script src="../assets/js/form-ajax.js"></script>
     <script src="../assets/js/modal.js"></script>
 
 </head>
@@ -215,6 +214,7 @@ if (isset($_SESSION['status'])) {
     </main>
     <!-- AJAX para content e formulários -->
     <script src="../assets/js/content-ajax.js"></script>
+    <script src="../assets/js/form-ajax.js"></script>
     <!-- Dicas aleatórias -->
     <script src="../assets/js/randomTips.js"></script>
     <!-- Menus -->

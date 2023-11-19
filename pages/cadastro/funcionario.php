@@ -34,13 +34,8 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
         $email = $_POST['email'];
         $celular = $_POST['celular'];
 
-        if($cargo === NULL){
-          $insert = $conexao->prepare("INSERT INTO funcionario (nome, usuario, senha, email, celular) VALUES (?, ?, ?, ?, ?)");
-          $insert->bind_param("sssss", $nome, $usuario, $senha, $email, $celular);
-        } else {
-          $insert = $conexao->prepare("INSERT INTO funcionario (nome, cargo, usuario, senha, email, celular) VALUES (?, ?, ?, ?, ?, ?)");
-          $insert->bind_param("ssssss", $nome, $cargo, $usuario, $senha, $email, $celular);
-        }
+        $insert = $conexao->prepare("INSERT INTO funcionario (nome, cargo, usuario, senha, email, celular) VALUES (?, ?, ?, ?, ?, ?)");
+        $insert->bind_param("ssssss", $nome, $cargo, $usuario, $senha, $email, $celular);
 
         if ($insert->execute()) {
           echo "success";
