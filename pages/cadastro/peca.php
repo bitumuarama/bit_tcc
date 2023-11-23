@@ -95,7 +95,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
     </div>
 
     <div class="button-area">
-      <button type="submit" name="salvar">Cadastrar</button>
+      <button class="submit-button" type="submit" name="salvar">Cadastrar</button>
     </div>
   </form>
 </body>

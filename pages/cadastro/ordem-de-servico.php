@@ -6,6 +6,23 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
 
   require_once("../../assets/php/auth_session.php");
   include("../../assets/php/connection.php");
+
+
+  // Fetch the latest order ID from the database
+  $query = "SELECT MAX(id) AS max_id FROM ordem_de_servico";
+  $result = mysqli_query($conexao, $query);
+
+  if ($result) {
+    $row = mysqli_fetch_assoc($result);
+    $latest_order_id = $row['max_id'];
+
+    $ordem_servico_id = $latest_order_id + 1;
+
+  } else {
+    $ordem_servico_id = "Inválido";
+  }
+
+
   if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (isset($_POST['search-cliente'])) {
@@ -147,10 +164,11 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
   <h2>Cadastrar Ordem de Serviço</h2>
   <div id="clienteModal" class="modal hidden">
     <div class="modal-content">
-      <span class="close">&times;</span>
-      <form id="searchCliente">
-        <input type="text" name="search-cliente" placeholder="Digite para pesquisar...">
-        <button type="submit">Pesquisar</button>
+      <form class="search-form" id="searchCliente">
+        <input class="search-input" type="text" name="search-cliente" placeholder="Digite para pesquisar...">
+        <button class="search-button" type="submit"><img class="icons" src="../assets/img/search-icon.png"
+            alt="Icon"></button>
+        <span class="close">&times;</span>
       </form>
       <table>
         <thead>
@@ -167,10 +185,11 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
 
   <div id="pecaModal" class="modal hidden">
     <div class="modal-content">
-      <span class="close">&times;</span>
-      <form id="searchPeca">
-        <input type="text" name="search-peca" placeholder="Digite para pesquisar...">
-        <button type="submit">Pesquisar</button>
+      <form class="search-form" id="searchPeca">
+        <input class="search-input" type="text" name="search-peca" placeholder="Digite para pesquisar...">
+        <button class="search-button" type="submit"><img class="icons" src="../assets/img/search-icon.png"
+            alt="Icon"></button>
+        <span class="close">&times;</span>
       </form>
       <table>
         <thead>
@@ -190,9 +209,13 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
   <form class="grid-template" id="submitForm" action="orderm-de-servico.php" method="POST">
     <div class="normal-field field">
       <label>Cliente</label>
-      <input type="text" id="clienteNome" name="clienteNome" placeholder="Clique para selecionar um cliente" readonly />
       <input type="hidden" id="clienteId" name="clienteId" />
-      <button type="button" id="selecionarCliente">Selecionar Cliente</button>
+      <div class="search-div" id="selecionarCliente">
+        <input class="search-input" type="text" id="clienteNome" name="clienteNome"
+          placeholder="Clique para selecionar um cliente" readonly />
+        <button class="search-button" type="button"><img class="icons" src="../assets/img/search-icon.png"
+            alt="Icon"></button>
+      </div>
     </div>
 
 
@@ -200,6 +223,14 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
       <label for="equipamento">Equipamento</label><br>
       <input type="text" name="equipamento" id="equipamento">
     </div>
+
+
+
+    <div class="extra-small-field field">
+      <label for="ordem_servico_id">ID da Ordem de Serviço:</label>
+      <input type="text" id="ordem_servico_id" name="ordem_servico_id" value="<?php echo $ordem_servico_id ?>" readonly>
+    </div>
+
 
     <div class="textarea-field field">
       <label for="problemarelatado">Probelema Relatado </label><br>
@@ -272,7 +303,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
     </div>
 
     <div class="button-area">
-      <button type="submit" name="salvar">Cadastrar</button>
+      <button class="submit-button" type="submit" name="salvar">Cadastrar</button>
     </div>
 
   </form>

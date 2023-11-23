@@ -41,7 +41,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
         mysqli_close($conexao);
         exit;
     }
-    
+
 
 
 } else {
@@ -63,9 +63,10 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
 <body>
     <h2>Controle de Clientes</h2>
     <div id="searchSection">
-        <form id="searchForm" method="POST">
-            <input type="text" name="searchTerm" placeholder="Digite para pesquisar...">
-            <button type="submit">Pesquisar</button>
+        <form class="search-form" id="searchForm" method="POST">
+            <input class="search-input" type="text" name="searchTerm" placeholder="Digite para pesquisar...">
+            <button class="search-button" type="submit"><img class="icons" src="../assets/img/search-icon.png"
+                    alt="Icon"></button>
         </form>
     </div>
 

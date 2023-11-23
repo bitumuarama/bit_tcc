@@ -73,7 +73,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
 </head>
 
 <body>
-  <h2>Cadastrar Clientes</h2>
+  <h2 class="page-title">Cadastrar Clientes</h2>
   <form class="grid-template" id="submitForm" method="POST">
 
 
@@ -140,7 +140,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
     </div>
 
     <div class="button-area">
-      <button type="submit" name="salvar">Cadastrar</button>
+      <button class="submit-button" type="submit" name="salvar">Cadastrar</button>
     </div>
   </form>
 </body>
