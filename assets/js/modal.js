@@ -30,12 +30,13 @@ $(document).ready(function () {
         showModal('#pecaModal');
     });
 
-    $(document).on('click', '#editarCliente', function () {
+    $(document).on('click', '.edit', function () {
         console.log("Editar")
         showModal('#editModal');
     });
     
-    $(document).on('click', '#excluirCliente', function () {
+    $(document).on('click', '.delete', function () {
+        console.log("Excluir")
         showModal('#excluirModal');
     });
 

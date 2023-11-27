@@ -15,14 +15,6 @@ $(document).ready(function () {
         console.log("searchForm");
 
         var formData = $(this).serialize();
-
-        // Certifique-se de que o $path está definido
-        if (!$path) {
-            console.log("Caminho para o formulário não definido.");
-            return;
-        }
-
-        // Realiza a chamada AJAX
         $.ajax({
             type: "POST",
             url: $path,
@@ -83,13 +75,64 @@ $(document).ready(function () {
         }
     }
 
-    $(document).on('click', "#editarCliente", function (e) {
+    $(document).on('click', ".edit", function (e) {
+        var editId = $(this).data('id');
+        console.log(editId);
+        $.ajax({
+            url: $path,
+            type: 'POST',
+            data: { 'action': 'getClienteData', 'id': editId },
+            dataType: 'json',
+            success: function (data) {
+                // Campos do formulário com os dados recebidos
+                $('#editModal #id').val(data.id);
+                $('#editModal #nome').val(data.nome);
+                $('#editModal #cpf').val(data.cpf);
+                $('#editModal #data_nascimento').val(data.data_nascimento);
+                $('#editModal #celular').val(data.celular);
+    
+                // Abre o modal
+                $('#editModal').removeClass('hidden').show();
+            },
+            error: function (xhr, status, error) {
+                console.error(error);
+            }
+        });
+    });
+    
+    $(document).on('click', "#salvar", function(e) {
+        var id = $('#id').val();
+        var nome = $('#nome').val();
+        var cpf = $('#cpf').val();
+        var data_nascimento = $('#data_nascimento').val();
+        var celular = $('#celular').val();
         
-
-    })
-
-
-
+        $.ajax({
+            url: $path,
+            type: 'POST',
+            data: {
+                'action': 'updateClientData',
+                'id': id,
+                'nome': nome,
+                'cpf': cpf,
+                'data_nascimento': data_nascimento,
+                'celular': celular
+            },
+            success: function(response) {
+                console.log(response)
+                if (response === 'success') {
+                    alert('Dados do cliente atualizados com sucesso.');
+                    $('#search-result').html('Pesquise novamente!'); // Atualiza o corpo da tabela com a resposta recebida
+                } else {
+                    alert('Erro ao atualizar os dados do cliente.');
+                    console.error(response);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+            }
+        });
+    });
 
     $(document).on('submit', '#searchPeca', function (e) {
         e.preventDefault();
