@@ -41,6 +41,9 @@ $(document).ready(function () {
     });
 
 
+    $(document).on('click', '#salvar', function() {
+        console.log("Salvar")
+    })
 
 
     $(document).on('click', '.close', function () {

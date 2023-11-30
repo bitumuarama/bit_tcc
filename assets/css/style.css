@@ -180,6 +180,56 @@ fieldset input[type="checkbox"] {
     order: 9;
 }
 
+.actions {
+    display: flex;
+    flex: auto;
+    justify-content: center;
+    align-items: center;
+}
+
+button img {
+    max-width: 35px;
+    max-height: 35px;
+    margin: 5px
+}
+
+.button-icon {
+    padding: 0;
+    margin: 0;
+    background-color: transparent;
+    border: none
+}
+
+.modal input[type="button"] {
+    color: #fff;
+    font-weight: 600;
+    font-size: 1rem;
+    min-width: 5rem;
+    width: auto;
+    height: 2rem;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    margin: 0 10px;
+    cursor: pointer;
+}
+
+.success-btn {
+    background-color: #28a745;
+}
+
+.success-btn:hover {
+    background-color: #0c7c26;
+}
+
+.alert-btn {
+    background-color: #dc3545;
+}
+
+.alert-btn:hover {
+    background-color: #9d1422;
+}
+
 .submit-button {
     border-style: none;
     padding: 0.75rem;
@@ -364,6 +414,22 @@ th:hover {
 
 .hidden {
     display: none;
+}
+
+
+
+/* IDs */
+
+#id {
+    max-width: 3rem;
+}
+
+#celular {
+    max-width: 9rem;
+}
+
+#cep {
+    max-width: 7.5rem;
 }
 
 @keyframes slideIn {

@@ -4,6 +4,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
 
+    include("../../assets/php/cpf_validation.php");
     // Functions
     function search($termSearch)
     {
@@ -28,9 +29,10 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
                 echo "<td>{$row['data_nascimento']}</td>";
                 echo "<td>{$row['celular']}</td>";
                 echo "<td>
-                    <input class='edit' type='button' data-id='" . $row['id'] . "' value='Editar'>
-                    <input class='delete' type='button' data-id='" . $row['id'] . "' value='Excluir'>
-                </td>";
+                    <div class='actions'>
+                    <button class='edit button-icon' data-id='" . $row['id'] . "'><img src='../assets/img/edit-icon.png' alt='Editar'></button>
+                    <button class='delete button-icon' data-id='" . $row['id'] . "'><img src='../assets/img/delete-icon.png' alt='Excluir'></button>
+                </div></td>";
                 echo "</tr>";
             }
         } else {
@@ -38,37 +40,13 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
         }
     }
 
-    function editValue($id)
+    function updateData($id, $nome, $rg, $cpf, $data_nascimento, $celular, $cep, $estado, $cidade, $bairro, $rua, $numero)
     {
         include("../../assets/php/connection.php");
-        $stmt = $conexao->prepare("SELECT id, nome, cpf, data_nascimento, celular FROM cliente WHERE id = ?");
-        $stmt->bind_param("i", $id);
-        $stmt->execute();
-        $resultado = $stmt->get_result();
-
-        if ($resultado->num_rows > 0) {
-            while ($pesquisa = $resultado->fetch_assoc()) {
-                echo "<tr>";
-                echo "<td>{$pesquisa['id']}</td>";
-                echo "<td>{$pesquisa['nome']}</td>";
-                echo "<td>{$pesquisa['cpf']}</td>";
-                echo "<td>{$pesquisa['data_nascimento']}</td>";
-                echo "<td>{$pesquisa['celular']}</td>";
-                echo "<td>
-                <input type='button' id='editarCliente' value='Editar'>
-                <input type='button' id='excluirCliente' value='Excluir'>
-                </td>";
-                echo "</tr>";
-            }
-        } else {
-            echo "<tr><td colspan='3'>Nenhum cliente encontrado.</td></tr>";
-        }
-    }
-    function updateData($id, $nome, $cpf, $data_nascimento, $celular)
-    {
-        include("../../assets/php/connection.php");
-        $stmt = $conexao->prepare("UPDATE cliente SET nome = ?, cpf = ?, data_nascimento = ?, celular = ? WHERE id = ?");
-        $stmt->bind_param("ssssi", $nome, $cpf, $data_nascimento, $celular, $id);
+        $stmt = $conexao->prepare("UPDATE cliente SET
+         nome = ?, rg = ?,cpf = ?, data_nascimento = ?, celular = ?, cep = ?, estado = ?, cidade = ?, bairro = ?, rua = ?, numero = ?
+          WHERE id = ?");
+        $stmt->bind_param("sssssssssssi", $nome, $rg, $cpf, $data_nascimento, $celular, $cep, $estado, $cidade, $bairro, $rua, $numero, $id);
         if ($stmt->execute()) {
             echo "success";
         } else {
@@ -83,9 +61,9 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
     include("../../assets/php/connection.php");
 
     // Quando houver um clique em .edit (botão de edição)
-    if (isset($_POST['action']) && $_POST['action'] == 'getClienteData') {
+    if (isset($_POST['action']) && $_POST['action'] == 'getData') {
         $id = $_POST['id'];
-        $stmt = $conexao->prepare("SELECT id, nome, cpf, data_nascimento, celular FROM cliente WHERE id = ?");
+        $stmt = $conexao->prepare("SELECT * FROM cliente WHERE id = ?");
         $stmt->bind_param("i", $id);
         $stmt->execute();
         $resultado = $stmt->get_result()->fetch_assoc();
@@ -96,12 +74,24 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
     }
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] == 'updateClientData') {
+
         $id = $_POST['id'];
         $nome = $_POST['nome'];
+        $rg = $_POST['rg'];
         $cpf = $_POST['cpf'];
         $data_nascimento = $_POST['data_nascimento'];
         $celular = $_POST['celular'];
-        updateData($id, $nome, $cpf, $data_nascimento, $celular);
+        $cep = $_POST['cep'];
+        $estado = $_POST['estado'];
+        $cidade = $_POST['cidade'];
+        $bairro = $_POST['bairro'];
+        $rua = $_POST['rua'];
+        $numero = $_POST['numero'];
+        if (!validaCPF($cpf)) {
+            echo "cpf";
+        } else {
+            updateData($id, $nome, $rg, $cpf, $data_nascimento, $celular, $cep, $estado, $cidade, $bairro, $rua, $numero);
+        }
         mysqli_close($conexao);
         exit;
     }
@@ -131,6 +121,8 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Controle de Clientes</title>
+
+    <script src="../assets/js/masks.js"></script>
 </head>
 
 <body>
@@ -146,39 +138,76 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
     <div id="editModal" class="modal hidden">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <form id="editForm">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nome</th>
-                            <th>CPF</th>
-                            <th>Data de Nascimento</th>
-                            <th>Celular</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <input type="text" id="id" readonly>
-                            </td>
-                            <td>
-                                <input type="text" id="nome">
-                            </td>
-                            <td>
-                                <input type="text" id="cpf">
-                            </td>
-                            <td>
-                                <input type="date" id="data_nascimento">
-                            </td>
-                            <td>
-                                <input type="text" id="celular">
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <input type="button" value="Salvar" id="salvar">
-                <input class="close" type="button" value="Cancelar">
+            <form class="grid-template" id="editForm">
+                <div class="extra-small-field field id">
+                    <label for="id">ID</label>
+                    <input type="text" name="id" id="id" placeholder="ID" readonly>
+                </div>
+                <div class="larger-field field">
+                    <label for="nome">Nome</label>
+                    <input type="text" name="nome" id="nome" placeholder="Nome Completo">
+                </div>
+
+                <div class="extra-small-field field">
+                    <label for="data_nascimento">Data nascimento</label>
+                    <input type="date" name="data_nascimento" id="data_nascimento">
+                </div>
+
+                <div class="extra-small-field field">
+                    <label for="rg">RG</label>
+                    <input type="text" name="rg" id="rg" placeholder="XX.XXX.XXX-X">
+                </div>
+
+                <div class="extra-small-field field">
+                    <label for="cpf">CPF</label>
+                    <input type="text" name="cpf" id="cpf" placeholder="XXX.XXX.XXX-XX">
+
+
+                </div>
+
+
+                <div class="small-field field">
+                    <label for="celular">Celular</label>
+                    <input class="celular" type="text" name="celular" id="celular" placeholder="(XX) XXXXXX-XXXX">
+                </div>
+
+                <div class="small-field field">
+                    <label for="cep">CEP</label>
+                    <input type="text" name="cep" id="cep" placeholder="XXXXX-XXX">
+                </div>
+
+                <div class="small-field field">
+                    <label for="estado">Estado</label>
+                    <select name="estado" id="estado">
+                        <option value="SC">Santa Catarina</option>
+                        <option value="PR">Paraná</option>
+                        <option value="SP">São Paulo</option>
+                    </select>
+                </div>
+
+                <div class="normal-field field">
+                    <label for="cidade">Cidade</label>
+                    <input type="text" name="cidade" id="cidade" placeholder="Cidade">
+                </div>
+
+                <div class="small-field field">
+                    <label for="bairro">Bairro</label>
+                    <input type="text" name="bairro" id="bairro" placeholder="Ex.: Centro">
+                </div>
+
+                <div class="larger-field field">
+                    <label for="rua">Rua</label>
+                    <input type="text" name="rua" id="rua" placeholder="Ex.: Av. Tecnologias / Rua das Caldeiras">
+                </div>
+
+                <div class="extra-small-field field">
+                    <label for="numero">N°</label>
+                    <input type="text" name="numero" id="numero" placeholder="Ex.: 1001">
+                </div>
+                <div class="actions">
+                    <input class="success-btn" type="button" value="Salvar" id="salvar">
+                    <input class="close alert-btn" type="button" value="Cancelar">
+                </div>
             </form>
         </div>
     </div>

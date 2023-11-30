@@ -16,10 +16,10 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
     $row = mysqli_fetch_assoc($result);
     $latest_order_id = $row['max_id'];
 
-    $ordem_servico_id = $latest_order_id + 1;
+    $id = $latest_order_id + 1;
 
   } else {
-    $ordem_servico_id = "Inválido";
+    $id = "Inválido";
   }
 
 
@@ -99,7 +99,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
         throw new Exception("Erro ao inserir ordem de serviço: " . $stmt->error);
       }
 
-      $ordemDeServicoId = $conexao->insert_id;
+      $id = $conexao->insert_id;
 
 
       $stmtPeca = $conexao->prepare("INSERT INTO `ordem_de_servico_peca` (`ordem_de_servico_id`, `peca_id`, `quantidade`) VALUES (?, ?, ?)");
@@ -116,7 +116,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
           throw new Exception("Erro ao atualizar quantidade da peça: " . $stmtUpdatePeca->error);
         }
 
-        $stmtPeca->bind_param("iii", $ordemDeServicoId, $peca_ids[$i], $peca_quantidades[$i]);
+        $stmtPeca->bind_param("iii", $id, $peca_ids[$i], $peca_quantidades[$i]);
         if (!$stmtPeca->execute()) {
           throw new Exception("Erro ao inserir peça: " . $stmtPeca->error);
         }
@@ -227,8 +227,8 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
 
 
     <div class="extra-small-field field">
-      <label for="ordem_servico_id">ID da Ordem de Serviço:</label>
-      <input type="text" id="ordem_servico_id" name="ordem_servico_id" value="<?php echo $ordem_servico_id ?>" readonly>
+      <label for="id">ID da Ordem de Serviço:</label>
+      <input type="text" id="id" name="id" value="<?php echo $id ?>" readonly>
     </div>
 
 

@@ -81,16 +81,23 @@ $(document).ready(function () {
         $.ajax({
             url: $path,
             type: 'POST',
-            data: { 'action': 'getClienteData', 'id': editId },
+            data: { 'action': 'getData', 'id': editId },
             dataType: 'json',
             success: function (data) {
                 // Campos do formulário com os dados recebidos
                 $('#editModal #id').val(data.id);
                 $('#editModal #nome').val(data.nome);
+                $('#editModal #rg').val(data.rg);
                 $('#editModal #cpf').val(data.cpf);
                 $('#editModal #data_nascimento').val(data.data_nascimento);
                 $('#editModal #celular').val(data.celular);
-    
+                $('#editModal #cep').val(data.cep);
+                $('#editModal #estado').val(data.estado);
+                $('#editModal #cidade').val(data.cidade);
+                $('#editModal #bairro').val(data.bairro);
+                $('#editModal #rua').val(data.rua);
+                $('#editModal #numero').val(data.numero);
+
                 // Abre o modal
                 $('#editModal').removeClass('hidden').show();
             },
@@ -99,14 +106,21 @@ $(document).ready(function () {
             }
         });
     });
-    
-    $(document).on('click', "#salvar", function(e) {
+
+    $(document).on('click', "#salvar", function (e) {
         var id = $('#id').val();
         var nome = $('#nome').val();
+        var rg = $('#rg').val();
         var cpf = $('#cpf').val();
         var data_nascimento = $('#data_nascimento').val();
         var celular = $('#celular').val();
-        
+        var cep = $('#cep').val();
+        var estado = $('#estado').val();
+        var cidade = $('#cidade').val();
+        var bairro = $('#bairro').val();
+        var rua = $('#rua').val();
+        var numero = $('#numero').val();
+
         $.ajax({
             url: $path,
             type: 'POST',
@@ -114,21 +128,31 @@ $(document).ready(function () {
                 'action': 'updateClientData',
                 'id': id,
                 'nome': nome,
+                'rg': rg,
                 'cpf': cpf,
                 'data_nascimento': data_nascimento,
-                'celular': celular
+                'celular': celular,
+                'cep': cep,
+                'estado': estado,
+                'cidade': cidade,
+                'bairro': bairro,
+                'rua': rua,
+                'numero': numero,
             },
-            success: function(response) {
+            success: function (response) {
                 console.log(response)
-                if (response === 'success') {
-                    alert('Dados do cliente atualizados com sucesso.');
-                    $('#search-result').html('Pesquise novamente!'); // Atualiza o corpo da tabela com a resposta recebida
+                alertMessage(response);
+                if (response == 'success') {
+                    $('#search-result').html('<td></td><td>Pesquise novamente!</td>'); // Atualiza o corpo da tabela com a resposta recebida
+                    setTimeout(() => {
+                        $('#editModal').hide();
+                    }, 250)
                 } else {
-                    alert('Erro ao atualizar os dados do cliente.');
-                    console.error(response);
+
                 }
+
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 console.error(error);
             }
         });
@@ -162,8 +186,37 @@ $(document).ready(function () {
         });
     })
 
-
-
-
+    function alertMessage($response) {
+        switch ($response) {
+            case "success": {
+                $("#status").html('<p class="slide-mensage success">Formulário enviado com sucesso!</p>');
+                break;
+            };
+            case "already_registered_user": {
+                $("#status").html('<p class="slide-mensage alert">Este usuário já está cadastrado!</p>');
+                break;
+            }
+            case "already": {
+                $("#status").html('<p class="slide-mensage alert">CPF já cadastrado!</p>');
+                break;
+            };
+            case "cpf": {
+                $("#status").html('<p class="slide-mensage alert">CPF inválido!</p>');
+                break;
+            }
+            case "teste": {
+                $("#status").html('<p class="slide-mensage success">Passou no Teste De</p>');
+                break;
+            }
+            case "pesquisa_cliente": {
+                $("#status").html('<p class="slide-mensage sucess"> Pesquisa de cliente</p>')
+                break;
+            }
+            default: {
+                console.log($response);
+                $("#status").html('<p class="slide-mensage alert">Ocorreu um erro ao enviar o formulário.</p>');
+            }
+        }
+    }
 })
 
