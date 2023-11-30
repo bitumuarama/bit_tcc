@@ -13,7 +13,6 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
     header("location: ../index.php");
   }
 
-
   require_once("../../assets/php/connection.php");
 
   if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -31,16 +30,22 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
         $nome = $_POST['nome'];
         $cargo = $_POST['cargo'] ?? NULL;
         $senha = $_POST['senha'];
+        $confirmarSenha = $_POST['confirmarSenha']; // Adicionado campo de confirmação de senha
         $email = $_POST['email'];
         $celular = $_POST['celular'];
 
-        $insert = $conexao->prepare("INSERT INTO funcionario (nome, cargo, usuario, senha, email, celular) VALUES (?, ?, ?, ?, ?, ?)");
-        $insert->bind_param("ssssss", $nome, $cargo, $usuario, $senha, $email, $celular);
-
-        if ($insert->execute()) {
-          echo "success";
+        // Validar se as senhas coincidem
+        if ($senha !== $confirmarSenha) {
+          echo "password_mismatch";
         } else {
-          echo "error";
+          $insert = $conexao->prepare("INSERT INTO funcionario (nome, cargo, usuario, senha, email, celular) VALUES (?, ?, ?, ?, ?, ?)");
+          $insert->bind_param("ssssss", $nome, $cargo, $usuario, $senha, $email, $celular);
+
+          if ($insert->execute()) {
+            echo "success";
+          } else {
+            echo "error";
+          }
         }
       }
     }
@@ -85,11 +90,16 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
       <input type="text" name="usuario" id="usuario" placeholder="Usuário" required>
     </div>
 
+    
     <div class="small-field">
       <label for="senha">Senha</label>
       <input type="password" name="senha" id="senha" placeholder="Senha" required>
     </div>
 
+    <div class="small-field">
+      <label for="confirmarSenha">Confirmar Senha</label>
+      <input type="password" name="confirmarSenha" id="confirmarSenha" placeholder="Confirmar Senha" required>
+    </div>
 
     <div class="normal-field">
       <label for="email">E-mail</label>
@@ -104,6 +114,18 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
       <button class="submit-button" type="submit" name="salvar">Cadastrar</button>
     </div>
   </form>
+
+  <script>
+    document.getElementById('submitForm').addEventListener('submit', function (event) {
+      var senha = document.getElementById('senha').value;
+      var confirmarSenha = document.getElementById('confirmarSenha').value;
+
+      if (senha !== confirmarSenha) {
+        alert('As senhas não coincidem. Por favor, tente novamente.');
+        event.preventDefault(); // Impede o envio do formulário se as senhas não coincidirem
+      }
+    });
+  </script>
 </body>
 
 </html>
