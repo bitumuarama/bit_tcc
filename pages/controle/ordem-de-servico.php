@@ -4,37 +4,40 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
 
-    // Functions
     function search($termSearch)
-    {
-        include("../../assets/php/connection.php");
-        if ($termSearch == 'all') {
-            $stmt = $conexao->prepare("SELECT id, cliente_id, equipamento  FROM ordem_de_servico");
-            $stmt->execute();
-            $resultado = $stmt->get_result();
-        } else {
-            $searchValue = "%$termSearch%";
-            $stmt = $conexao->prepare("SELECT id, cliente_id, equipamento FROM ordem_de_servico WHERE nome LIKE ?");
-            $stmt->bind_param("s", $searchValue);
-            $stmt->execute();
-            $resultado = $stmt->get_result();
-        }
-        if ($resultado->num_rows > 0) {
-            while ($row = $resultado->fetch_assoc()) {
-                echo "<tr>";
-                echo "<td>{$row['id']}</td>";
-                echo "<td>{$row['cliente_id']}</td>";
-                echo "<td>{$row['equipamento']}</td>";
-                echo "<td>
-                    <input class='edit' type='button' data-id='" . $row['id'] . "' value='Editar'>
-                    <input class='delete' type='button' data-id='" . $row['id'] . "' value='Excluir'>
-                </td>";
-                echo "</tr>";
-            }
-        } else {
-            echo "<tr><td colspan='3'>Nenhum ordem de serviço encontrado.</td></tr>";
-        }
+{
+    include("../../assets/php/connection.php");
+    
+    if ($termSearch == 'all') {
+        $stmt = $conexao->prepare("SELECT os.id, c.nome AS cliente_nome, c.celular AS cliente_celular, os.equipamento FROM ordem_de_servico os INNER JOIN cliente c ON os.cliente_id = c.id");
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+    } else {
+        $searchValue = "%$termSearch%";
+        $stmt = $conexao->prepare("SELECT os.id, c.nome AS cliente_nome, c.celular AS cliente_celular, os.equipamento FROM ordem_de_servico os INNER JOIN cliente c ON os.cliente_id = c.id WHERE os.nome LIKE ?");
+        $stmt->bind_param("s", $searchValue);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
     }
+    
+    if ($resultado->num_rows > 0) {
+        while ($row = $resultado->fetch_assoc()) {
+            echo "<tr>";
+            echo "<td>{$row['id']}</td>";
+            echo "<td>{$row['cliente_nome']}</td>"; // Display client's name
+            echo "<td>{$row['equipamento']}</td>";
+            echo "<td>{$row['cliente_celular']}</td>"; // Display client's cellphone
+            echo "<td>
+                <input class='edit' type='button' data-id='" . $row['id'] . "' value='Editar'>
+                <input class='delete' type='button' data-id='" . $row['id'] . "' value='Excluir'>
+            </td>";
+            echo "</tr>";
+        }
+    } else {
+        echo "<tr><td colspan='4'>Nenhuma ordem de serviço encontrada.</td></tr>";
+    }
+}
+
 
     function editValue($id)
     {
