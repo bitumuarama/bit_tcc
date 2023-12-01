@@ -107,6 +107,37 @@ $(document).ready(function () {
         });
     });
 
+
+    $(document).on('click', ".editpeca", function (e) {
+        var editId = $(this).data('id');
+        console.log(editId);
+        $.ajax({
+            url: $path,
+            type: 'POST',
+            data: { 'action': 'getData', 'id': editId },
+            dataType: 'json',
+            success: function (data) {
+                // Campos do formulário com os dados recebidos
+                $('#editModal #id').val(data.id);
+                $('#editModal #nome').val(data.nome);
+                $('#editModal #descricao').val(data.descricao);
+                $('#editModal #marca').val(data.marca);
+                $('#editModal #categoria').val(data.categoria);
+                $('#editModal #estoque_minimo').val(data.estoque_minimo);
+                $('#editModal #estoque_atual').val(data.estoque_atual);
+                $('#editModal #valor_custo').val(data.valor_custo);
+                $('#editModal #valor_venda').val(data.valor_venda);
+
+
+                // Abre o modal
+                $('#editModal').removeClass('hidden').show();
+            },
+            error: function (xhr, status, error) {
+                console.error(error);
+            }
+        });
+    });
+
     $(document).on('click', "#salvar", function (e) {
         var id = $('#id').val();
         var nome = $('#nome').val();
@@ -138,6 +169,51 @@ $(document).ready(function () {
                 'bairro': bairro,
                 'rua': rua,
                 'numero': numero,
+            },
+            success: function (response) {
+                console.log(response)
+                alertMessage(response);
+                if (response == 'success') {
+                    $('#search-result').html('<td></td><td>Pesquise novamente!</td>'); // Atualiza o corpo da tabela com a resposta recebida
+                    setTimeout(() => {
+                        $('#editModal').hide();
+                    }, 250)
+                } else {
+
+                }
+
+            },
+            error: function (xhr, status, error) {
+                console.error(error);
+            }
+        });
+    });
+
+    $(document).on('click', "#salvarpeca", function (e) {
+        var id = $('#id').val();
+        var nome = $('#nome').val();
+        var descricao = $('#descricao').val();
+        var marca = $('#marca').val();
+        var categoria = $('#categoria').val();
+        var estoque_minimo = $('#estoque_minimo').val();
+        var estoque_atual = $('#estoque_atual').val();
+        var valor_custo = $('#valor_custo').val();
+        var valor_venda = $('#valor_venda').val();
+
+        $.ajax({
+            url: $path,
+            type: 'POST',
+            data: {
+                'action': 'updatePecaData',
+                'id': id,
+                'nome': nome,
+                'descricao': descricao,
+                'marca': marca,
+                'categoria': categoria,
+                'estoque_minimo': estoque_minimo,
+                'estoque_atual': estoque_atual,
+                'valor_custo': valor_custo,
+                'valor_venda': valor_venda,
             },
             success: function (response) {
                 console.log(response)
