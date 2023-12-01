@@ -40,7 +40,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
         }
     }
 
-    function updateData($nome, $descricao, $marca, $categoria, $estoque_minimo, $estoque_atual, $valor_custo, $valor_venda)
+    function updateData($id, $nome, $descricao, $marca, $categoria, $estoque_minimo, $estoque_atual, $valor_custo, $valor_venda)
     {
         include("../../assets/php/connection.php");
         $stmt = $conexao->prepare("UPDATE peca SET
