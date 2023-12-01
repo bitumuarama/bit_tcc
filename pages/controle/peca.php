@@ -30,7 +30,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
                 echo "<td>{$row['estoque_atual']}</td>";
                 echo "<td>
                     <div class='actions'>
-                    <button class='edit button-icon' data-id='" . $row['id'] . "'><img src='../assets/img/edit-icon.png' alt='Editar'></button>
+                    <button class='editpeca button-icon' data-id='" . $row['id'] . "'><img src='../assets/img/edit-icon.png' alt='Editar'></button>
                     <button class='delete button-icon' data-id='" . $row['id'] . "'><img src='../assets/img/delete-icon.png' alt='Excluir'></button>
                 </div></td>";
                 echo "</tr>";
@@ -43,10 +43,10 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
     function updateData($nome, $descricao, $marca, $categoria, $estoque_minimo, $estoque_atual, $valor_custo, $valor_venda)
     {
         include("../../assets/php/connection.php");
-        $stmt = $conexao->prepare("UPDATE cliente SET
-         nome = ?, rg = ?,cpf = ?, data_nascimento = ?, celular = ?, cep = ?, estado = ?, cidade = ?, bairro = ?, rua = ?, numero = ?
+        $stmt = $conexao->prepare("UPDATE peca SET
+         nome = ?, descricao = ?,marca = ?, categoria = ?, estoque_minimo = ?, estoque_atual = ?, valor_custo = ?, valor_venda = ?
           WHERE id = ?");
-        $stmt->bind_param("sssssssssssi", $nome, $descricao, $marca, $categoria, $estoque_minimo, $estoque_atual, $valor_custo, $valor_venda, $id);
+        $stmt->bind_param("ssssssssi", $nome, $descricao, $marca, $categoria, $estoque_minimo, $estoque_atual, $valor_custo, $valor_venda, $id);
         if ($stmt->execute()) {
             echo "success";
         } else {
@@ -73,7 +73,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
         exit;
     }
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] == 'updateClientData') {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] == 'updatePecaData') {
 
         $id = $_POST['id'];
         $nome = $_POST['nome'];
@@ -182,7 +182,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
     </div>
 
     <div class="actions">
-                    <input class="success-btn" type="button" value="Salvar" id="salvar">
+                    <input class="success-btn" type="button" value="Salvar" id="salvarpeca">
                     <input class="close alert-btn" type="button" value="Cancelar">
                 </div>
 
