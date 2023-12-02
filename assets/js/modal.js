@@ -34,6 +34,11 @@ $(document).ready(function () {
         console.log("Editar")
         showModal('#editModal');
     });
+
+    $(document).on('click', ".finish_os", function () {
+        console.log("Finalizar")
+        showModal('#finalizarModal');
+    });
     
     $(document).on('click', '.edit_os', function () {
         console.log("Editar")
