@@ -323,6 +323,41 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
         </div>
     </div>
 
+    <div id="finalizarModal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close close-btn">&times;</span>
+            <form id="finalizarForm">
+                <div class="field">
+                    <label for="ordemServicoID">ID da Ordem de Serviço:</label>
+                    <input type="text" id="ordemServicoID" name="ordemServicoID" readonly>
+                </div>
+                <div class="field">
+                    <label for="clienteNome">Nome do Cliente:</label>
+                    <input type="text" id="clienteNome" name="clienteNome" readonly>
+                </div>
+                <div class="field">
+                    <label for="formaPagamento">Forma de Pagamento:</label>
+                    <select id="formaPagamento" name="formaPagamento">
+                        <option value="cartao_credito">Cartão de Crédito</option>
+                        <!-- Other payment options... -->
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="valorTotal">Valor Total:</label>
+                    <input type="text" id="valorTotal" placeholder="R$" name="valorTotal" readonly>
+                </div>
+                <div class="field">
+                    <label for="valorPago">Valor Pago:</label>
+                    <input type="text" id="valorPago" name="valorPago" placeholder="R$">
+                </div>
+                <div class="button-area">
+                    <input class="alert-btn" id="finalizar_os" type="button" value="Finalizar">
+                    <input class="cancel-btn close" type="button" value="Cancelar">
+                </div>
+            </form>
+        </div>
+    </div>
+
     <div id="clientList">
         <table id="clientsTable">
             <thead>
