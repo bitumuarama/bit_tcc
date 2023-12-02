@@ -35,11 +35,25 @@ $(document).ready(function () {
         showModal('#editModal');
     });
     
-    $(document).on('click', '.delete', function () {
+    $(document).on('click', '.edit_os', function () {
+        console.log("Editar")
+        showModal('#editModal');
+    });
+
+    $(document).on('click', '.delete_cliente', function () {
         console.log("Excluir")
         showModal('#excluirModal');
     });
 
+    $(document).on('click', '.delete_funcionario', function () {
+        console.log("Excluir")
+        showModal('#excluirModal');
+    });
+
+    $(document).on('click', '.delete_os', function () {
+        console.log("Excluir")
+        showModal('#excluirModal');
+    });
 
     $(document).on('click', '#salvar', function() {
         console.log("Salvar")

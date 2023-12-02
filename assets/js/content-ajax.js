@@ -20,17 +20,14 @@ $(document).ready(function () {
     // Trata formulário para enviar o cadastro nas páginas de acesso
     $(document).on('submit', '#submitForm', function (e) {
         e.preventDefault();
-        console.log("submitForm");
 
         var formData = $(this).serialize();
 
-        // Certifique-se de que o $path está definido
         if (!$path) {
             console.log("Caminho para o formulário não definido.");
             return;
         }
 
-        // Realiza a chamada AJAX
         $.ajax({
             type: "POST",
             url: $path,
@@ -46,19 +43,17 @@ $(document).ready(function () {
         });
     })
 
+    // Trata formulários que precisam de uma busca de dados no banco de dados
     $(document).on('submit', '#searchForm', function (e) {
         e.preventDefault();
-        console.log("searchForm");
 
         var formData = $(this).serialize();
 
-        // Certifique-se de que o $path está definido
         if (!$path) {
             console.log("Caminho para o formulário não definido.");
             return;
         }
 
-        // Realiza a chamada AJAX
         $.ajax({
             type: "POST",
             url: $path,
@@ -73,11 +68,6 @@ $(document).ready(function () {
             }
         });
     })
-
-
-
-    // Trata formulário de pesquisa em páginas de acesso.
-
 
 
     // Mensagens de Erros que devem ser exibidas na página
@@ -97,10 +87,6 @@ $(document).ready(function () {
             };
             case "cpf": {
                 $("#status").html('<p class="slide-mensage alert">CPF inválido!</p>');
-                break;
-            }
-            case "teste": {
-                $("#status").html('<p class="slide-mensage success">Passou no Teste De</p>');
                 break;
             }
             case "pesquisa_cliente": {

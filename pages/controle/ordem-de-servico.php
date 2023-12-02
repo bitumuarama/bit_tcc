@@ -4,74 +4,75 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
 
-    function search($termSearch)
-{
+    // Conexão
+    require_once("../../assets/php/auth_session.php");
     include("../../assets/php/connection.php");
-    
-    if ($termSearch == 'all') {
-        $stmt = $conexao->prepare("SELECT os.id, c.nome AS cliente_nome, c.celular AS cliente_celular, os.equipamento FROM ordem_de_servico os INNER JOIN cliente c ON os.cliente_id = c.id");
-        $stmt->execute();
-        $resultado = $stmt->get_result();
-    } else {
-        $searchValue = "%$termSearch%";
-        $stmt = $conexao->prepare("SELECT os.id, c.nome AS cliente_nome, c.celular AS cliente_celular, os.equipamento FROM ordem_de_servico os INNER JOIN cliente c ON os.cliente_id = c.id WHERE os.nome LIKE ?");
-        $stmt->bind_param("s", $searchValue);
-        $stmt->execute();
-        $resultado = $stmt->get_result();
-    }
-    
-    if ($resultado->num_rows > 0) {
-        while ($row = $resultado->fetch_assoc()) {
-            echo "<tr>";
-            echo "<td>{$row['id']}</td>";
-            echo "<td>{$row['cliente_nome']}</td>"; // Display client's name
-            echo "<td>{$row['equipamento']}</td>";
-            echo "<td>{$row['cliente_celular']}</td>"; // Display client's cellphone
-            echo "<td>
-                <input class='edit' type='button' data-id='" . $row['id'] . "' value='Editar'>
-                <input class='delete' type='button' data-id='" . $row['id'] . "' value='Excluir'>
-            </td>";
-            echo "</tr>";
-        }
-    } else {
-        echo "<tr><td colspan='4'>Nenhuma ordem de serviço encontrada.</td></tr>";
-    }
-}
 
 
-    function editValue($id)
+    function search($termSearch)
     {
         include("../../assets/php/connection.php");
-        $stmt = $conexao->prepare("SELECT id, cliente_id, equipamento, problema_relatado, problema_constatado, servico_executado, servicos FROM ordem_de_servico WHERE id = ?");
-        $stmt->bind_param("i", $id);
-        $stmt->execute();
-        $resultado = $stmt->get_result();
+
+        if ($termSearch == 'all') {
+            $stmt = $conexao->prepare("SELECT os.id, c.nome AS cliente_nome, c.celular AS cliente_celular, os.equipamento, os.data_criacao, os.status FROM ordem_de_servico os INNER JOIN cliente c ON os.cliente_id = c.id");
+            $stmt->execute();
+            $resultado = $stmt->get_result();
+        } else {
+            $searchValue = "%$termSearch%";
+            $stmt = $conexao->prepare("SELECT os.id, c.nome AS cliente_nome, c.celular AS cliente_celular, os.equipamento, os.data_criacao, os.status FROM ordem_de_servico os INNER JOIN cliente c ON os.cliente_id = c.id WHERE c.nome LIKE ?");
+            $stmt->bind_param("s", $searchValue);
+            $stmt->execute();
+            $resultado = $stmt->get_result();
+        }
 
         if ($resultado->num_rows > 0) {
-            while ($pesquisa = $resultado->fetch_assoc()) {
-                echo "<tr>";
-                echo "<td>{$pesquisa['id']}</td>";
-                echo "<td>{$pesquisa['cliente_id']}</td>";
-                echo "<td>{$pesquisa['equipamento']}</td>";
-                echo "<td>{$pesquisa['problema_relatado']}</td>";
-                echo "<td>{$pesquisa['problema_constatado']}</td>";
-                echo "<td>{$pesquisa['servico_executado']}</td>";
-                echo "<td>{$pesquisa['servicos']}</td>";
-                echo "<td>
-                <input type='button' id='editarCliente' value='Editar'>
-                <input type='button' id='excluirCliente' value='Excluir'>
-                </td>";
-                echo "</tr>";
+            while ($row = $resultado->fetch_assoc()) {
+                if ($row['status'] == 'Ativo') {
+                    echo "<tr>";
+                    echo "<td>{$row['id']}</td>";
+                    echo "<td>{$row['cliente_nome']}</td>";
+                    echo "<td>{$row['equipamento']}</td>";
+                    echo "<td>{$row['cliente_celular']}</td>";
+                    echo "<td>{$row['data_criacao']}</td>";
+                    if (allowedUser()) {
+                        echo "<td>
+                    <div class='actions'>
+                    <button class='edit_os button-icon' data-id='" . $row['id'] . "'><img src='../assets/img/edit-icon.png' alt='Editar'></button>
+                    <button class='delete_os button-icon' data-id='" . $row['id'] . "'><img src='../assets/img/delete-icon.png' alt='Excluir'></button>
+                    <button class='finish_os button-icon' data-id='" . $row['id'] . "'><img src='../assets/img/check-icon.png' alt='Excluir'></button>
+                    </div></td>";
+                    } else {
+                        echo "<td>
+                    <div class='actions'>
+                    <button class='edit_os button-icon' data-id='" . $row['id'] . "'><img src='../assets/img/edit-icon.png' alt='Editar'></button>
+                    </div></td>";
+                    }
+                    echo "</tr>";
+                }
             }
         } else {
-            echo "<tr><td colspan='3'>Nenhuma ordem de serviço encontrado.</td></tr>";
+            echo "<tr><td colspan='6'>Nenhuma ordem de serviço encontrada.</td></tr>";
         }
     }
-    function updateData($id, $nome, $cpf, $data_nascimento, $celular)
+
+    function updateData($os_id, $c_id, $c_celular, $os_equipamento, $os_problema_relatado, $os_problema_constatado, $os_servico_executado, $os_servicos, $os_pecas, $os_valor_servico)
     {
         include("../../assets/php/connection.php");
-        $stmt = $conexao->prepare("UPDATE ordem_de_servico SET nome = ?, cpf = ?, data_nascimento = ?, celular = ? WHERE id = ?");
-        $stmt->bind_param("ssssi", $cliente_id, $equipamento, $problema_relatado, $problema_constatado,$servico_executado,$servicos);
+
+        // Atualizar informações do cliente
+        $stmt = $conexao->prepare("UPDATE cliente SET celular = ? WHERE id = ?");
+        $stmt->bind_param("si", $c_celular, $c_id);
+        if (!$stmt->execute()) {
+            echo "error: " . $stmt->error;
+            $stmt->close();
+            $conexao->close();
+            return;
+        }
+        $stmt->close();
+
+        // Atualizar informações da ordem de serviço
+        $stmt = $conexao->prepare("UPDATE ordem_de_servico SET equipamento = ?, problema_relatado = ?, problema_constatado = ?, servico_executado = ?, servicos = ?, pecas = ?, valor_servico = ? WHERE id = ?");
+        $stmt->bind_param("sssssssi", $os_equipamento, $os_problema_relatado, $os_problema_constatado, $os_servico_executado, $os_servicos, $os_pecas, $os_valor_servico, $os_id);
         if ($stmt->execute()) {
             echo "success";
         } else {
@@ -81,14 +82,55 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
         $conexao->close();
     }
 
-    // Conexão
-    require_once("../../assets/php/auth_session.php");
-    include("../../assets/php/connection.php");
+    function deleteData($id)
+    {
+        include("../../assets/php/connection.php");
+
+        if ($id != "") {
+
+            $stmt = $conexao->prepare("DELETE FROM ordem_de_servico WHERE id = ?");
+
+            $stmt->bind_param("i", $id);
+
+            if ($stmt->execute()) {
+                echo json_encode(['success' => true, 'message' => $id]);
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Erro: ' . $stmt->error]);
+            }
+
+            $stmt->close();
+        }
+        $conexao->close();
+    }
 
     // Quando houver um clique em .edit (botão de edição)
-    if (isset($_POST['action']) && $_POST['action'] == 'getClienteData') {
+    if (isset($_POST['action']) && $_POST['action'] == 'getData') {
         $id = $_POST['id'];
-        $stmt = $conexao->prepare("SELECT id, cliente_id, equipamento, problema_relatado, problema_constatado, servico_executado, servicos FROM ordem_de_servico WHERE id = ?");
+        $stmt = $conexao->prepare("
+            SELECT 
+                os.id AS os_id, 
+                c.nome AS c_nome, 
+                os.equipamento AS os_equipamento, 
+                os.problema_relatado AS os_problema_relatado, 
+                os.problema_constatado AS os_problema_constatado, 
+                os.servico_executado AS os_servico_executado, 
+                os.servicos AS os_servicos, 
+                os.valor_servico AS os_valor_servico, 
+                os.valor_total AS os_valor_total, 
+                GROUP_CONCAT(p.nome SEPARATOR ', ') AS os_pecas
+            FROM 
+                ordem_de_servico os 
+            INNER JOIN 
+                cliente c ON os.cliente_id = c.id
+            LEFT JOIN 
+                ordem_de_servico_peca osp ON os.id = osp.ordem_de_servico_id
+            LEFT JOIN 
+                peca p ON osp.peca_id = p.id
+            WHERE 
+                os.id = ?
+            GROUP BY 
+                os.id");
+
         $stmt->bind_param("i", $id);
         $stmt->execute();
         $resultado = $stmt->get_result()->fetch_assoc();
@@ -98,20 +140,27 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
         exit;
     }
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] == 'updateClientData') {
-        $id = $_POST['id'];
-        $cliente_id = $_POST['cliente_id'];
-        $equipamento = $_POST['equipamento'];
-        $problema_relatado = $_POST['problema_relatado'];
-        $problema_constatado = $_POST['problema_constatado'];
-        $servico_executado = $_POST['servico_executado'];
-        $servicos = $_POST['servicos'];
 
-        
-        updateData($id, $cliente_id, $equipamento, $problema_relatado, $problema_constatado,$servico_executado,$servicos);
-        mysqli_close($conexao);
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] == 'updateOSData') {
+        $os_id = $_POST['ordem_de_servico_id'];
+        $c_id = $_POST['cliente_id'];
+        $c_celular = $_POST['celular'];
+        $os_equipamento = $_POST['equipamento'];
+
+        $os_problema_relatado = $_POST['problema_relatado'] ?? '';
+        $os_problema_constatado = $_POST['problema_constatado'] ?? '';
+        $os_servico_executado = $_POST['servico_executado'] ?? '';
+        $os_servicos = $_POST['servicos'] ?? '';
+        $os_pecas = $_POST['pecas'] ?? '';
+        $os_valor_servico = $_POST['valor_servico'] ?? '';
+
+        // Chamando a função updateData
+        updateData($os_id, $c_id, $c_celular, $os_equipamento, $os_problema_relatado, $os_problema_constatado, $os_servico_executado, $os_servicos, $os_pecas, $os_valor_servico);
+
+        // Não é necessário fechar a conexão aqui se ela já é fechada dentro da função updateData
         exit;
     }
+
 
     // Quando enviar o formulário de pesquisa
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -152,68 +201,109 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
 
     <div id="editModal" class="modal hidden">
         <div class="modal-content">
-            <span class="close">&times;</span>
-            <form id="editForm">
-            <div class="small-field field">
-            
-                
-    <div class="extra-small-field field">
-      <label for="ordem_servico_id">ID da Ordem de Serviço:</label>
-      <input type="text" id="ordem_servico_id" name="ordem_servico_id" value="<?php echo $ordem_servico_id ?>" readonly>
-    </div>
-      <label for="equipamento">Equipamento</label><br>
-      <input type="text" name="equipamento" id="equipamento">
-    </div>
+            <span class="close close-btn">&times;</span>
+            <form class="grid-template" id="editForm">
 
-    <div class="textarea-field field">
-      <label for="problemarelatado">Probelema Relatado </label><br>
-      <textarea id="problemarelatado" name="problemarelatado" cols="20" rows="10"></textarea>
-    </div>
+                <div class="extra-small-field field">
+                    <label for="ordem_servico_id">OS:</label>
+                    <input type="text" id="ordem_servico_id" name="ordem_servico_id" readonly>
+                </div>
+                <div class="small-field field">
+                    <label for="nome">Nome</label><br>
+                    <input type="text" name="nome" id="nome">
+                </div>
+                <div class="small-field field">
+                    <label for="equipamento">Equipamento</label><br>
+                    <input type="text" name="equipamento" id="equipamento">
+                </div>
 
-    <div class="textarea-field field">
-      <label for="problemaconstatado">Problema Constatado</label><br>
-      <textarea id="problemaconstatado" name="problemaconstatado" cols="20" rows="10"></textarea>
-    </div>
+                <!-- <div class="textarea-field field">
+                    <label for="problema_relatado">Probelema Relatado </label><br>
+                    <textarea id="problema_relatado" name="problema_relatado" cols="20" rows="10"></textarea>
+                </div>
 
-    <div class="textarea-field field">
-      <label for="servicoexecutado">Serviço Executado</label><br>
-      <textarea id="servicoexecutado" name="servicoexecutado" cols="20" rows="10"></textarea>
-    </div>
+                <div class="textarea-field field">
+                    <label for="problema_constatado">Problema Constatado</label><br>
+                    <textarea id="problema_constatado" name="problema_constatado" cols="20" rows="10"></textarea>
+                </div>
+
+                <div class="textarea-field field">
+                    <label for="servico_executado">Serviço Executado</label><br>
+                    <textarea id="servico_executado" name="servico_executado" cols="20" rows="10"></textarea>
+                </div> -->
 
 
 
-    <fieldset class="fieldset-field field" name="servico">
-      <legend>SERVIÇOS:</legend>
-      <div>
-        <label for="formatacao">Formatação</label>
-        <input type="checkbox" id="formatacao" name="servicos[]" value="formatacao" />
-      </div>
+                <fieldset class="fieldset-field field" name="servico">
+                    <legend>SERVIÇOS:</legend>
+                    <div>
+                        <label for="formatacao">Formatação</label>
+                        <input type="checkbox" id="formatacao" name="servicos[]" value="formatacao" />
+                    </div>
 
-      <div>
-        <label for="limpeza">Limpeza</label>
-        <input type="checkbox" id="limpeza" name="servicos[]" value="limpeza" />
-      </div>
+                    <div>
+                        <label for="limpeza">Limpeza</label>
+                        <input type="checkbox" id="limpeza" name="servicos[]" value="limpeza" />
+                    </div>
 
-      <div>
-        <label for="trocadepeca">Troca de peça</label>
-        <input type="checkbox" id="trocadepeca" name="servicos[]" value="trocadepeca" />
-      </div>
+                    <div>
+                        <label for="troca_de_peca">Troca de peça</label>
+                        <input type="checkbox" id="troca_de_peca" name="servicos[]" value="troca_de_peca" />
+                    </div>
 
-      <div>
-        <label for="montagem">Montagem</label>
-        <input type="checkbox" id="montagem" name="servicos[]" value="montagem" />
-      </div>
+                    <div>
+                        <label for="montagem">Montagem</label>
+                        <input type="checkbox" id="montagem" name="servicos[]" value="montagem" />
+                    </div>
 
-      <div>
-        <label for="instalacao">Instalação de Programas</label>
-        <input type="checkbox" id="instalacao" name="servicos[]" value="instalacao" />
-      </div>
+                    <div>
+                        <label for="instalacao">Instalação de Programas</label>
+                        <input type="checkbox" id="instalacao" name="servicos[]" value="instalacao" />
+                    </div>
 
-      <div>
-        <label for="restauracao">Recuperação de Arquivos</label>
-        <input type="checkbox" id="restauracao" name="servicos[]" value="restauracao" />
-      </div>
-    </fieldset>
+                    <div>
+                        <label for="restauracao">Recuperação de Arquivos</label>
+                        <input type="checkbox" id="restauracao" name="servicos[]" value="restauracao" />
+                    </div>
+                </fieldset>
+                <div class="normal-field field">
+                    <label>Peças</label>
+                    <div id="pecasSelecionadas">
+                        <p>Sem peças</p>
+                    </div>
+                </div>
+
+                <div class="extra-small-field field">
+                    <label for="valor_servico">Valor Serviço: </label>
+                    <input class="contabil" type="text" placeholder="R$ 0,00" name="valor_servico" id="valor_servico"
+                        value="">
+                </div>
+
+
+                <div class="extra-small-field field">
+                    <label for="valor_total">Valor Total: </label>
+                    <input class="contabil" type="text" placeholder="R$ 0,00" name="valor_total" id="valor_total"
+                        value="">
+                </div>
+
+                <form class="search-form" id="searchPeca">
+                    <input class="search-input" type="text" name="search-peca" placeholder="Digite para pesquisar...">
+                    <button class="search-button" type="submit"><img class="icons" src="../assets/img/search-icon.png"
+                            alt="Icon"></button>
+                </form>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Valor</th>
+                            <th>Quantidade</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="search-result-peca"></tbody>
+                </table>
+
                 <input type="button" value="Salvar" id="salvar">
                 <input class="close" type="button" value="Cancelar">
             </form>
@@ -222,9 +312,14 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
 
     <div id="excluirModal" class="modal hidden">
         <div class="modal-content">
-            <span class="close">&times;</span>
-            <input type="button" value="Confirmar">
-            <input class="close" type="button" value="Cancelar">
+            <span class="close close-btn">&times;</span>
+            <h3 class="confirm-msg">Você tem certeza que deseja excluir? OS:
+                <input type="text" id="idOS" readonly>
+            </h3>
+            <div class="button-area">
+                <input class="alert-btn" id="excluir_os" type="button" value="Confirmar">
+                <input class="cancel-btn close" type="button" value="Cancelar">
+            </div>
         </div>
     </div>
 
@@ -236,11 +331,14 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
                     <th>Nome</th>
                     <th>Equipamento</th>
                     <th>Celular</th>
+                    <th>Data de Criação</th>
                     <th>Ações</th>
                 </tr>
             </thead>
             <tbody id="search-result">
-                <?php search('all'); ?>
+                <tr>
+                    <?php search('all'); ?>
+                </tr>
             </tbody>
         </table>
     </div>

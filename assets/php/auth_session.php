@@ -8,4 +8,13 @@ if (!isset($_SESSION['id'])) {
     header("location: ../index.php");
     exit;
 }
+
+function allowedUser()
+{
+    if (isset($_SESSION['cargo']) && ($_SESSION['cargo'] == 'Administrador' || $_SESSION['cargo'] == 'Suporte')) {
+        return true;
+    } else {
+        return false;
+    }
+}
 ?>

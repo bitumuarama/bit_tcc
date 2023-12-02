@@ -95,10 +95,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
     <div class="extra-small-field field">
       <label for="cpf">CPF</label>
       <input type="text" name="cpf" id="cpf" placeholder="XXX.XXX.XXX-XX">
-
-
     </div>
-
 
     <div class="small-field field">
       <label for="celular">Celular</label>

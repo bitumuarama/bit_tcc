@@ -12,6 +12,7 @@ if (isset($_SESSION['status'])) {
     }
     unset($_SESSION['status']);
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -76,25 +77,27 @@ if (isset($_SESSION['status'])) {
                     <h1 class="mobile-menu-title restore-default-content" id="mobileMenuTitle">Painel de Controle</h1>
                     <ul class="mobile-menu-list">
                         <h2>Cadastro</h2>
-                        <li><a class="menu-item" href="#cadastro/exemplo">Exemplo</a></li>
+                        <?php if (allowedUser()) {
+                            echo '<li><a class="menu-item" href="#cadastro/exemplo">Exemplo</a></li>';
+                        }
+                        ?>
                         <li><a class="menu-item" href="#cadastro/cliente">Cliente</a></li>
                         <li><a class="menu-item" href="#cadastro/ordem-de-servico">Ordem de Serviço</a></li>
-                        <li><a class="menu-item" href="#cadastro/funcionario">Funcionário</a></li>
+                        <?php if (allowedUser()) {
+                            echo '<li><a class="menu-item" href="#cadastro/funcionario">Funcionário</a></li>';
+                        }
+                        ?>
                         <li><a class="menu-item" href="#cadastro/peca">Peças</a></li>
                     </ul>
                     <ul class="mobile-menu-list">
                         <h2>Controle</h2>
                         <li><a class="menu-item" href="#controle/clientes">Clientes</a></li>
-                        <li><a class="menu-item" href="#controle/funcionarios">Funcionários</a></li>
+                        <?php if (allowedUser()) {
+                            echo '<li><a class="menu-item" href="#controle/funcionarios">Funcionários</a></li>';
+                        }
+                        ?>
                         <li><a class="menu-item" href="#controle/ordem-de-servico">Ordem de Serviço</a></li>
                         <li><a class="menu-item" href="#controle/pagamentos">Pagamentos</a></li>
-                    </ul>
-                    <ul class="mobile-menu-list">
-                        <h2>Relatórios </h2>
-                        <li><a class="menu-item" href="#relatorio/clientes">Clientes</a></li>
-                        <li><a class="menu-item" href="#relatorio/ordem_servico">Ordem de Serviço</a></li>
-                        <li><a class="menu-item" href="#relatorio/pecas">Peças</a></li>
-                        <li><a class="menu-item" href="#relatorio/servicos">Serviços</a></li>
                     </ul>
                     <a class="mobile-logout" href="../assets/php/exit.php">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -136,31 +139,38 @@ if (isset($_SESSION['status'])) {
                     <div class="desktop-central-bar" id="desktopMenuBar"></div>
                 </div>
             </div>
-
-            <div class="desktop-menu-items" id="desktopMenuItems">
-                <ul class="desktop-menu-list">
-                    <h2>Cadastro</h2>
-                    <li><a class="menu-item" href="#cadastro/exemplo">Exemplo</a></li>
-                    <li><a class="menu-item" href="#cadastro/cliente">Cliente</a></li>
-                    <li><a class="menu-item" href="#cadastro/ordem-de-servico">Ordem de Serviço</a></li>
-                    <li><a class="menu-item" href="#cadastro/funcionario">Funcionário</a></li>
-                    <li><a class="menu-item" href="#cadastro/peca">Peças</a></li>
-                </ul>
-                <ul class="desktop-menu-list">
-                    <h2>Controle</h2>
-                    <li><a class="menu-item" href="#controle/clientes">Clientes</a></li>
-                    <li><a class="menu-item" href="#controle/funcionarios">Funcionários</a></li>
-                    <li><a class="menu-item" href="#controle/ordem-de-servico">Ordem de Serviço</a></li>
-                    <li><a class="menu-item" href="#controle/pagamentos">Pagamentos</a></li>
-                </ul>
-                <ul class="desktop-menu-list">
-                    <h2>Relatórios </h2>
-                    <li><a class="menu-item" href="#relatorio/clientes">Clientes</a></li>
-                    <li><a class="menu-item" href="#relatorio/ordem_servico">Ordem de Serviço</a></li>
-                    <li><a class="menu-item" href="#relatorio/pecas">Peças</a></li>
-                    <li><a class="menu-item" href="#relatorio/servicos">Serviços</a></li>
-                </ul>
-            </div>
+            <?php
+            if (isset($_SESSION['cargo'])) {
+                ?>
+                <div class="desktop-menu-items" id="desktopMenuItems">
+                    <ul class="desktop-menu-list">
+                        <h2>Cadastro</h2>
+                        <?php if (allowedUser()) {
+                            echo '<li><a class="menu-item" href="#cadastro/exemplo">Exemplo</a></li>';
+                        }
+                        ?>
+                        <li><a class="menu-item" href="#cadastro/cliente">Cliente</a></li>
+                        <li><a class="menu-item" href="#cadastro/ordem-de-servico">Ordem de Serviço</a></li>
+                        <?php if (allowedUser()) {
+                            echo '<li><a class="menu-item" href="#cadastro/funcionario">Funcionário</a></li>';
+                        }
+                        ?>
+                        <li><a class="menu-item" href="#cadastro/peca">Peças</a></li>
+                    </ul>
+                    <ul class="desktop-menu-list">
+                        <h2>Controle</h2>
+                        <li><a class="menu-item" href="#controle/clientes">Clientes</a></li>
+                        <?php if (allowedUser()) {
+                            echo '<li><a class="menu-item" href="#controle/funcionarios">Funcionários</a></li>';
+                        }
+                        ?>
+                        <li><a class="menu-item" href="#controle/ordem-de-servico">Ordem de Serviço</a></li>
+                        <li><a class="menu-item" href="#controle/pagamentos">Pagamentos</a></li>
+                    </ul>
+                </div>
+                <?php
+            }
+            ?>
 
         </div>
 

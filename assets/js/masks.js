@@ -15,7 +15,7 @@ $(document).ready(function () {
     });
 
 
-    $('.celular').mask('(00) 00000-0000').on('blur', function() {
+    $('.celular').mask('(00) 00000-0000').on('blur', function () {
         var regex = /^\(\d{2}\) \d{5}-\d{4}$/;
         var numero = $(this).val();
 
@@ -24,14 +24,14 @@ $(document).ready(function () {
         }
     });
 
-    $("#cep").on("blur", function() {
+    $("#cep").on("blur", function () {
         var cep = $(this).val().replace(/\D/g, '');
 
         if (cep !== "") {
             var validacep = /^[0-9]{8}$/;
 
-            if(validacep.test(cep)) {
-                $.getJSON("https://viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) {
+            if (validacep.test(cep)) {
+                $.getJSON("https://viacep.com.br/ws/" + cep + "/json/?callback=?", function (dados) {
                     if (!("erro" in dados)) {
                         // Atualiza os campos com os valores da consulta.
                         $("#rua").val(dados.logradouro);
@@ -56,5 +56,9 @@ $(document).ready(function () {
         }
 
     });
+
+
+
+
 });
 

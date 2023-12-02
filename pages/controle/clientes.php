@@ -4,8 +4,12 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
 
+    // Conexão
+    require_once("../../assets/php/auth_session.php");
+    include("../../assets/php/connection.php");
+
     include("../../assets/php/cpf_validation.php");
-    // Functions
+
     function search($termSearch)
     {
         include("../../assets/php/connection.php");
@@ -20,6 +24,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
             $stmt->execute();
             $resultado = $stmt->get_result();
         }
+
         if ($resultado->num_rows > 0) {
             while ($row = $resultado->fetch_assoc()) {
                 echo "<tr>";
@@ -28,18 +33,26 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
                 echo "<td>{$row['cpf']}</td>";
                 echo "<td>{$row['data_nascimento']}</td>";
                 echo "<td>{$row['celular']}</td>";
-                echo "<td>
+                if (allowedUser()) {
+                    echo "<td>
                     <div class='actions'>
-                    <button class='edit button-icon' data-id='" . $row['id'] . "'><img src='../assets/img/edit-icon.png' alt='Editar'></button>
-                    <button class='delete button-icon' data-id='" . $row['id'] . "'><img src='../assets/img/delete-icon.png' alt='Excluir'></button>
-                </div></td>";
+                    <button class='edit_cliente button-icon' data-id='" . $row['id'] . "'><img src='../assets/img/edit-icon.png' alt='Editar'></button>
+                    <button class='delete_cliente button-icon' data-id='" . $row['id'] . "'><img src='../assets/img/delete-icon.png' alt='Excluir'></button>
+                    </div></td>";
+                } else {
+                    echo "<td>
+                    <div class='actions'>
+                    <button class='edit_cliente button-icon' data-id='" . $row['id'] . "'><img src='../assets/img/edit-icon.png' alt='Editar'></button>
+                    </div></td>";
+                }
                 echo "</tr>";
             }
         } else {
-            echo "<tr><td colspan='3'>Nenhum cliente encontrado.</td></tr>";
+            echo "<tr><td colspan='6'>Nenhum cliente encontrado.</td></tr>";
         }
     }
 
+    // Atualizar valores na tabela do banco de dados
     function updateData($id, $nome, $rg, $cpf, $data_nascimento, $celular, $cep, $estado, $cidade, $bairro, $rua, $numero)
     {
         include("../../assets/php/connection.php");
@@ -56,9 +69,28 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
         $conexao->close();
     }
 
-    // Conexão
-    require_once("../../assets/php/auth_session.php");
-    include("../../assets/php/connection.php");
+    // Excluir os valores na tabela do banco de dados
+    function deleteData($id)
+    {
+        include("../../assets/php/connection.php");
+
+        if ($id != "") {
+
+            $stmt = $conexao->prepare("DELETE FROM cliente WHERE id = ?");
+
+            $stmt->bind_param("i", $id);
+
+            if ($stmt->execute()) {
+                echo json_encode(['success' => true, 'message' => $id]);
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Erro: ' . $stmt->error]);
+            }
+
+            $stmt->close();
+        }
+        $conexao->close();
+    }
+
 
     // Quando houver um clique em .edit (botão de edição)
     if (isset($_POST['action']) && $_POST['action'] == 'getData') {
@@ -94,6 +126,10 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
         }
         mysqli_close($conexao);
         exit;
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] == 'deleteData') {
+        deleteData($_POST['id']);
     }
 
     // Quando enviar o formulário de pesquisa
@@ -137,7 +173,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
 
     <div id="editModal" class="modal hidden">
         <div class="modal-content">
-            <span class="close">&times;</span>
+            <span class="close close-btn">&times;</span>
             <form class="grid-template" id="editForm">
                 <div class="extra-small-field field id">
                     <label for="id">ID</label>
@@ -205,7 +241,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
                     <input type="text" name="numero" id="numero" placeholder="Ex.: 1001">
                 </div>
                 <div class="actions">
-                    <input class="success-btn" type="button" value="Salvar" id="salvar">
+                    <input class="success-btn" type="button" value="Salvar" id="salvar_cliente">
                     <input class="close alert-btn" type="button" value="Cancelar">
                 </div>
             </form>
@@ -214,9 +250,14 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
 
     <div id="excluirModal" class="modal hidden">
         <div class="modal-content">
-            <span class="close">&times;</span>
-            <input type="button" value="Confirmar">
-            <input class="close" type="button" value="Cancelar">
+            <span class="close close-btn">&times;</span>
+            <h3 class="confirm-msg">Você tem certeza que deseja excluir? ID:
+                <input type="text" id="idCliente" readonly>
+            </h3>
+            <div class="button-area">
+                <input class="alert-btn" id="excluir_cliente" type="button" value="Confirmar">
+                <input class="cancel-btn close" type="button" value="Cancelar">
+            </div>
         </div>
     </div>
 
@@ -237,6 +278,8 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
             </tbody>
         </table>
     </div>
+
+
 </body>
 
 </html>

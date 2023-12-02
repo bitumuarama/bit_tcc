@@ -19,6 +19,8 @@ if (isset($_POST['submit'])) {
         $_SESSION['id'] = $usuario['id'];
         $_SESSION['nome'] = $usuario['nome'];
         $_SESSION['email'] = $usuario['email'];
+    
+        $_SESSION['cargo'] = $usuario['cargo'];
 
         header("location: ../../pages/dashboard.php");
         exit;

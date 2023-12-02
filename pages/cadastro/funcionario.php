@@ -82,22 +82,32 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
 
     <div class="small-field">
       <label for="cargo">Cargo</label>
-      <input type="text" name="cargo" id="cargo" placeholder="Funcionário">
+      <select name="cargo" id="cargo">
+        <option value="Membro">Membro</option>
+        <option value="Técnico">Técnico</option>
+        <option value="Administrador">Administrador</option>
+        <option value="Gerente">Gerente</option>
+        <option value="Suporte">Suporte</option>
+        <option value="Vendas">Vendas</option>
+        <option value="Atendimento">Atendimento ao Cliente</option>
+      </select>
     </div>
-
     <div class="small-field">
       <label for="usuario">Usuário</label>
       <input type="text" name="usuario" id="usuario" placeholder="Usuário" required>
     </div>
 
-    
+
     <div class="small-field">
       <label for="senha">Senha</label>
       <input type="password" name="senha" id="senha" placeholder="Senha" required>
     </div>
 
     <div class="small-field">
-      <label for="confirmarSenha">Confirmar Senha</label>
+      <label for="confirmarSenha">Confirmar Senha <label class="change-label" for="mostrarSenhas"
+          id="labelMostrarSenhas">(Mostrar)</label>
+        <input type="checkbox" id="mostrarSenhas">
+      </label>
       <input type="password" name="confirmarSenha" id="confirmarSenha" placeholder="Confirmar Senha" required>
     </div>
 
@@ -125,6 +135,22 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
         event.preventDefault(); // Impede o envio do formulário se as senhas não coincidirem
       }
     });
+    document.getElementById('mostrarSenhas').addEventListener('change', function (event) {
+      var senha = document.getElementById('senha');
+      var confirmarSenha = document.getElementById('confirmarSenha');
+      var label = document.getElementById('labelMostrarSenhas');
+
+      // Já temos a referência do checkbox pelo event.target
+      var isChecked = event.target.checked;
+
+      // Atualize o tipo de campo de senha com base no estado do checkbox
+      senha.type = isChecked ? 'text' : 'password';
+      confirmarSenha.type = isChecked ? 'text' : 'password';
+
+      // Atualize o texto da label com base no estado do checkbox
+      label.textContent = isChecked ? "(Esconder)" : "(Mostrar)";
+    });
+
   </script>
 </body>
 

@@ -84,9 +84,23 @@ button {
 
 
 label {
+    display: flex;
+    align-items: center;
     font-size: 1rem;
     margin: 0.15rem;
     color: #fff;
+}
+
+.change-label,
+label input {
+    padding: 0;
+    margin: 0 10px;
+    font-size: 0.75rem;
+    cursor: pointer;
+}
+
+label input[type="checkbox"] {
+    display: none;
 }
 
 
@@ -180,6 +194,11 @@ fieldset input[type="checkbox"] {
     order: 9;
 }
 
+.modal-content .button-area {
+    grid: none;
+    margin: 1rem;
+}
+
 .actions {
     display: flex;
     flex: auto;
@@ -200,6 +219,7 @@ button img {
     border: none
 }
 
+.modal .action-btn,
 .modal input[type="button"] {
     color: #fff;
     font-weight: 600;
@@ -228,6 +248,22 @@ button img {
 
 .alert-btn:hover {
     background-color: #9d1422;
+}
+
+.select-btn {
+    background-color: #007bff;
+}
+
+.select-btn:hover {
+    background-color: #0056b3;
+}
+
+.cancel-btn {
+    background-color: #bbbbbb;
+}
+
+.cancel-btn:hover {
+    background-color: #807b7b;
 }
 
 .submit-button {
@@ -326,7 +362,8 @@ th:hover {
     background-color: #333;
     padding: 20px;
     border: 1px solid #111;
-    width: 80%;
+    min-width: 30%;
+    max-width: 80%;
     max-height: 80%;
     overflow-y: auto;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5);
@@ -352,18 +389,33 @@ th:hover {
 
 /* Elemento para fechar o modal */
 .close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
     font-weight: bold;
     cursor: pointer;
+}
+
+.close-btn {
+    float: right;
 }
 
 .close:hover,
 .close:focus {
     color: black;
     text-decoration: none;
-    cursor: pointer;
+}
+
+.confirm-msg {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+}
+
+.confirm-msg input {
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 0 10px;
+    max-width: 5rem;
+    text-align: end;
 }
 
 /* Campo de pesquisa dentro do modal */
@@ -422,6 +474,7 @@ th:hover {
 
 #id {
     max-width: 3rem;
+    text-align: end;
 }
 
 #celular {

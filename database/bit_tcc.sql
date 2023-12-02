@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 19, 2023 at 11:16 PM
+-- Generation Time: Dec 02, 2023 at 02:22 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -20,8 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `bit_tcc`
 --
-CREATE DATABASE IF NOT EXISTS `bit_tcc` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `bit_tcc`;
 
 -- --------------------------------------------------------
 
@@ -49,17 +47,10 @@ CREATE TABLE `cliente` (
 --
 
 INSERT INTO `cliente` (`id`, `nome`, `data_nascimento`, `rg`, `cpf`, `celular`, `cep`, `estado`, `cidade`, `bairro`, `rua`, `numero`) VALUES
-(1, 'ADMINISTRADOR', '2000-01-01', '00.000.000-0', '000.000.000-00', '(00) 00000-0000', '00000-00', 'PR', 'Cidade', 'Centro', 'Av. Tecnologias', '000000'),
-(2, 'João Silva', '1990-01-01', 'MG-10.123.45', '000.000.001-91', '(31) 90000-0001', '31000-00', 'MG', 'Belo Horizonte', 'Centro', 'Rua da Bahia', '100'),
-(3, 'Maria Souza', '1991-02-02', 'SP-20.234.56', '000.000.002-72', '(11) 90000-0002', '01000-00', 'SP', 'São Paulo', 'Brás', 'Rua São Caetano', '200'),
-(4, 'Pedro Santos', '1992-03-03', 'RJ-30.345.67', '000.000.003-53', '(21) 90000-0003', '22000-00', 'RJ', 'Rio de Janeiro', 'Copacabana', 'Avenida Atlântica', '300'),
-(5, 'Ana Costa', '1993-04-04', 'RS-40.456.78', '000.000.004-34', '(51) 90000-0004', '90000-00', 'RS', 'Porto Alegre', 'Centro', 'Rua dos Andradas', '400'),
-(6, 'Lucas Martins', '1994-05-05', 'PR-50.567.89', '000.000.005-15', '(41) 90000-0005', '80000-00', 'PR', 'Curitiba', 'Batel', 'Avenida Sete de Setembro', '500'),
-(7, 'Patrícia Oliveira', '1995-06-06', 'SC-60.678.90', '000.000.006-96', '(48) 90000-0006', '88000-00', 'SC', 'Florianópolis', 'Centro', 'Rua Felipe Schmidt', '600'),
-(8, 'Rafael Almeida', '1996-07-07', 'BA-70.789.01', '000.000.007-77', '(71) 90000-0007', '40000-00', 'BA', 'Salvador', 'Itapuã', 'Avenida Dorival Caymmi', '700'),
-(9, 'Fernanda Gomes', '1997-08-08', 'PE-80.890.12', '000.000.008-58', '(81) 90000-0008', '50000-00', 'PE', 'Recife', 'Boa Viagem', 'Avenida Conselheiro Aguiar', '800'),
-(10, 'Carlos Rodrigues', '1998-09-09', 'CE-90.901.23', '000.000.009-39', '(85) 90000-0009', '60000-00', 'CE', 'Fortaleza', 'Meireles', 'Avenida Beira Mar', '900'),
-(11, 'Sandra Lima', '1999-10-10', 'PA-01.012.34', '000.000.010-10', '(91) 90000-0010', '66000-00', 'PA', 'Belém', 'Nazaré', 'Avenida Nazaré', '1000');
+(1, 'ADMINISTRADOR', '2000-01-01', '00.000.000-0', '080.391.989-17', '(00) 00000-0000', '0000-000', 'PR', 'Umuarama', 'Zona V', 'Avenida Rio Grande do Norte', '000000'),
+(24, 'CLIENTE 06', '1999-09-09', '00.000.000-0', '221.856.143-39', '(99) 99999-9999', '87504-00', 'PR', 'Umuarama', 'Zona V', 'Avenida Rio Grande do Norte', '00'),
+(29, 'CLIENTE 11', '1994-04-16', '00.000.000-0', '558.652.838-04', '(44) 99999-9999', '13833-00', 'SP', 'Santo Antônio de Posse', 'Jardim Vila Rica', 'Rua Maestro Adelino Menuzzo', '1421'),
+(30, 'CLIENTE 12', '1994-04-16', '00.000.000-0', '056.288.111-57', '(44) 99999-9999', '13833-00', 'SP', 'Santo Antônio de Posse', 'Jardim Vila Rica', 'Rua Maestro Adelino Menuzzo', '1672');
 
 -- --------------------------------------------------------
 
@@ -70,7 +61,7 @@ INSERT INTO `cliente` (`id`, `nome`, `data_nascimento`, `rg`, `cpf`, `celular`, 
 CREATE TABLE `funcionario` (
   `id` int(11) NOT NULL,
   `nome` varchar(100) NOT NULL,
-  `cargo` varchar(40) DEFAULT 'Funcionario',
+  `cargo` varchar(40) DEFAULT 'Membro',
   `usuario` varchar(20) NOT NULL,
   `senha` varchar(50) NOT NULL,
   `email` varchar(100) NOT NULL,
@@ -84,8 +75,9 @@ CREATE TABLE `funcionario` (
 --
 
 INSERT INTO `funcionario` (`id`, `nome`, `cargo`, `usuario`, `senha`, `email`, `celular`, `path`, `data_upload`) VALUES
-(1, 'Admin', 'Administrador', 'Admin', '123abC', 'comercialexemplo@bit.com', '(00) 00000-0000', NULL, '2023-11-17'),
-(2, 'Bruno Pereira Bertolli', '', 'Bruno', '1471', '', '', NULL, '2023-11-17');
+(1, 'Admin', 'Administrador', 'Admin', '123abC', 'comercialexemplo@bit.com', '(44) 44444-4444', NULL, '2023-11-17'),
+(8, 'Bruno Pereira Bertolli', 'Suporte', 'brb', '@1', 'bertolli.pb@gmail.com', '(44) 99839-9410', NULL, '2023-12-02'),
+(9, 'Ednei do Esporte', 'Membro', 'ednei', '123', 'ednelsuduisport@gimeiu.cum', '(69) 96970-6024', NULL, '2023-12-02');
 
 -- --------------------------------------------------------
 
@@ -103,24 +95,38 @@ CREATE TABLE `ordem_de_servico` (
   `servicos` varchar(255) DEFAULT NULL,
   `valor_servico` decimal(10,2) DEFAULT NULL,
   `valor_total` decimal(10,2) DEFAULT NULL,
-  `data_criacao` timestamp NOT NULL DEFAULT current_timestamp()
+  `data_criacao` timestamp NOT NULL DEFAULT current_timestamp(),
+  `data_fechamento` datetime NOT NULL,
+  `status` varchar(20) DEFAULT 'Ativo'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `ordem_de_servico`
 --
 
-INSERT INTO `ordem_de_servico` (`id`, `cliente_id`, `equipamento`, `problema_relatado`, `problema_constatado`, `servico_executado`, `servicos`, `valor_servico`, `valor_total`, `data_criacao`) VALUES
-(1, 1, 'Laptop', 'Não sei', 'Não sei', 'Não sei', 'limpeza', 240.00, 300.00, '2023-11-15 22:09:01'),
-(2, 1, 'Laptop', 'Não sei', 'Não sei', 'Não sei', 'limpeza', 240.00, 300.00, '2023-11-15 22:09:40'),
-(3, 1, 'Laptop', 'Não sei', 'Não sei', 'Não sei', 'limpeza', 240.00, 300.00, '2023-11-15 22:10:08'),
-(4, 1, '', '', '', '', '', 0.00, 0.00, '2023-11-15 22:37:22'),
-(5, 1, '', '', '', '', '', 0.00, 0.00, '2023-11-15 22:37:24'),
-(7, 1, '', '', '', '', '', 0.00, 0.00, '2023-11-16 11:11:23'),
-(9, 1, 'PC', 'ABC', 'ABC', 'ABC', 'formatacao', 1.20, 1.20, '2023-11-19 16:35:06'),
-(10, 11, 'Notebook Asus', 'Está lento', 'HD danificado', 'Troca do HD por SSD e colocado parafusos', 'formatacao,trocadepeca,montagem', 165.00, 165.00, '2023-11-19 16:37:52'),
-(12, 1, 'BROCA DE ELIXIR DO CLASH OF CLANS', 'Deu tela AZUL', 'HIN TU PIO', 'Parafusuuus  e SSD', 'formatacao,limpeza,trocadepeca,instalacao', 160.00, 160.00, '2023-11-19 17:18:11'),
-(13, 11, 'Notebook Asus', 'Algo deu ruim no teclado', 'Teclado tá com merda de gato', 'Trocamos o teclado e o SSD, mas o teclado novo era do cliente', 'formatacao,trocadepeca,instalacao', 200.00, 200.00, '2023-11-19 17:21:17');
+INSERT INTO `ordem_de_servico` (`id`, `cliente_id`, `equipamento`, `problema_relatado`, `problema_constatado`, `servico_executado`, `servicos`, `valor_servico`, `valor_total`, `data_criacao`, `data_fechamento`, `status`) VALUES
+(1, 1, 'Laptop', 'Não sei', 'Não sei', 'Não sei', 'limpeza', 240.00, 300.00, '2023-11-15 22:09:01', '2023-12-01 00:00:00', 'Ativo'),
+(2, 1, 'Laptop', 'Não sei', 'Não sei', 'Não sei', 'limpeza', 240.00, 300.00, '2023-11-15 22:09:40', '2023-12-01 00:00:00', 'Ativo'),
+(3, 1, 'Laptop', 'Não sei', 'Não sei', 'Não sei', 'limpeza', 240.00, 300.00, '2023-11-15 22:10:08', '2023-12-01 00:00:00', 'Ativo'),
+(4, 1, '', '', '', '', '', 0.00, 0.00, '2023-11-15 22:37:22', '2023-12-01 00:00:00', 'Ativo'),
+(5, 1, '', '', '', '', '', 0.00, 0.00, '2023-11-15 22:37:24', '2023-12-01 00:00:00', 'Ativo'),
+(7, 1, '', '', '', '', '', 0.00, 0.00, '2023-11-16 11:11:23', '2023-12-01 00:00:00', 'Ativo'),
+(9, 1, 'PC', 'ABC', 'ABC', 'ABC', 'formatacao', 1.20, 1.20, '2023-11-19 16:35:06', '2023-12-01 00:00:00', 'Ativo'),
+(12, 1, 'BROCA DE ELIXIR DO CLASH OF CLANS', 'Deu tela AZUL', 'HIN TU PIO', 'Parafusuuus  e SSD', 'formatacao,limpeza,trocadepeca,instalacao', 160.00, 160.00, '2023-11-19 17:18:11', '2023-12-01 00:00:00', 'Ativo'),
+(17, 1, 'Notebook Asus', '', '', '', '', 200.00, 300.00, '2023-11-22 18:10:56', '2023-12-01 00:00:00', 'Ativo'),
+(18, 1, 'Notebook Asus', '', '', '', '', 200.00, 300.00, '2023-11-22 18:11:05', '2023-12-01 00:00:00', 'Ativo'),
+(19, 1, 'a', 'a', 'a', 'a', 'formatacao', 300.00, 300.00, '2023-11-23 13:04:35', '2023-12-01 00:00:00', 'Ativo'),
+(20, 1, 'a', 'a', 'a', 'a', 'formatacao', 150.00, 0.00, '2023-11-23 13:07:31', '2023-12-01 00:00:00', 'Ativo'),
+(21, 1, 'a', 'a', 'a', 'a', 'formatacao', 150.00, 0.00, '2023-11-23 13:07:32', '2023-12-01 00:00:00', 'Ativo'),
+(28, 1, 'Máquina Potente', 'Danificado', 'Sem funcionamento', 'Comprou um novo', 'formatacao,limpeza,trocadepeca,montagem', 1.00, 500.00, '2023-12-01 13:14:49', '2023-12-01 00:00:00', 'Ativo'),
+(30, 1, 'Notebook Asus', 'Abc', 'A', 's', NULL, NULL, NULL, '2023-12-01 13:34:28', '2023-12-01 00:00:00', 'Ativo'),
+(31, 1, 'Notebook Asus', 'Abc', 'A', 's', NULL, NULL, NULL, '2023-12-01 13:34:41', '2023-12-01 00:00:00', 'Ativo'),
+(32, 1, 'Notebook Asus', 'Abc', 'A', 's', NULL, NULL, NULL, '2023-12-01 13:34:48', '2023-12-01 00:00:00', 'Ativo'),
+(45, 24, 'Note', 'Asus', NULL, NULL, NULL, NULL, NULL, '2023-12-02 04:24:34', '0000-00-00 00:00:00', 'Ativo'),
+(46, 24, 'Notebook', 'Derramou café no teclado', NULL, NULL, NULL, NULL, NULL, '2023-12-02 11:34:25', '0000-00-00 00:00:00', 'Ativo'),
+(47, 29, 'BROCA DE ELIXIR DO CLASH OF CLANS', 'Está sujo', NULL, NULL, NULL, NULL, NULL, '2023-12-02 11:35:58', '0000-00-00 00:00:00', 'Ativo'),
+(48, 30, 'BROCA DE ELIXIR DA NASA', 'Sistema corrompido', NULL, NULL, NULL, NULL, NULL, '2023-12-02 11:36:16', '0000-00-00 00:00:00', 'Ativo'),
+(49, 30, 'Notebook da Nasa', 'Sistema corrompido', NULL, NULL, NULL, NULL, NULL, '2023-12-02 11:36:42', '0000-00-00 00:00:00', 'Ativo');
 
 -- --------------------------------------------------------
 
@@ -153,7 +159,13 @@ INSERT INTO `ordem_de_servico_peca` (`ordem_de_servico_id`, `peca_id`, `quantida
 (10, 6, 30),
 (12, 2, 1),
 (12, 6, 20),
-(13, 2, 1);
+(13, 2, 1),
+(17, 3, 1),
+(18, 3, 1),
+(19, 2, 2),
+(20, 2, 1),
+(21, 2, 1),
+(28, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -179,8 +191,8 @@ CREATE TABLE `peca` (
 
 INSERT INTO `peca` (`id`, `nome`, `descricao`, `marca`, `categoria`, `estoque_minimo`, `estoque_atual`, `valor_custo`, `valor_venda`) VALUES
 (1, 'SSD 120 Gb Gigabyte', '', '', '', 2, 2, 120.00, 140.00),
-(2, 'SSD 240Gb', 'State Solid Disk 240 Gigabytes Kingston', 'Kingston', 'SSD', 5, 8, 90.00, 150.00),
-(3, 'SSD 240Gb', 'State Solid Disk 240 Gigabytes Kingston', 'Kingston', 'SSD', 5, 10, 90.00, 150.00),
+(2, 'SSD 240Gb', 'State Solid Disk 240 Gigabytes Kingston', 'Kingston', 'SSD', 5, 4, 90.00, 150.00),
+(3, 'SSD 240Gb', 'State Solid Disk 240 Gigabytes Kingston', 'Kingston', 'SSD', 5, 7, 90.00, 150.00),
 (4, 'Fonte para Testes', 'Fonte de testes da loja', 'Indefinido', 'Fontes', 1, 1, 200.00, 1.00),
 (5, 'Fonte para Testes', 'Fonte de testes da loja', 'Indefinido', 'Fontes', 1, 1, 200.00, 1.00),
 (6, 'Parafuso', 'Parafuso da dona tereza', 'Casa dos Parafusos', 'Essencial', 1, 80, 0.10, 0.50),
@@ -233,19 +245,19 @@ ALTER TABLE `peca`
 -- AUTO_INCREMENT for table `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `funcionario`
 --
 ALTER TABLE `funcionario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `ordem_de_servico`
 --
 ALTER TABLE `ordem_de_servico`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- AUTO_INCREMENT for table `peca`
@@ -261,6 +273,7 @@ ALTER TABLE `peca`
 -- Constraints for table `ordem_de_servico`
 --
 ALTER TABLE `ordem_de_servico`
+  ADD CONSTRAINT `fk_cliente` FOREIGN KEY (`cliente_id`) REFERENCES `cliente` (`id`),
   ADD CONSTRAINT `ordem_de_servico_ibfk_1` FOREIGN KEY (`cliente_id`) REFERENCES `cliente` (`id`) ON DELETE CASCADE;
 
 --
