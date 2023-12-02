@@ -340,6 +340,257 @@ $(document).ready(function () {
         });
     });
 
+    $(document).on('click', "#salvarpeca", function (e) {
+        var id = $('#id').val();
+        var nome = $('#nome').val();
+        var descricao = $('#descricao').val();
+        var marca = $('#marca').val();
+        var categoria = $('#categoria').val();
+        var estoque_minimo = $('#estoque_minimo').val();
+        var estoque_atual = $('#estoque_atual').val();
+        var valor_custo = $('#valor_custo').val();
+        var valor_venda = $('#valor_venda').val();
+
+        $.ajax({
+            url: $path,
+            type: 'POST',
+            data: {
+                'action': 'updatePecaData',
+                'id': id,
+                'nome': nome,
+                'descricao': descricao,
+                'marca': marca,
+                'categoria': categoria,
+                'estoque_minimo': estoque_minimo,
+                'estoque_atual': estoque_atual,
+                'valor_custo': valor_custo,
+                'valor_venda': valor_venda,
+            },
+            success: function (response) {
+                alertMessage(response);
+                if (response == 'success') {
+                    // Atualiza a lista principal e esconde o modal
+                    $('#search-result').html('<td colspan="6">Pesquise novamente!</td>');
+                    setTimeout(() => {
+                        $('#editModal').hide();
+                    }, 250)
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error(error);
+            }
+        });
+    });
+
+
+    // Reconhece o ID do cliente ao pressionar no botão de exclusão e abre o modal para confirmação
+    $(document).on('click', ".delete_cliente", function (e) {
+        var idCliente = $(this).data('id');
+        $.ajax({
+            url: $path,
+            type: 'POST',
+            success: function () {
+                $('#idCliente').val(idCliente);
+                console.log("Abriu modal e o ID é:" + idCliente);
+
+                $('#excluirModal').removeClass('hidden').show();
+            },
+            error: function (xhr, status, error) {
+                console.error(error);
+            }
+        });
+    });
+
+    // Ao pressionar o botão de confirmação ele tenta excluir o cliente de acordo com o ID
+    $(document).on('click', "#excluir_cliente", function (e) {
+        var id = $('#idCliente').val();
+
+        $.ajax({
+            url: $path,
+            type: 'POST',
+            dataType: 'json',
+            data: { 'action': 'deleteData', 'id': id, },
+            success: function (response) {
+                console.log("Resposta json: " + response.success)
+                if (response.success) {
+                    $('#search-result').html('<td colspan="6">Pesquise novamente!</td>');
+                    setTimeout(() => {
+                        $('#excluirModal').hide();
+                        alertMessage('success');
+                    }, 250)
+                } else {
+                    alertMessage('erro-chave-estrangeira');
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error(error);
+            }
+        });
+    });
+
+
+    // Ao clicar no botão de edição ele atualiza os valores do modal de edição e exibe na tela
+    $(document).on('click', ".edit_funcionario", function (e) {
+        var editId = $(this).data('id');
+        console.log("Funcionario ID:" + editId);
+        $.ajax({
+            url: $path,
+            type: 'POST',
+            data: { 'action': 'getData', 'id': editId },
+            dataType: 'json',
+            success: function (data) {
+                // Campos do formulário com os dados recebidos
+                $('#editModal #id').val(data.id);
+                $('#editModal #nome').val(data.nome);
+                $('#editModal #usuario').val(data.usuario);
+                $('#editModal #cargo').val(data.cargo);
+                $('#editModal #senha').val(data.senha);
+                $('#editModal #confirmarSenha').val(data.senha);
+                $('#editModal #email').val(data.email);
+                $('#editModal #celular').val(data.celular);
+
+                // Abre o modal
+                $('#editModal').removeClass('hidden').show();
+            },
+            error: function (xhr, status, error) {
+                console.error(error);
+            }
+        });
+    });
+
+
+    $(document).on('click', "#salvar_funcionario", function (e) {
+        // Obtem os valores dos campos
+        var id = $('#editModal #id').val();
+        var nome = $('#editModal #nome').val();
+        var usuario = $('#editModal #usuario').val();
+        var cargo = $('#editModal #cargo').val();
+        var senha = $('#editModal #senha').val();
+        var confirmarSenha = $('#editModal #confirmarSenha').val();
+        var email = $('#editModal #email').val();
+        var celular = $('#editModal #celular').val();
+
+        // Verifica se as senhas coincidem antes de enviar
+        if (senha !== confirmarSenha) {
+            alertMessage('senha-nao-coincide');
+            return;
+        }
+
+        // Faz a chamada AJAX
+        $.ajax({
+            url: $path,
+            type: 'POST',
+            data: {
+                'action': 'updateEmployeeData',
+                'id': id,
+                'nome': nome,
+                'usuario': usuario,
+                'cargo': cargo,
+                'senha': senha,
+                'email': email,
+                'celular': celular
+            },
+            dataType: 'json',
+            success: function (response) {
+                if (response.success) {
+                    $('#search-result').html('<td colspan="7">Pesquise novamente!</td>');
+                    setTimeout(() => {
+                        $('#editModal').hide();
+                    }, 250);
+                    alertMessage('success');
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error(error);
+            }
+        });
+    });
+
+    // Reconhece o ID do funcionario ao pressionar no botão de exclusão e abre o modal para confirmação
+    $(document).on('click', ".delete_funcionario", function (e) {
+        var idCliente = $(this).data('id');
+        $.ajax({
+            url: $path,
+            type: 'POST',
+            success: function () {
+                $('#idFuncionario').val(idCliente);
+                console.log("Abriu modal e o ID é:" + idCliente);
+
+                $('#excluirModal').removeClass('hidden').show();
+            },
+            error: function (xhr, status, error) {
+                console.error(error);
+            }
+        });
+    });
+
+    // Ao pressionar o botão de confirmação ele tenta excluir o funcionario de acordo com o ID
+    $(document).on('click', "#excluir_funcionario", function (e) {
+        var id = $('#idFuncionario').val();
+
+        $.ajax({
+            url: $path,
+            type: 'POST',
+            dataType: 'json',
+            data: { 'action': 'deleteData', 'id': id, },
+            success: function (response) {
+                console.log("Resposta json: " + response.success)
+                if (response.success) {
+                    $('#search-result').html('<td colspan="7">Pesquise novamente!</td>');
+                    setTimeout(() => {
+                        $('#excluirModal').hide();
+                        alertMessage('success');
+                    }, 250)
+                } else {
+                    alertMessage('erro');
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error(error);
+            }
+        });
+    });
+
+
+    $(document).on('click', '.edit_os', function (e) {
+        var editId = $(this).data('id');
+        console.log(editId + " ordem de serviço");
+        $.ajax({
+            url: $path,
+            type: 'POST',
+            data: { 'action': 'getData', 'id': editId },
+            dataType: 'json',
+            success: function (data) {
+                console.log(data)
+                // Campos do formulário com os dados recebidos
+                // Preenchendo os campos do formulário de edição com os dados recebidos
+                $('#editModal #ordem_servico_id').val(data.os_id);
+                $('#editModal #nome').val(data.c_nome);
+                $('#editModal #equipamento').val(data.os_equipamento);
+                $('#editModal #problema_relatado').val(data.os_problema_relatado);
+                $('#editModal #problema_constatado').val(data.os_problema_constatado);
+                $('#editModal #servico_executado').val(data.os_servico_executado);
+                $('#editModal #valor_servico').val(data.os_valor_servico);
+                $('#editModal #valor_total').val(data.os_valor_total);
+
+
+                $('#editModal #formatacao').prop('checked', data.os_servicos.includes('formatacao')); // Formatação
+                $('#editModal #limpeza').prop('checked', data.os_servicos.includes('limpeza')); // Limpeza
+                $('#editModal #trocadepeca').prop('checked', data.os_servicos.includes('trocadepeca')); // Troca de peça
+                $('#editModal #montagem').prop('checked', data.os_servicos.includes('montagem')); // Montagem
+                $('#editModal #instalacao').prop('checked', data.os_servicos.includes('instalacao')); // Instalação de Programas
+                $('#editModal #restauracao').prop('checked', data.os_servicos.includes('restauracao')); // Recuperação de Arquivos
+
+
+                // Abre o modal
+                $('#editModal').removeClass('hidden').show();
+            },
+            error: function (xhr, status, error) {
+                console.error(error);
+            }
+        });
+    });
+
     $(document).on('submit', '#searchPeca', function (e) {
         e.preventDefault();
         console.log("searchForm");
