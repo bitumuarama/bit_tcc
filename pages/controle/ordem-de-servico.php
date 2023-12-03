@@ -7,19 +7,19 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
     // Conexão
     require_once("../../assets/php/auth_session.php");
     include("../../assets/php/connection.php");
-
-
+    
+    
     function search($termSearch)
     {
         include("../../assets/php/connection.php");
 
         if ($termSearch == 'all') {
-            $stmt = $conexao->prepare("SELECT os.id, c.nome AS cliente_nome, c.celular AS cliente_celular, os.equipamento, os.data_criacao, os.status FROM ordem_de_servico os INNER JOIN cliente c ON os.cliente_id = c.id");
+            $stmt = $conexao->prepare("SELECT os.id, c.nome AS cliente_nome, c.celular AS cliente_celular, os.equipamento, os.data_criacao, os.valor_total, os.status FROM ordem_de_servico os INNER JOIN cliente c ON os.cliente_id = c.id");
             $stmt->execute();
             $resultado = $stmt->get_result();
         } else {
             $searchValue = "%$termSearch%";
-            $stmt = $conexao->prepare("SELECT os.id, c.nome AS cliente_nome, c.celular AS cliente_celular, os.equipamento, os.data_criacao, os.status FROM ordem_de_servico os INNER JOIN cliente c ON os.cliente_id = c.id WHERE c.nome LIKE ?");
+            $stmt = $conexao->prepare("SELECT os.id, c.nome AS cliente_nome, c.celular AS cliente_celular, os.equipamento, os.data_criacao, os.valor_total, os.status FROM ordem_de_servico os INNER JOIN cliente c ON os.cliente_id = c.id WHERE c.nome LIKE ?");
             $stmt->bind_param("s", $searchValue);
             $stmt->execute();
             $resultado = $stmt->get_result();
@@ -34,12 +34,14 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
                     echo "<td>{$row['equipamento']}</td>";
                     echo "<td>{$row['cliente_celular']}</td>";
                     echo "<td>{$row['data_criacao']}</td>";
+                    echo "<td>{$row['valor_total']}</td>";
                     if (allowedUser()) {
                         echo "<td>
                     <div class='actions'>
                     <button class='edit_os button-icon' data-id='" . $row['id'] . "'><img src='../assets/img/edit-icon.png' alt='Editar'></button>
                     <button class='delete_os button-icon' data-id='" . $row['id'] . "'><img src='../assets/img/delete-icon.png' alt='Excluir'></button>
                     <button class='finish_os button-icon' data-id='" . $row['id'] . "'><img src='../assets/img/check-icon.png' alt='Excluir'></button>
+
                     </div></td>";
                     } else {
                         echo "<td>
@@ -323,6 +325,8 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
         </div>
     </div>
 
+    <!-- ... Seu HTML existente ... -->
+
     <div id="finalizarModal" class="modal hidden">
         <div class="modal-content">
             <span class="close">&times;</span>
@@ -383,19 +387,46 @@ $(".finish_os").click(function () {
 function preencherModalFinalizar(id, clienteNome, valorTotal) {
     $("#ordemServicoID").val(id);
     $("#clienteNome").val(clienteNome);
-    $("#valorTotal").val(valorTotal).maskMoney({
-        prefix: 'R$ ',
-        allowNegative: false,
-        thousands: '.',
-        decimal: ',',
-        affixesStay: false,
-        precision: 0
-    });
+    $("#valorTotal").val(valorTotal);
 }
 
+$(document).ready(function () {
+        // Adiciona máscara de dinheiro ao campo "Valor Total"
+        $('#valorTotal').maskMoney({
+            prefix: 'R$ ',
+            allowNegative: false,
+            thousands: '.',
+            decimal: ',',
+            affixesStay: false
+        }).on('change', function () {
+            var valorAtual = $(this).maskMoney('unmasked')[0];
+            if (valorAtual > valorLimite) {
+                alert('O valor não pode exceder R$' + valorLimite.toFixed(2).replace('.', ','));
+                $(this).maskMoney('mask', valorLimite);
+            }
+        });
+
+        // Adiciona máscara de dinheiro ao campo "Valor Pago"
+        $('#valorPago').maskMoney({
+            prefix: 'R$ ',
+            allowNegative: false,
+            thousands: '.',
+            decimal: ',',
+            affixesStay: false
+        }).on('change', function () {
+            var valorAtual = $(this).maskMoney('unmasked')[0];
+            if (valorAtual > valorLimite) {
+                alert('O valor não pode exceder R$' + valorLimite.toFixed(2).replace('.', ','));
+                $(this).maskMoney('mask', valorLimite);
+            }
+        });
+    });
 
     </script>
 
+    
+
+    
     <div id="clientList">
         <table id="clientsTable">
             <thead>
@@ -405,6 +436,7 @@ function preencherModalFinalizar(id, clienteNome, valorTotal) {
                     <th>Equipamento</th>
                     <th>Celular</th>
                     <th>Data de Criação</th>
+                    <th>Valor</th>
                     <th>Ações</th>
                 </tr>
             </thead>
