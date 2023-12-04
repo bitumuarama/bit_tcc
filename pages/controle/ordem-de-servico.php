@@ -7,8 +7,8 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
     // Conexão
     require_once("../../assets/php/auth_session.php");
     include("../../assets/php/connection.php");
-    
-    
+
+
     function search($termSearch)
     {
         include("../../assets/php/connection.php");
@@ -142,6 +142,67 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
         exit;
     }
 
+    if (isset($_POST['action']) && $_POST['action'] == 'getReceiveData') {
+        $id = $_POST['id'];
+        $stmt = $conexao->prepare("
+            SELECT 
+                c.id AS cliente_id, 
+                c.nome AS cliente_nome, 
+                os.valor_total AS valor_total
+            FROM 
+                ordem_de_servico os 
+            INNER JOIN 
+                cliente c ON os.cliente_id = c.id
+            WHERE 
+                os.id = ?
+        ");
+        
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $resultado = $stmt->get_result()->fetch_assoc();
+
+        header('Content-Type: application/json');
+        echo json_encode($resultado);
+        exit;
+    }
+    
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] == 'salvarrecebimento') {
+        $clienteId = $_POST['clienteId'];
+        $ordemServicoID = $_POST['ordemServicoID'];
+        $valorPago = $_POST['valorPago'];
+        $valorTotal = $_POST['valorTotal'];
+        $formaPagamento = $_POST['formaPagamento'];
+        
+        $stmt = $conexao->prepare("INSERT INTO recebimento (cliente_id, os_id, valor_pago, valor_total, forma_pagamento) VALUES (?, ?, ?, ?, ?)");
+        $stmt->bind_param("iidds", $clienteId, $ordemServicoID, $valorPago, $valorTotal, $formaPagamento);
+    
+        try {
+            if ($stmt->execute()) {
+                $usts = $conexao->prepare("UPDATE ordem_de_servico SET status = 'pendente' WHERE id = ?");
+                $usts->bind_param("i", $ordemServicoID);
+    
+                if ($usts->execute()) {
+                    echo json_encode(['success' => true, 'message' => $ordemServicoID]);
+                } else {
+                    echo json_encode(['success' => false, 'message' => 'Erro: ' . mysqli_error($conexao)]);
+                }
+    
+                $usts->close();
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Erro: ' . mysqli_error($conexao)]);
+            }
+        } catch (Exception $e) {
+            echo json_encode(['success' => false, 'message' => 'Erro: ' . $e->getMessage()]);
+        }
+    
+        $stmt->close();
+        $conexao->close();
+    }
+    
+    
+
+
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] == 'updateOSData') {
         $os_id = $_POST['ordem_de_servico_id'];
@@ -189,6 +250,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Controle de Clientes</title>
+    <script src="../assets/js/masks.js"></script>
 </head>
 
 <body>
@@ -331,8 +393,10 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
         <div class="modal-content">
             <span class="close">&times;</span>
             <form id="finalizarForm">
+
                 <div class="field">
                     <label for="clienteNome">Nome do Cliente:</label>
+                    <input type="text" id="clienteId" name="clienteId" readonly hidden>
                     <input type="text" id="clienteNome" name="clienteNome" readonly>
                 </div>
                 <div>
@@ -349,7 +413,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
                 </div>
                 <div class="field">
                     <label for="valorTotal">Valor Total:</label>
-                    <input type="text"  id="valorTotal" name="valorTotal" placeholder="R$" readonly>
+                    <input type="text" id="valorTotal" name="valorTotal" placeholder="R$" readonly>
                 </div>
                 <div class="field">
                     <label for="valorPago">Valor Pago:</label>
@@ -368,40 +432,40 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
 
     <!-- ... (código anterior) ... -->
 
-    <script>
-        
+    <!-- <script>
+
         // Função para abrir o modal de finalização ao clicar no botão "Finalizar"
-$(".finish_os").click(function () {
-    var id = $(this).closest("tr").find("td:eq(0)").text();
-    var clienteNome = $(this).closest("tr").find("td:eq(1)").text();
-    var valorTotal = $(this).closest("tr").find("td:eq(5)").text(); // Ajuste para pegar o valor na coluna correta
+        $(".finish_os").click(function () {
+            var id = $(this).closest("tr").find("td:eq(0)").text();
+            var clienteNome = $(this).closest("tr").find("td:eq(1)").text();
+            var valorTotal = $(this).closest("tr").find("td:eq(5)").text(); // Ajuste para pegar o valor na coluna correta
 
-    // Preenche o modal de finalização
-    preencherModalFinalizar(id, clienteNome, valorTotal);
+            // Preenche o modal de finalização
+            preencherModalFinalizar(id, clienteNome, valorTotal);
 
-    // Abre o modal de finalização
-    $("#finalizarModal").removeClass("hidden");
-});
+            // Abre o modal de finalização
+            $("#finalizarModal").removeClass("hidden");
+        });
 
-// Função para preencher o modal de finalização com os dados da ordem de serviço
-// Função para preencher o modal de finalização com os dados da ordem de serviço
-function preencherModalFinalizar(id, clienteNome, valorTotal) {
-    $("#ordemServicoID").val(id);
-    $("#clienteNome").val(clienteNome);
+        // Função para preencher o modal de finalização com os dados da ordem de serviço
+        // Função para preencher o modal de finalização com os dados da ordem de serviço
+        function preencherModalFinalizar(id, clienteNome, valorTotal) {
+            $("#ordemServicoID").val(id);
+            $("#clienteNome").val(clienteNome);
 
-    // Remove apenas o prefixo "R$ "
-    valorTotal = valorTotal.replace('R$ ', '');
+            // Remove apenas o prefixo "R$ "
+            valorTotal = valorTotal.replace('R$ ', '');
 
-    // Atribui o valor diretamente ao campo "Valor Total" no modal
-    $("#valorTotal").val('R$ ' + valorTotal);
-}
+            // Atribui o valor diretamente ao campo "Valor Total" no modal
+            $("#valorTotal").val('R$ ' + valorTotal);
+        }
 
 
-    </script>
+    </script> -->
 
-    
 
-    
+
+
     <div id="clientList">
         <table id="clientsTable">
             <thead>
