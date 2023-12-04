@@ -177,6 +177,7 @@ $(document).ready(function () {
         });
     });
 
+    
 
     // Ao clicar no botão de edição ele atualiza os valores do modal de edição e exibe na tela
     $(document).on('click', ".edit_funcionario", function (e) {
@@ -206,7 +207,49 @@ $(document).ready(function () {
             }
         });
     });
+    $(document).on('click', "#confirmarFinalizacao", function (e) {
+        // Obtem os valores dos campos
+        var clienteId = $('#finalizarModal #clienteId').val();
+        var formaPagamento = $('#finalizarModal #formaPagamento').val();
+        var valorTotal = $('#finalizarModal #valorTotal').val();
+        var valorPago = $('#finalizarModal #valorPago').val();
+        var ordemServicoID = $('#finalizarModal #ordemServicoID').val();
+        
 
+        console.log(clienteId)
+        console.log(formaPagamento)
+        console.log(valorTotal)
+        console.log(valorPago)
+        console.log(ordemServicoID)
+        // Faz a chamada AJAX
+        $.ajax({
+            url: $path,
+            type: 'POST',
+            data: {
+                'action': 'salvarrecebimento',
+                'clienteId': clienteId,
+                'formaPagamento': formaPagamento,
+                'valorTotal': valorTotal,
+                'valorPago': valorPago,
+                'ordemServicoID': ordemServicoID,
+                
+                
+            },
+            dataType: 'json',
+            success: function (response) {
+                if (response.success) {
+                    $('#search-result').html('<td colspan="7">Pesquise novamente!</td>');
+                    setTimeout(() => {
+                        $('#editModal').hide();
+                    }, 250);
+                    alertMessage('success');
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("erro aqui: " + error);
+            }
+        });
+    });
 
     $(document).on('click', "#salvar_funcionario", function (e) {
         // Obtem os valores dos campos
@@ -225,6 +268,7 @@ $(document).ready(function () {
             return;
         }
 
+        
         // Faz a chamada AJAX
         $.ajax({
             url: $path,
@@ -584,6 +628,29 @@ $(document).ready(function () {
 
                 // Abre o modal
                 $('#editModal').removeClass('hidden').show();
+            },
+            error: function (xhr, status, error) {
+                console.error(error);
+            }
+        });
+    });
+
+    $(document).on('click', ".finish_os", function (e) {
+        var id = $(this).data('id');
+        $.ajax({
+            url: $path,
+            type: 'POST',
+            data: { 'action': 'getReceiveData', 'id': id },
+            dataType: 'json',
+            success: function (data) {
+                // Campos do formulário com os dados recebidos
+                $('#finalizarModal #ordemServicoID').val(id);
+                $('#finalizarModal #clienteId').val(data.cliente_id);
+                $('#finalizarModal #clienteNome').val(data.cliente_nome);
+                $('#finalizarModal #valorTotal').val(data.valor_total);
+
+                // Abre o modal
+                $('#finalizarModal').removeClass('hidden').show();
             },
             error: function (xhr, status, error) {
                 console.error(error);
