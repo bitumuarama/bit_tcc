@@ -349,11 +349,11 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
                 </div>
                 <div class="field">
                     <label for="valorTotal">Valor Total:</label>
-                    <input type="text" id="valorTotal" name="valorTotal" readonly>
+                    <input type="text"  id="valorTotal" name="valorTotal" placeholder="R$" readonly>
                 </div>
                 <div class="field">
                     <label for="valorPago">Valor Pago:</label>
-                    <input type="text" id="valorPago" name="valorPago">
+                    <input type="text" class="contabil" id="valorPago" name="valorPago" placeholder="R$">
                 </div>
                 <div class="field">
                     <label for="ordemServicoID">ID da Ordem de Serviço:</label>
@@ -384,43 +384,18 @@ $(".finish_os").click(function () {
 });
 
 // Função para preencher o modal de finalização com os dados da ordem de serviço
+// Função para preencher o modal de finalização com os dados da ordem de serviço
 function preencherModalFinalizar(id, clienteNome, valorTotal) {
     $("#ordemServicoID").val(id);
     $("#clienteNome").val(clienteNome);
-    $("#valorTotal").val(valorTotal);
+
+    // Remove apenas o prefixo "R$ "
+    valorTotal = valorTotal.replace('R$ ', '');
+
+    // Atribui o valor diretamente ao campo "Valor Total" no modal
+    $("#valorTotal").val('R$ ' + valorTotal);
 }
 
-$(document).ready(function () {
-        // Adiciona máscara de dinheiro ao campo "Valor Total"
-        $('#valorTotal').maskMoney({
-            prefix: 'R$ ',
-            allowNegative: false,
-            thousands: '.',
-            decimal: ',',
-            affixesStay: false
-        }).on('change', function () {
-            var valorAtual = $(this).maskMoney('unmasked')[0];
-            if (valorAtual > valorLimite) {
-                alert('O valor não pode exceder R$' + valorLimite.toFixed(2).replace('.', ','));
-                $(this).maskMoney('mask', valorLimite);
-            }
-        });
-
-        // Adiciona máscara de dinheiro ao campo "Valor Pago"
-        $('#valorPago').maskMoney({
-            prefix: 'R$ ',
-            allowNegative: false,
-            thousands: '.',
-            decimal: ',',
-            affixesStay: false
-        }).on('change', function () {
-            var valorAtual = $(this).maskMoney('unmasked')[0];
-            if (valorAtual > valorLimite) {
-                alert('O valor não pode exceder R$' + valorLimite.toFixed(2).replace('.', ','));
-                $(this).maskMoney('mask', valorLimite);
-            }
-        });
-    });
 
     </script>
 
