@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 02, 2023 at 02:22 PM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.0.28
+-- Tempo de geração: 06/12/2023 às 12:19
+-- Versão do servidor: 10.4.32-MariaDB
+-- Versão do PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,15 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `bit_tcc`
+-- Banco de dados: `bit_tcc`
 --
+CREATE DATABASE IF NOT EXISTS `bit_tcc` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `bit_tcc`;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `cliente`
+-- Estrutura para tabela `cliente`
 --
 
 CREATE TABLE `cliente` (
@@ -43,25 +45,27 @@ CREATE TABLE `cliente` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `cliente`
+-- Despejando dados para a tabela `cliente`
 --
 
 INSERT INTO `cliente` (`id`, `nome`, `data_nascimento`, `rg`, `cpf`, `celular`, `cep`, `estado`, `cidade`, `bairro`, `rua`, `numero`) VALUES
-(1, 'ADMINISTRADOR', '2000-01-01', '00.000.000-0', '080.391.989-17', '(00) 00000-0000', '0000-000', 'PR', 'Umuarama', 'Zona V', 'Avenida Rio Grande do Norte', '000000'),
-(24, 'CLIENTE 06', '1999-09-09', '00.000.000-0', '221.856.143-39', '(99) 99999-9999', '87504-00', 'PR', 'Umuarama', 'Zona V', 'Avenida Rio Grande do Norte', '00'),
-(29, 'CLIENTE 11', '1994-04-16', '00.000.000-0', '558.652.838-04', '(44) 99999-9999', '13833-00', 'SP', 'Santo Antônio de Posse', 'Jardim Vila Rica', 'Rua Maestro Adelino Menuzzo', '1421'),
-(30, 'CLIENTE 12', '1994-04-16', '00.000.000-0', '056.288.111-57', '(44) 99999-9999', '13833-00', 'SP', 'Santo Antônio de Posse', 'Jardim Vila Rica', 'Rua Maestro Adelino Menuzzo', '1672');
+(1, 'ADMINISTRADOR', '2000-01-01', '00.000.000-0', '000.000.000-00', '(00) 00000-0000', '00000-00', 'PR', 'Cidade', 'Centro', 'Av. Tecnologias', '000000'),
+(3, 'Maria Souza ', '1991-02-02', 'SP-20.234.56', '000.000.002-72', '(11) 90000-0002', '01000-00', 'SP', 'São Paulo', 'Brás', 'Rua São Caetano', '200'),
+(4, 'Pedro Santos de Souza', '1992-03-03', 'RJ-30.345.67', '000.000.003-53', '(21) 90000-0003', '22000-00', '', 'Rio de Janeiro', 'Copacabana', 'Avenida Atlântica', '300'),
+(5, 'Ana Costa', '1993-04-04', 'RS-40.456.78', '000.000.004-34', '(51) 90000-0004', '90000-00', 'RS', 'Porto Alegre', 'Centro', 'Rua dos Andradas', '400'),
+(6, 'Lucas Martins', '1994-05-05', 'PR-50.567.89', '000.000.005-15', '(41) 90000-0005', '80000-00', 'PR', 'Curitiba', 'Batel', 'Avenida Sete de Setembro', '500'),
+(10, 'Carlos Rodrigues', '1998-09-09', 'CE-90.901.23', '000.000.009-39', '(85) 90000-0009', '60000-00', 'CE', 'Fortaleza', 'Meireles', 'Avenida Beira Mar', '900');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `funcionario`
+-- Estrutura para tabela `funcionario`
 --
 
 CREATE TABLE `funcionario` (
   `id` int(11) NOT NULL,
   `nome` varchar(100) NOT NULL,
-  `cargo` varchar(40) DEFAULT 'Membro',
+  `cargo` varchar(40) DEFAULT 'Funcionario',
   `usuario` varchar(20) NOT NULL,
   `senha` varchar(50) NOT NULL,
   `email` varchar(100) NOT NULL,
@@ -71,18 +75,16 @@ CREATE TABLE `funcionario` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `funcionario`
+-- Despejando dados para a tabela `funcionario`
 --
 
 INSERT INTO `funcionario` (`id`, `nome`, `cargo`, `usuario`, `senha`, `email`, `celular`, `path`, `data_upload`) VALUES
-(1, 'Admin', 'Administrador', 'Admin', '123abC', 'comercialexemplo@bit.com', '(44) 44444-4444', NULL, '2023-11-17'),
-(8, 'Bruno Pereira Bertolli', 'Suporte', 'brb', '@1', 'bertolli.pb@gmail.com', '(44) 99839-9410', NULL, '2023-12-02'),
-(9, 'Ednei do Esporte', 'Membro', 'ednei', '123', 'ednelsuduisport@gimeiu.cum', '(69) 96970-6024', NULL, '2023-12-02');
+(1, 'Administrador', 'Administrador', 'Admin', '123abC', 'comercialexemplo@bit.com', '(00) 00000-0000', NULL, '2023-11-17');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ordem_de_servico`
+-- Estrutura para tabela `ordem_de_servico`
 --
 
 CREATE TABLE `ordem_de_servico` (
@@ -93,45 +95,26 @@ CREATE TABLE `ordem_de_servico` (
   `problema_constatado` text DEFAULT NULL,
   `servico_executado` text DEFAULT NULL,
   `servicos` varchar(255) DEFAULT NULL,
-  `valor_servico` decimal(10,2) DEFAULT NULL,
-  `valor_total` decimal(10,2) DEFAULT NULL,
+  `valor_servico` double(10,2) DEFAULT NULL,
+  `valor_total` double(10,2) DEFAULT NULL,
+  `valor_pago` double(10,2) NOT NULL DEFAULT 0.00,
   `data_criacao` timestamp NOT NULL DEFAULT current_timestamp(),
-  `data_fechamento` datetime NOT NULL,
-  `status` varchar(20) DEFAULT 'Ativo'
+  `status` varchar(20) NOT NULL DEFAULT 'Ativo'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `ordem_de_servico`
+-- Despejando dados para a tabela `ordem_de_servico`
 --
 
-INSERT INTO `ordem_de_servico` (`id`, `cliente_id`, `equipamento`, `problema_relatado`, `problema_constatado`, `servico_executado`, `servicos`, `valor_servico`, `valor_total`, `data_criacao`, `data_fechamento`, `status`) VALUES
-(1, 1, 'Laptop', 'Não sei', 'Não sei', 'Não sei', 'limpeza', 240.00, 300.00, '2023-11-15 22:09:01', '2023-12-01 00:00:00', 'Ativo'),
-(2, 1, 'Laptop', 'Não sei', 'Não sei', 'Não sei', 'limpeza', 240.00, 300.00, '2023-11-15 22:09:40', '2023-12-01 00:00:00', 'Ativo'),
-(3, 1, 'Laptop', 'Não sei', 'Não sei', 'Não sei', 'limpeza', 240.00, 300.00, '2023-11-15 22:10:08', '2023-12-01 00:00:00', 'Ativo'),
-(4, 1, '', '', '', '', '', 0.00, 0.00, '2023-11-15 22:37:22', '2023-12-01 00:00:00', 'Ativo'),
-(5, 1, '', '', '', '', '', 0.00, 0.00, '2023-11-15 22:37:24', '2023-12-01 00:00:00', 'Ativo'),
-(7, 1, '', '', '', '', '', 0.00, 0.00, '2023-11-16 11:11:23', '2023-12-01 00:00:00', 'Ativo'),
-(9, 1, 'PC', 'ABC', 'ABC', 'ABC', 'formatacao', 1.20, 1.20, '2023-11-19 16:35:06', '2023-12-01 00:00:00', 'Ativo'),
-(12, 1, 'BROCA DE ELIXIR DO CLASH OF CLANS', 'Deu tela AZUL', 'HIN TU PIO', 'Parafusuuus  e SSD', 'formatacao,limpeza,trocadepeca,instalacao', 160.00, 160.00, '2023-11-19 17:18:11', '2023-12-01 00:00:00', 'Ativo'),
-(17, 1, 'Notebook Asus', '', '', '', '', 200.00, 300.00, '2023-11-22 18:10:56', '2023-12-01 00:00:00', 'Ativo'),
-(18, 1, 'Notebook Asus', '', '', '', '', 200.00, 300.00, '2023-11-22 18:11:05', '2023-12-01 00:00:00', 'Ativo'),
-(19, 1, 'a', 'a', 'a', 'a', 'formatacao', 300.00, 300.00, '2023-11-23 13:04:35', '2023-12-01 00:00:00', 'Ativo'),
-(20, 1, 'a', 'a', 'a', 'a', 'formatacao', 150.00, 0.00, '2023-11-23 13:07:31', '2023-12-01 00:00:00', 'Ativo'),
-(21, 1, 'a', 'a', 'a', 'a', 'formatacao', 150.00, 0.00, '2023-11-23 13:07:32', '2023-12-01 00:00:00', 'Ativo'),
-(28, 1, 'Máquina Potente', 'Danificado', 'Sem funcionamento', 'Comprou um novo', 'formatacao,limpeza,trocadepeca,montagem', 1.00, 500.00, '2023-12-01 13:14:49', '2023-12-01 00:00:00', 'Ativo'),
-(30, 1, 'Notebook Asus', 'Abc', 'A', 's', NULL, NULL, NULL, '2023-12-01 13:34:28', '2023-12-01 00:00:00', 'Ativo'),
-(31, 1, 'Notebook Asus', 'Abc', 'A', 's', NULL, NULL, NULL, '2023-12-01 13:34:41', '2023-12-01 00:00:00', 'Ativo'),
-(32, 1, 'Notebook Asus', 'Abc', 'A', 's', NULL, NULL, NULL, '2023-12-01 13:34:48', '2023-12-01 00:00:00', 'Ativo'),
-(45, 24, 'Note', 'Asus', NULL, NULL, NULL, NULL, NULL, '2023-12-02 04:24:34', '0000-00-00 00:00:00', 'Ativo'),
-(46, 24, 'Notebook', 'Derramou café no teclado', NULL, NULL, NULL, NULL, NULL, '2023-12-02 11:34:25', '0000-00-00 00:00:00', 'Ativo'),
-(47, 29, 'BROCA DE ELIXIR DO CLASH OF CLANS', 'Está sujo', NULL, NULL, NULL, NULL, NULL, '2023-12-02 11:35:58', '0000-00-00 00:00:00', 'Ativo'),
-(48, 30, 'BROCA DE ELIXIR DA NASA', 'Sistema corrompido', NULL, NULL, NULL, NULL, NULL, '2023-12-02 11:36:16', '0000-00-00 00:00:00', 'Ativo'),
-(49, 30, 'Notebook da Nasa', 'Sistema corrompido', NULL, NULL, NULL, NULL, NULL, '2023-12-02 11:36:42', '0000-00-00 00:00:00', 'Ativo');
+INSERT INTO `ordem_de_servico` (`id`, `cliente_id`, `equipamento`, `problema_relatado`, `problema_constatado`, `servico_executado`, `servicos`, `valor_servico`, `valor_total`, `valor_pago`, `data_criacao`, `status`) VALUES
+(16, 5, 'NOTEBOOK', 'SAS', 'SAS', 'SAS', 'formatacao,trocadepeca', 0.00, 100.00, 0.00, '2023-12-01 11:53:39', 'Finalizado'),
+(21, 6, '', '', NULL, NULL, NULL, 1.00, 1.00, 0.00, '2023-12-05 14:09:38', 'Pendente'),
+(24, 4, 'aaaaa', '', NULL, NULL, NULL, NULL, NULL, 0.00, '2023-12-05 18:17:04', 'Ativo');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ordem_de_servico_peca`
+-- Estrutura para tabela `ordem_de_servico_peca`
 --
 
 CREATE TABLE `ordem_de_servico_peca` (
@@ -141,36 +124,16 @@ CREATE TABLE `ordem_de_servico_peca` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `ordem_de_servico_peca`
+-- Despejando dados para a tabela `ordem_de_servico_peca`
 --
 
 INSERT INTO `ordem_de_servico_peca` (`ordem_de_servico_id`, `peca_id`, `quantidade`) VALUES
-(1, 1, 1),
-(1, 1, 1),
-(2, 1, 1),
-(2, 1, 1),
-(2, 1, 5),
-(3, 1, 3),
-(4, 2, 1),
-(5, 2, 1),
-(7, 1, 1),
-(9, 2, 1),
-(10, 2, 1),
-(10, 6, 30),
-(12, 2, 1),
-(12, 6, 20),
-(13, 2, 1),
-(17, 3, 1),
-(18, 3, 1),
-(19, 2, 2),
-(20, 2, 1),
-(21, 2, 1),
-(28, 3, 1);
+(16, 3, 1);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `peca`
+-- Estrutura para tabela `peca`
 --
 
 CREATE TABLE `peca` (
@@ -181,107 +144,142 @@ CREATE TABLE `peca` (
   `categoria` varchar(100) NOT NULL,
   `estoque_minimo` int(11) NOT NULL,
   `estoque_atual` int(11) NOT NULL,
-  `valor_custo` decimal(10,2) NOT NULL,
-  `valor_venda` decimal(10,2) NOT NULL
+  `valor_custo` double(10,2) NOT NULL,
+  `valor_venda` double(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `peca`
+-- Despejando dados para a tabela `peca`
 --
 
 INSERT INTO `peca` (`id`, `nome`, `descricao`, `marca`, `categoria`, `estoque_minimo`, `estoque_atual`, `valor_custo`, `valor_venda`) VALUES
-(1, 'SSD 120 Gb Gigabyte', '', '', '', 2, 2, 120.00, 140.00),
-(2, 'SSD 240Gb', 'State Solid Disk 240 Gigabytes Kingston', 'Kingston', 'SSD', 5, 4, 90.00, 150.00),
-(3, 'SSD 240Gb', 'State Solid Disk 240 Gigabytes Kingston', 'Kingston', 'SSD', 5, 7, 90.00, 150.00),
-(4, 'Fonte para Testes', 'Fonte de testes da loja', 'Indefinido', 'Fontes', 1, 1, 200.00, 1.00),
-(5, 'Fonte para Testes', 'Fonte de testes da loja', 'Indefinido', 'Fontes', 1, 1, 200.00, 1.00),
-(6, 'Parafuso', 'Parafuso da dona tereza', 'Casa dos Parafusos', 'Essencial', 1, 80, 0.10, 0.50),
-(7, 'Teclado ASUS', 'Teclado para notebook', 'SEi lá', 'Teclado', 1, 1, 0.00, 0.00),
-(8, 'Teclado ASUS', 'Teclado para notebook', 'SEi lá', 'Teclado', 1, 1, 1.00, 2.00),
-(9, 'Teclado ASUS', 'Teclado para notebook', 'SEi lá', 'Teclado', 1, 1, 0.00, 0.00),
-(10, 'Teste', 'Teste', 'TEste', 'Teste', 1, 22, 50.00, 50.00);
+(1, 'SSD 120 Gb Gigabyte', '', 'Kingston', '', 1, 12, 200.00, 500.00),
+(2, 'SSD 240Gb', 'State Solid Disk 240 Gigabytes Kingston', 'Kingston', 'SSD', 5, 7, 66.25, 15000.00),
+(3, 'SSD 240Gb', 'State Solid Disk 240 Gigabytes Kingston', 'Kingston', 'SSD', 5, 9, 90.00, 150.00),
+(8, 'Teclado ASUS', 'Teclado para notebook', 'SEi lá', 'Teclado', 1, 1, 1.00, 2.00);
+
+-- --------------------------------------------------------
 
 --
--- Indexes for dumped tables
+-- Estrutura para tabela `recebimento`
+--
+
+CREATE TABLE `recebimento` (
+  `id` int(11) NOT NULL,
+  `cliente_id` int(11) NOT NULL,
+  `ordem_servico_id` int(11) NOT NULL,
+  `data_recebimento` datetime NOT NULL DEFAULT current_timestamp(),
+  `valor_recebimento` double(10,2) NOT NULL DEFAULT 0.00,
+  `forma_pagamento` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `recebimento`
+--
+
+INSERT INTO `recebimento` (`id`, `cliente_id`, `ordem_servico_id`, `data_recebimento`, `valor_recebimento`, `forma_pagamento`) VALUES
+(2, 5, 16, '2023-11-15 19:09:01', 0.00, 'cartao_credito'),
+(8, 6, 21, '2023-11-15 19:09:01', 0.00, 'cartao_credito');
+
+--
+-- Índices para tabelas despejadas
 --
 
 --
--- Indexes for table `cliente`
+-- Índices de tabela `cliente`
 --
 ALTER TABLE `cliente`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `funcionario`
+-- Índices de tabela `funcionario`
 --
 ALTER TABLE `funcionario`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `ordem_de_servico`
+-- Índices de tabela `ordem_de_servico`
 --
 ALTER TABLE `ordem_de_servico`
   ADD PRIMARY KEY (`id`),
   ADD KEY `cliente_id` (`cliente_id`);
 
 --
--- Indexes for table `ordem_de_servico_peca`
+-- Índices de tabela `ordem_de_servico_peca`
 --
 ALTER TABLE `ordem_de_servico_peca`
   ADD KEY `ordem_de_servico_id` (`ordem_de_servico_id`),
   ADD KEY `peca_id` (`peca_id`);
 
 --
--- Indexes for table `peca`
+-- Índices de tabela `peca`
 --
 ALTER TABLE `peca`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- Índices de tabela `recebimento`
+--
+ALTER TABLE `recebimento`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `os_idpk` (`ordem_servico_id`);
+
+--
+-- AUTO_INCREMENT para tabelas despejadas
 --
 
 --
--- AUTO_INCREMENT for table `cliente`
+-- AUTO_INCREMENT de tabela `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
--- AUTO_INCREMENT for table `funcionario`
+-- AUTO_INCREMENT de tabela `funcionario`
 --
 ALTER TABLE `funcionario`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- AUTO_INCREMENT for table `ordem_de_servico`
+-- AUTO_INCREMENT de tabela `ordem_de_servico`
 --
 ALTER TABLE `ordem_de_servico`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
--- AUTO_INCREMENT for table `peca`
+-- AUTO_INCREMENT de tabela `peca`
 --
 ALTER TABLE `peca`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
--- Constraints for dumped tables
+-- AUTO_INCREMENT de tabela `recebimento`
+--
+ALTER TABLE `recebimento`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- Restrições para tabelas despejadas
 --
 
 --
--- Constraints for table `ordem_de_servico`
+-- Restrições para tabelas `ordem_de_servico`
 --
 ALTER TABLE `ordem_de_servico`
-  ADD CONSTRAINT `fk_cliente` FOREIGN KEY (`cliente_id`) REFERENCES `cliente` (`id`),
   ADD CONSTRAINT `ordem_de_servico_ibfk_1` FOREIGN KEY (`cliente_id`) REFERENCES `cliente` (`id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `ordem_de_servico_peca`
+-- Restrições para tabelas `ordem_de_servico_peca`
 --
 ALTER TABLE `ordem_de_servico_peca`
   ADD CONSTRAINT `ordem_de_servico_peca_ibfk_1` FOREIGN KEY (`ordem_de_servico_id`) REFERENCES `ordem_de_servico` (`id`),
   ADD CONSTRAINT `ordem_de_servico_peca_ibfk_2` FOREIGN KEY (`peca_id`) REFERENCES `peca` (`id`);
+
+--
+-- Restrições para tabelas `recebimento`
+--
+ALTER TABLE `recebimento`
+  ADD CONSTRAINT `os_idpk` FOREIGN KEY (`ordem_servico_id`) REFERENCES `ordem_de_servico` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
