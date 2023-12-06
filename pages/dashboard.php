@@ -97,7 +97,11 @@ if (isset($_SESSION['status'])) {
                         }
                         ?>
                         <li><a class="menu-item" href="#controle/ordem-de-servico">Ordem de Serviço</a></li>
-                        <li><a class="menu-item" href="#controle/pagamentos">Pagamentos</a></li>
+                        <li><a class="menu-item" href="#controle/recebimentos">Recebimentos</a></li>
+                        <?php if (allowedUser()) {
+                            echo '<li><a class="menu-item" href="#controle/peca">Peças</a></li>';
+                        }
+                        ?>
                     </ul>
                     <a class="mobile-logout" href="../assets/php/exit.php">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -165,7 +169,11 @@ if (isset($_SESSION['status'])) {
                         }
                         ?>
                         <li><a class="menu-item" href="#controle/ordem-de-servico">Ordem de Serviço</a></li>
-                        <li><a class="menu-item" href="#controle/pagamentos">Pagamentos</a></li>
+                        <li><a class="menu-item" href="#controle/recebimentos">Recebimentos</a></li>
+                        <?php if (allowedUser()) {
+                            echo '<li><a class="menu-item" href="#controle/peca">Peças</a></li>';
+                        }
+                        ?>
                     </ul>
                 </div>
                 <?php
