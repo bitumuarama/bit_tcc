@@ -38,7 +38,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
                 echo "<td>{$row['cliente_nome']}</td>";
                 echo "<td class='status_data'>{$row['status']}</td>";
                 // Verifica se existe data de último recebimento e a exibe, caso contrário, mostra uma mensagem
-                echo "<td>" . ($row['ultimo_recebimento'] ? $row['ultimo_recebimento'] : "Nenhum pagamento") . "</td>";
+                echo "<td>" . ($row['ultimo_recebimento'] ? date('d/m/Y H:i:s', strtotime($row['ultimo_recebimento'])) : "Nenhum pagamento") . "</td>";
                 echo "<td>R$ " . number_format($row['valor_total'], 2, ',', '.') . "</td>";
                 echo "<td>R$ " . number_format($row['valor_total'], 2, ',', '.') . "</td>";
                 // A coluna valor_pago não está presente na sua seleção, então esta linha foi removida.
