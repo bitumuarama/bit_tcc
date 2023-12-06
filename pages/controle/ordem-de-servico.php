@@ -33,7 +33,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
                     echo "<td>{$row['cliente_nome']}</td>";
                     echo "<td>{$row['equipamento']}</td>";
                     echo "<td>{$row['cliente_celular']}</td>";
-                    echo "<td>{$row['data_criacao']}</td>";
+                    echo "<td>" . date('d/m/Y H:i:s', strtotime($row['data_criacao'])) . "</td>";
                     if (allowedUser()) {
                         echo "<td>
                     <div class='actions'>
