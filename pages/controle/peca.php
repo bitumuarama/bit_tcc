@@ -198,14 +198,42 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
                 </div>
 
                 <div class="normal-field field">
-                    <label for="marca">Marca</label>
-                    <input type="text" name="marca" id="marca" placeholder="Marca da Peça" required>
-                </div>
-
-                <div class="normal-field field">
-                    <label for="categoria">Categoria</label>
-                    <input type="text" name="categoria" id="categoria" placeholder="Categoria da Peça" required>
-                </div>
+    <label for="marca">Selecione a Marca:</label>
+<select id="marca" name="marca">
+    <option value="Asus">Asus</option>
+    <option value="Kingston">Kingston</option>
+    <option value="Logitech">Logitech</option>
+    <option value="Samsung">Samsung</option>
+    <option value="Corsair">Corsair</option>
+    <option value="Dell">Dell</option>
+    <option value="Hp">HP</option>
+    <option value="Lenovo">Lenovo</option>
+    <option value="Acer">Acer</option>
+    <option value="MSI">MSI</option>
+    <option value="Intel">Intel</option>
+    <option value="AMD">AMD</option>
+    <option value="Western_Digital">Western Digital</option>
+    <option value="Seagate">Seagate</option>
+    <option value="Razer">Razer</option>
+    <option value="Hyperx">HyperX</option>
+    <option value="DIVERSOS">DIVERSOS</option>    
+</select>
+</div>
+    <div class="normal-field field">
+      <label for="categoria">Selecione a Categoria:</label>
+<select id="categoria" name="categoria">
+    <option value="Laptops">Laptops</option>
+    <option value="Desktops">Desktops</option>
+    <option value="Perifericos">Periféricos</option>
+    <option value="Hardware">Hardware</option>
+    <option value="Armazenamento">Armazenamento</option>
+    <option value="Acessorios">Acessórios</option>
+    <option value="Software">Software</option>
+    <option value="Rede">Rede</option>
+    <option value="Gaming">Gaming</option>
+    <option value="Impressoras">Impressoras</option>
+</select>
+    </div>
 
                 <div class="extra-small-field field">
                     <label for="estoque_minimo">Estoque Mínimo</label>
