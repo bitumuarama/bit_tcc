@@ -14,12 +14,12 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
         include("../../assets/php/connection.php");
 
         if ($termSearch == 'all') {
-            $stmt = $conexao->prepare("SELECT os.id, c.nome AS cliente_nome, c.celular AS cliente_celular, os.equipamento, os.data_criacao, os.valor_total, os.status FROM ordem_de_servico os INNER JOIN cliente c ON os.cliente_id = c.id");
+            $stmt = $conexao->prepare("SELECT os.id, c.nome AS cliente_nome, c.celular AS cliente_celular, os.equipamento, os.data_criacao, os.status FROM ordem_de_servico os INNER JOIN cliente c ON os.cliente_id = c.id");
             $stmt->execute();
             $resultado = $stmt->get_result();
         } else {
             $searchValue = "%$termSearch%";
-            $stmt = $conexao->prepare("SELECT os.id, c.nome AS cliente_nome, c.celular AS cliente_celular, os.equipamento, os.data_criacao, os.valor_total, os.status FROM ordem_de_servico os INNER JOIN cliente c ON os.cliente_id = c.id WHERE c.nome LIKE ?");
+            $stmt = $conexao->prepare("SELECT os.id, c.nome AS cliente_nome, c.celular AS cliente_celular, os.equipamento, os.data_criacao, os.status FROM ordem_de_servico os INNER JOIN cliente c ON os.cliente_id = c.id WHERE c.nome LIKE ?");
             $stmt->bind_param("s", $searchValue);
             $stmt->execute();
             $resultado = $stmt->get_result();
@@ -34,19 +34,18 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
                     echo "<td>{$row['equipamento']}</td>";
                     echo "<td>{$row['cliente_celular']}</td>";
                     echo "<td>{$row['data_criacao']}</td>";
-                    echo "<td>{$row['valor_total']}</td>";
                     if (allowedUser()) {
                         echo "<td>
                     <div class='actions'>
                     <button class='edit_os button-icon' data-id='" . $row['id'] . "'><img src='../assets/img/edit-icon.png' alt='Editar'></button>
                     <button class='delete_os button-icon' data-id='" . $row['id'] . "'><img src='../assets/img/delete-icon.png' alt='Excluir'></button>
                     <button class='finish_os button-icon' data-id='" . $row['id'] . "'><img src='../assets/img/check-icon.png' alt='Excluir'></button>
-
                     </div></td>";
                     } else {
                         echo "<td>
                     <div class='actions'>
                     <button class='edit_os button-icon' data-id='" . $row['id'] . "'><img src='../assets/img/edit-icon.png' alt='Editar'></button>
+                    <button class='finish_os button-icon' data-id='" . $row['id'] . "'><img src='../assets/img/check-icon.png' alt='Excluir'></button>
                     </div></td>";
                     }
                     echo "</tr>";
@@ -57,53 +56,128 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
         }
     }
 
-    function updateData($os_id, $c_id, $c_celular, $os_equipamento, $os_problema_relatado, $os_problema_constatado, $os_servico_executado, $os_servicos, $os_pecas, $os_valor_servico)
+    if (isset($_POST['action']) && $_POST['action'] == 'searchPeca' && isset($_POST['term'])) {
+        $term = $_POST['term'];
+
+        // Cria uma consulta SQL para buscar as peças    
+        $stmt = $conexao->prepare("SELECT * FROM peca WHERE (nome LIKE CONCAT('%', ?, '%')) OR (descricao LIKE CONCAT('%', ?, '%'))");
+        if ($stmt === false) {
+            // A declaração não foi preparada corretamente
+            // Trate o erro aqui
+            die("Erro na preparação da declaração: " . $conexao->error);
+        }
+        $stmt->bind_param("ss", $term, $term);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+
+        if ($resultado->num_rows > 0) {
+            while ($row = $resultado->fetch_assoc()) {
+                echo "<tr>";
+                echo "<td class='part-id'>" . htmlspecialchars($row["id"]) . "</td>";
+                echo "<td class='part-name'>" . htmlspecialchars($row["nome"]) . "</td>";
+                echo "<td class='part-desc'>" . htmlspecialchars($row["descricao"]) . "</td>";
+                echo "<td class='part-brand'>" . htmlspecialchars($row["marca"]) . "</td>";
+                if($row['estoque_atual'] > 2) {
+                    echo "<td><input class='peca-qtd' type='number'></input></td>";
+                    echo "<td><button class='select-peca button-icon' data-id='" . $row['id'] . "' data-qtd='" . $row['estoque_atual'] . "'>Adicionar</button></td>";
+                } else {
+                    echo "<td><input class='peca-qtd' type='text' value='Sem estoque' readonlyy></input></td>";
+                    echo "<td><button class='select-peca button-icon' data-id='" . $row['id'] . "' data-qtd='" . $row['estoque_atual'] . "'>Adicionar</button></td>";
+                }
+                echo "</tr>";
+            }
+        } else {
+            // Escapa o termo antes de exibi-lo por razões de segurança
+            echo "<tr><td colspan='4'>Nenhuma peça encontrada para: " . htmlspecialchars($term) . "</td></tr>";
+        }
+    }
+
+    // Busca pelo código a peça que será adicionada à OS
+    if (isset($_POST['action']) && $_POST['action'] == 'addPeca') {
+        $id = $_POST['id'];
+        $quantidade = isset($_POST['quantidade']) ? (int) $_POST['quantidade'] : 1;
+
+        $stmt = $conexao->prepare("SELECT id, nome, valor_venda FROM peca WHERE id = ?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+
+        if ($peca = $resultado->fetch_assoc()) {
+            $peca['quantidade'] = $quantidade; // Adiciona a quantidade ao array
+            $peca['total'] = $peca['valor_venda'] * $quantidade; // Calcula o total
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode($peca); // Retorna o preço unitário, o nome, o id, a quantidade e o total
+    }
+
+
+
+
+    function updateData($os_id, $os_equipamento, $os_problema_relatado, $os_problema_constatado, $os_servico_executado, $os_servicos, $os_valor_servico)
     {
         include("../../assets/php/connection.php");
 
-        // Atualizar informações do cliente
-        $stmt = $conexao->prepare("UPDATE cliente SET celular = ? WHERE id = ?");
-        $stmt->bind_param("si", $c_celular, $c_id);
-        if (!$stmt->execute()) {
-            echo "error: " . $stmt->error;
-            $stmt->close();
-            $conexao->close();
-            return;
+        if (isset($_POST['servicos'])) {
+            // Supondo que 'servicos' seja um array, você pode convertê-lo em string para armazenar no banco de dados
+            $servicos = implode(',', $_POST['servicos']);
+        } else {
+            $servicos = '';
         }
-        $stmt->close();
 
         // Atualizar informações da ordem de serviço
-        $stmt = $conexao->prepare("UPDATE ordem_de_servico SET equipamento = ?, problema_relatado = ?, problema_constatado = ?, servico_executado = ?, servicos = ?, pecas = ?, valor_servico = ? WHERE id = ?");
-        $stmt->bind_param("sssssssi", $os_equipamento, $os_problema_relatado, $os_problema_constatado, $os_servico_executado, $os_servicos, $os_pecas, $os_valor_servico, $os_id);
+        $stmt = $conexao->prepare("UPDATE ordem_de_servico SET equipamento = ?, problema_relatado = ?, problema_constatado = ?, servico_executado = ?, servicos = ? WHERE id = ?");
+        $stmt->bind_param("sssssi", $os_equipamento, $os_problema_relatado, $os_problema_constatado, $os_servico_executado, $servicos, $os_id);
+
         if ($stmt->execute()) {
-            echo "success";
+            $stmt->close();
+            $conexao->close();
+            return true; // Sucesso
         } else {
-            echo "error: " . $stmt->error;
+            $error = $stmt->error;
+            $stmt->close();
+            $conexao->close();
+            return ['error' => $error]; // Retorna o erro para ser tratado por quem chamou a função
         }
-        $stmt->close();
-        $conexao->close();
     }
+
 
     function deleteData($id)
     {
         include("../../assets/php/connection.php");
 
-        if ($id != "") {
+        // Inicia uma transação para garantir que todas as operações sejam concluídas com sucesso
+        $conexao->begin_transaction();
 
-            $stmt = $conexao->prepare("DELETE FROM ordem_de_servico WHERE id = ?");
-
+        try {
+            // Primeiro, exclui todas as relações na tabela ordem_de_servico_peca
+            $stmt = $conexao->prepare("DELETE FROM ordem_de_servico_peca WHERE ordem_de_servico_id = ?");
             $stmt->bind_param("i", $id);
-
-            if ($stmt->execute()) {
-                echo json_encode(['success' => true, 'message' => $id]);
-            } else {
-                echo json_encode(['success' => false, 'message' => 'Erro: ' . $stmt->error]);
+            if (!$stmt->execute()) {
+                throw new Exception('Erro ao excluir peças relacionadas: ' . $stmt->error);
             }
-
             $stmt->close();
+
+            // Depois, exclui a ordem de serviço
+            $stmt = $conexao->prepare("DELETE FROM ordem_de_servico WHERE id = ?");
+            $stmt->bind_param("i", $id);
+            if (!$stmt->execute()) {
+                throw new Exception('Erro ao excluir ordem de serviço: ' . $stmt->error);
+            }
+            $stmt->close();
+
+            // Se tudo ocorreu bem, confirma as operações
+            $conexao->commit();
+            echo json_encode(['success' => true, 'message' => 'Ordem de serviço excluída com sucesso.']);
+        } catch (Exception $e) {
+            // Se algo der errado, desfaz as operações
+            $conexao->rollback();
+            echo json_encode(['success' => false, 'message' => $e->getMessage()]);
         }
+
         $conexao->close();
     }
+
 
     // Quando houver um clique em .edit (botão de edição)
     if (isset($_POST['action']) && $_POST['action'] == 'getData') {
@@ -156,7 +230,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
             WHERE 
                 os.id = ?
         ");
-        
+
         $stmt->bind_param("i", $id);
         $stmt->execute();
         $resultado = $stmt->get_result()->fetch_assoc();
@@ -165,65 +239,75 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
         echo json_encode($resultado);
         exit;
     }
-    
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] == 'salvarrecebimento') {
+
+    mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] == 'saveReceives') {
         $clienteId = $_POST['clienteId'];
-        $ordemServicoID = $_POST['ordemServicoID'];
-        $valorPago = $_POST['valorPago'];
-        $valorTotal = $_POST['valorTotal'];
         $formaPagamento = $_POST['formaPagamento'];
-        
+        $valorTotal = $_POST['valorTotal'];
+        $valorPago = $_POST['valorPago'];
+        $ordemServicoID = $_POST['ordemServicoID'];
+
         $stmt = $conexao->prepare("INSERT INTO recebimento (cliente_id, os_id, valor_pago, valor_total, forma_pagamento) VALUES (?, ?, ?, ?, ?)");
         $stmt->bind_param("iidds", $clienteId, $ordemServicoID, $valorPago, $valorTotal, $formaPagamento);
-    
+
         try {
             if ($stmt->execute()) {
-                $usts = $conexao->prepare("UPDATE ordem_de_servico SET status = 'pendente' WHERE id = ?");
+                $usts = $conexao->prepare("UPDATE ordem_de_servico SET status = 'Pendente' WHERE id = ?");
                 $usts->bind_param("i", $ordemServicoID);
-    
+
                 if ($usts->execute()) {
                     echo json_encode(['success' => true, 'message' => $ordemServicoID]);
                 } else {
-                    echo json_encode(['success' => false, 'message' => 'Erro: ' . mysqli_error($conexao)]);
+                    // O mysqli_error não será necessário aqui, pois uma exceção será lançada em caso de erro.
+                    echo json_encode(['success' => false, 'message' => 'Erro ao atualizar status da ordem de serviço.']);
                 }
-    
+
                 $usts->close();
             } else {
-                echo json_encode(['success' => false, 'message' => 'Erro: ' . mysqli_error($conexao)]);
+                // O mysqli_error não será necessário aqui, pois uma exceção será lançada em caso de erro.
+                echo json_encode(['success' => false, 'message' => 'Erro ao inserir recebimento.']);
             }
         } catch (Exception $e) {
             echo json_encode(['success' => false, 'message' => 'Erro: ' . $e->getMessage()]);
         }
-    
+
         $stmt->close();
-        $conexao->close();
     }
-    
-    
 
 
-
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] == 'updateOSData') {
-        $os_id = $_POST['ordem_de_servico_id'];
-        $c_id = $_POST['cliente_id'];
-        $c_celular = $_POST['celular'];
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] == 'updateOrderService') {
+        $os_id = $_POST['ordem_servico_id'];
         $os_equipamento = $_POST['equipamento'];
 
         $os_problema_relatado = $_POST['problema_relatado'] ?? '';
         $os_problema_constatado = $_POST['problema_constatado'] ?? '';
         $os_servico_executado = $_POST['servico_executado'] ?? '';
-        $os_servicos = $_POST['servicos'] ?? '';
-        $os_pecas = $_POST['pecas'] ?? '';
+
+        // $os_servicos = is_array($_POST['servicos']) ? implode(', ', $_POST['servicos']) : $_POST['servicos'];
+        $os_servicos = '';
+
         $os_valor_servico = $_POST['valor_servico'] ?? '';
 
-        // Chamando a função updateData
-        updateData($os_id, $c_id, $c_celular, $os_equipamento, $os_problema_relatado, $os_problema_constatado, $os_servico_executado, $os_servicos, $os_pecas, $os_valor_servico);
+        $update_success = updateData($os_id, $os_equipamento, $os_problema_relatado, $os_problema_constatado, $os_servico_executado, $os_servicos, $os_valor_servico);
 
-        // Não é necessário fechar a conexão aqui se ela já é fechada dentro da função updateData
+        header('Content-Type: application/json');
+        if ($update_success) {
+            echo json_encode(['success' => true, 'message' => $id]);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Erro: ' . $stmt->error]);
+        }
+
         exit;
     }
 
+
+    // Faz a chamada de exclusão passando o ID
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] == 'deleteData') {
+        deleteData($_POST['id']);
+    }
 
     // Quando enviar o formulário de pesquisa
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -240,7 +324,6 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
     header('HTTP/1.0 403 Forbidden');
     exit;
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -250,6 +333,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Controle de Clientes</title>
+
     <script src="../assets/js/masks.js"></script>
 </head>
 
@@ -266,111 +350,54 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
     <div id="editModal" class="modal hidden">
         <div class="modal-content">
             <span class="close close-btn">&times;</span>
-            <form class="grid-template" id="editForm">
 
-                <div class="extra-small-field field">
-                    <label for="ordem_servico_id">OS:</label>
-                    <input type="text" id="ordem_servico_id" name="ordem_servico_id" readonly>
-                </div>
-                <div class="small-field field">
-                    <label for="nome">Nome</label><br>
-                    <input type="text" name="nome" id="nome">
-                </div>
-                <div class="small-field field">
-                    <label for="equipamento">Equipamento</label><br>
-                    <input type="text" name="equipamento" id="equipamento">
-                </div>
-
-                <!-- <div class="textarea-field field">
-                    <label for="problema_relatado">Probelema Relatado </label><br>
-                    <textarea id="problema_relatado" name="problema_relatado" cols="20" rows="10"></textarea>
-                </div>
-
-                <div class="textarea-field field">
-                    <label for="problema_constatado">Problema Constatado</label><br>
-                    <textarea id="problema_constatado" name="problema_constatado" cols="20" rows="10"></textarea>
-                </div>
-
-                <div class="textarea-field field">
-                    <label for="servico_executado">Serviço Executado</label><br>
-                    <textarea id="servico_executado" name="servico_executado" cols="20" rows="10"></textarea>
-                </div> -->
-
-
-
-                <fieldset class="fieldset-field field" name="servico">
-                    <legend>SERVIÇOS:</legend>
+            <div class="extra-larger-field field">
+                <div>
                     <div>
-                        <label for="formatacao">Formatação</label>
-                        <input type="checkbox" id="formatacao" name="servicos[]" value="formatacao" />
+                        <h1>
+                            Peças
+                        </h1>
+                        <label class="expandir" for="expandir" id="expandirLabel">+</label>
+                        <input class="hidden" type="checkbox" id="expandir">
                     </div>
 
-                    <div>
-                        <label for="limpeza">Limpeza</label>
-                        <input type="checkbox" id="limpeza" name="servicos[]" value="limpeza" />
+                    <div class="lista-peca hidden">
+                        <div class="search-div">
+                            <input class="search-input" type="text" id="searchTerm"
+                                placeholder="Digite para pesquisar...">
+                            <button id="pesquisar_peca" class="search-button">
+                                <img class="icons" src="../assets/img/search-icon.png" alt="Icon">
+                            </button>
+                        </div>
+
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nome</th>
+                                    <th>Descrição</th>
+                                    <th>Marca</th>
+                                    <th>Quantidade</th>
+                                    <th>Adicionar</th>
+                                </tr>
+                            </thead>
+                            <tbody id="peca-results"></tbody>
+                        </table>
                     </div>
 
-                    <div>
-                        <label for="troca_de_peca">Troca de peça</label>
-                        <input type="checkbox" id="troca_de_peca" name="servicos[]" value="troca_de_peca" />
-                    </div>
-
-                    <div>
-                        <label for="montagem">Montagem</label>
-                        <input type="checkbox" id="montagem" name="servicos[]" value="montagem" />
-                    </div>
-
-                    <div>
-                        <label for="instalacao">Instalação de Programas</label>
-                        <input type="checkbox" id="instalacao" name="servicos[]" value="instalacao" />
-                    </div>
-
-                    <div>
-                        <label for="restauracao">Recuperação de Arquivos</label>
-                        <input type="checkbox" id="restauracao" name="servicos[]" value="restauracao" />
-                    </div>
-                </fieldset>
-                <div class="normal-field field">
-                    <label>Peças</label>
-                    <div id="pecasSelecionadas">
-                        <p>Sem peças</p>
-                    </div>
                 </div>
-
-                <div class="extra-small-field field">
-                    <label for="valor_servico">Valor Serviço: </label>
-                    <input class="contabil" type="text" placeholder="R$ 0,00" name="valor_servico" id="valor_servico"
-                        value="">
+                <div id="pecasSelecionadas">
+                    <div id="selects"></div>
+                    <p>Valor total: <input id="valorTotal" type="text" placeholder="R$ 0,00" readonly></p>
                 </div>
+            </div>
 
 
-                <div class="extra-small-field field">
-                    <label for="valor_total">Valor Total: </label>
-                    <input class="contabil" type="text" placeholder="R$ 0,00" name="valor_total" id="valor_total"
-                        value="">
-                </div>
-
-                <form class="search-form" id="searchPeca">
-                    <input class="search-input" type="text" name="search-peca" placeholder="Digite para pesquisar...">
-                    <button class="search-button" type="submit"><img class="icons" src="../assets/img/search-icon.png"
-                            alt="Icon"></button>
-                </form>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nome</th>
-                            <th>Valor</th>
-                            <th>Quantidade</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody id="search-result-peca"></tbody>
-                </table>
-
-                <input type="button" value="Salvar" id="salvar">
-                <input class="close" type="button" value="Cancelar">
-            </form>
+            <div class="actions">
+                <input class="success-btn" type="button" value="Salvar" id="salvar_os">
+                <input class="close alert-btn" type="button" value="Cancelar">
+            </div>
         </div>
     </div>
 
@@ -387,11 +414,30 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
         </div>
     </div>
 
-    <!-- ... Seu HTML existente ... -->
+    <div id="table">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Equipamento</th>
+                    <th>Celular</th>
+                    <th>Data de Criação</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="search-result">
+                <tr>
+                    <?php search('all'); ?>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
 
     <div id="finalizarModal" class="modal hidden">
         <div class="modal-content">
-            <span class="close">&times;</span>
+            <span class="close close-btn">&times;</span>
             <form id="finalizarForm">
 
                 <div class="field">
@@ -424,68 +470,30 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
                     <input type="text" id="ordemServicoID" name="ordemServicoID" readonly>
                 </div>
 
-                <input type="button" value="Confirmar" id="confirmarFinalizacao" name="finalizar">
-                <input class="close" type="button" value="Cancelar">
+                <div class="button-area">
+                    <input class="success-btn" id="saveFinishOS" type="button" value="Confirmar">
+                    <input class="cancel-btn close" type="button" value="Cancelar">
+                </div>
             </form>
         </div>
     </div>
 
-    <!-- ... (código anterior) ... -->
+    <script>
+        document.getElementById('expandir').addEventListener('change', function (event) {
+            var expandir = document.getElementById('expandir');
+            var listaPeca = document.querySelector('.lista-peca');
 
-    <!-- <script>
+            if (expandir.checked) {
+                // Se o checkbox estiver marcado, adicione a classe 'show'
+                listaPeca.classList.add('show');
+            } else {
+                // Se o checkbox não estiver marcado, remova a classe 'show'
+                listaPeca.classList.remove('show');
+            }
 
-        // Função para abrir o modal de finalização ao clicar no botão "Finalizar"
-        $(".finish_os").click(function () {
-            var id = $(this).closest("tr").find("td:eq(0)").text();
-            var clienteNome = $(this).closest("tr").find("td:eq(1)").text();
-            var valorTotal = $(this).closest("tr").find("td:eq(5)").text(); // Ajuste para pegar o valor na coluna correta
-
-            // Preenche o modal de finalização
-            preencherModalFinalizar(id, clienteNome, valorTotal);
-
-            // Abre o modal de finalização
-            $("#finalizarModal").removeClass("hidden");
         });
 
-        // Função para preencher o modal de finalização com os dados da ordem de serviço
-        // Função para preencher o modal de finalização com os dados da ordem de serviço
-        function preencherModalFinalizar(id, clienteNome, valorTotal) {
-            $("#ordemServicoID").val(id);
-            $("#clienteNome").val(clienteNome);
-
-            // Remove apenas o prefixo "R$ "
-            valorTotal = valorTotal.replace('R$ ', '');
-
-            // Atribui o valor diretamente ao campo "Valor Total" no modal
-            $("#valorTotal").val('R$ ' + valorTotal);
-        }
-
-
-    </script> -->
-
-
-
-
-    <div id="clientList">
-        <table id="clientsTable">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nome</th>
-                    <th>Equipamento</th>
-                    <th>Celular</th>
-                    <th>Data de Criação</th>
-                    <th>Valor</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody id="search-result">
-                <tr>
-                    <?php search('all'); ?>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    </script>
 </body>
 
 </html>
