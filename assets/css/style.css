@@ -60,6 +60,7 @@ button {
     cursor: pointer;
 }
 
+
 /* Estilos Formulários */
 .search-div,
 .search-form {
@@ -134,6 +135,7 @@ fieldset {
     flex-wrap: wrap;
     margin: 0;
     padding: 0 1rem;
+    max-height: 30rem;
 }
 
 fieldset label {
@@ -183,7 +185,9 @@ fieldset input[type="checkbox"] {
 
 .fieldset-field {
     grid-area: span 6 / span 4;
+    grid-column: -1;
 }
+
 
 .button-area {
     grid-column: 1 / -1;
@@ -259,11 +263,11 @@ button img {
 }
 
 .cancel-btn {
-    background-color: #bbbbbb;
+    background-color: rgb(181, 178, 178);
 }
 
 .cancel-btn:hover {
-    background-color: #807b7b;
+    background-color: #706d6d;
 }
 
 .submit-button {
@@ -332,6 +336,18 @@ tr:hover {
     background-color: #e7e7e7;
     transition: background-color 0.1s;
 }
+
+tr.lin_success {
+    background-color: #d3efdc;
+}
+tr.lin_success:hover {
+    background-color: #a3ecba;
+}
+
+tr.lin_success:hover td.status_data {
+    font-weight: 900;
+}
+
 
 th:hover {
     background-color: #007bff;
@@ -468,6 +484,30 @@ th:hover {
     display: none;
 }
 
+.show {
+    display: block;
+    animation: show-up 0.5s forwards;
+}
+
+@keyframes show-up {
+    0% {
+        opacity: 0;
+        /* Começa totalmente transparente */
+        transform: translateY(100%);
+        /* Move o conteúdo para cima, fora da tela */
+    }
+
+    75% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+        /* Fica totalmente opaco */
+        transform: translateY(0);
+        /* Volta para a posição original */
+    }
+}
 
 
 /* IDs */
