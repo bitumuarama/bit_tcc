@@ -35,12 +35,11 @@ $(document).ready(function () {
         showModal('#editModal');
     });
 
-    $(document).on('click', ".finish_os", function () {
-        console.log("Finalizar")
-        showModal('#finalizarModal');
-    });
-    
     $(document).on('click', '.edit_os', function () {
+        console.log("Editar")
+        showModal('#editModal');
+    });
+    $(document).on('click', '.edit_peca', function () {
         console.log("Editar")
         showModal('#editModal');
     });
@@ -54,13 +53,30 @@ $(document).ready(function () {
         console.log("Excluir")
         showModal('#excluirModal');
     });
+    
+    $(document).on('click', '.delete_peca', function () {
+        console.log("Excluir")
+        showModal('#excluirModal');
+    });
 
     $(document).on('click', '.delete_os', function () {
         console.log("Excluir")
         showModal('#excluirModal');
     });
+    $(document).on('click', '.edit_receive', function () {
+        console.log("Edit")
+        showModal('#editModal');
+    });
+    $(document).on('click', '.delete_receive', function () {
+        console.log("Excluir")
+        showModal('#excluirModal');
+    });
+    $(document).on('click', '.finish_os', function () {
+        console.log("Finalizar")
+        showModal('#finalizarModal');
+    });
 
-    $(document).on('click', '#salvar', function() {
+    $(document).on('click', '#salvar', function () {
         console.log("Salvar")
     })
 
@@ -98,7 +114,5 @@ $(document).ready(function () {
         hideModal('#pecaModal');
     });
 
-    $(document).on('click', '.remove-peca', function () {
-        $(this).parent('.peca-item').remove();
-    });
+
 });
