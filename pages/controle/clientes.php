@@ -74,20 +74,26 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
     {
         include("../../assets/php/connection.php");
 
-        if ($id != "") {
+        // Inicia uma transação para garantir que todas as operações sejam concluídas com sucesso
+        $conexao->begin_transaction();
 
+        try {
+            // Primeiro, exclui todas as relações na tabela ordem_de_servico_peca
             $stmt = $conexao->prepare("DELETE FROM cliente WHERE id = ?");
-
             $stmt->bind_param("i", $id);
-
-            if ($stmt->execute()) {
-                echo json_encode(['success' => true, 'message' => $id]);
-            } else {
-                echo json_encode(['success' => false, 'message' => 'Erro: ' . $stmt->error]);
+            if (!$stmt->execute()) {
+                throw new Exception('Erro ao excluir cliente: ' . $stmt->error);
             }
-
             $stmt->close();
+
+            // Se tudo ocorreu bem, confirma as operações
+            $conexao->commit();
+            echo json_encode(['success' => true, 'message' => $id]);
+        } catch (Exception $e) {
+            $conexao->rollback();
+            echo json_encode(['success' => false, 'message' => $e->getMessage()]);
         }
+
         $conexao->close();
     }
 
